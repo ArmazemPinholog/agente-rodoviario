@@ -1,0 +1,22 @@
+# AgenteRodo · Pinholog — deploy estático (Netlify)
+[build]
+  publish = "."
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "no-referrer"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/painel.html"
+  [headers.values]
+    Cache-Control = "no-cache"
