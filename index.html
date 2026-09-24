@@ -1038,6 +1038,48 @@ body.has-dock{padding-bottom:120px;}
 .v2-tbl tr.is-dif td{background:var(--orange4);}
 .v2-edt-docs{display:flex;gap:8px;flex-wrap:wrap;margin:-4px 0 12px;}
 
+/* ── Visualizador lado a lado na conferência de documentos ── */
+.v2-docs-viewer{display:flex;flex-direction:column;min-width:0;border:1px solid var(--border);border-radius:14px;overflow:hidden;background:var(--s2);}
+.v2-docs-viewer[hidden]{display:none;}
+.v2-docs-grid.comparando{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);}
+.v2-docs-grid.comparando .v2-docs-fontes{display:none;}
+.v2-vw-h{display:flex;align-items:center;gap:8px;padding:8px;border-bottom:1px solid var(--border);background:var(--s1);}
+.v2-vw-tabs{display:flex;gap:4px;overflow-x:auto;flex:1;min-width:0;scrollbar-width:thin;}
+.v2-vw-tabs button{flex:none;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border:1px solid transparent;background:transparent;color:var(--text2);font:600 12px var(--font-sans);padding:6px 10px;border-radius:8px;cursor:pointer;}
+.v2-vw-tabs button:hover{background:var(--s3);}
+.v2-vw-tabs button.on{background:var(--blue4);border-color:var(--blue3);color:var(--text);}
+.v2-vw-acts{display:flex;gap:4px;flex:none;}
+.v2-vw-body{flex:1;min-height:0;height:calc(88vh - 190px);min-height:420px;overflow:auto;background:var(--s2);}
+.v2-vw-body iframe{width:100%;height:100%;border:0;background:#fff;display:block;}
+.v2-vw-msg{padding:40px 20px;text-align:center;color:var(--text2);font-size:13px;line-height:1.7;}
+.v2-vw-img{padding:12px;display:flex;justify-content:center;} .v2-vw-img img{max-width:100%;height:auto;border-radius:8px;box-shadow:var(--shadow-md);}
+.v2-vw-pre{font:11.5px/1.5 var(--font-mono);white-space:pre-wrap;word-break:break-all;padding:12px;margin:0;color:var(--text2);}
+.v2-vw-sheet{padding:12px;font-size:12px;} .v2-vw-sheet h4{margin:10px 0 6px;font-size:12px;color:var(--text2);}
+.v2-vw-sheet table{border-collapse:collapse;background:var(--s1);} .v2-vw-sheet td{border:1px solid var(--border);padding:4px 8px;white-space:nowrap;}
+.v2-lido.clicavel{cursor:pointer;position:relative;} .v2-lido.clicavel:hover{border-color:var(--blue);}
+.v2-lido.vendo{border-color:var(--blue);box-shadow:0 0 0 1px var(--blue);background:var(--blue4);}
+.v2-lido-olho{margin-left:auto;opacity:.55;font-size:13px;} .v2-lido.clicavel:hover .v2-lido-olho{opacity:1;}
+.v2-fonte{color:var(--blue);text-decoration:none;font-weight:600;} .v2-fonte:hover{text-decoration:underline;}
+.v2-arq-ver{border:none;background:none;cursor:pointer;font-size:13px;padding:2px 4px;border-radius:6px;opacity:.6;} .v2-arq-ver:hover{opacity:1;background:var(--s3);}
+.v2-nf{padding:16px;background:var(--s1);min-height:100%;}
+.v2-nf-top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-bottom:14px;border-bottom:1px solid var(--border);margin-bottom:14px;}
+.v2-nf-k{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);}
+.v2-nf-n{font-size:24px;font-weight:800;letter-spacing:-.02em;color:var(--text);}
+.v2-nf-v{text-align:right;} .v2-nf-v span{display:block;font-size:11.5px;color:var(--text3);} .v2-nf-v b{font-size:22px;color:var(--text);letter-spacing:-.02em;}
+.v2-nf-g{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.v2-nf-b{background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;}
+.v2-nf-t{font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:6px;}
+.v2-nf-l{display:flex;justify-content:space-between;gap:10px;font-size:12px;padding:2px 0;} .v2-nf-l span{color:var(--text3);} .v2-nf-l b{color:var(--text);text-align:right;}
+.v2-nf-obs{font-size:12px;color:var(--text2);background:var(--s2);border-radius:10px;padding:10px 12px;line-height:1.55;}
+.v2-nf .n{text-align:right;white-space:nowrap;}
+@media (max-width:860px){ .v2-docs-grid.comparando{grid-template-columns:minmax(0,1fr);} .v2-vw-body{height:62vh;min-height:320px;} .v2-nf-g{grid-template-columns:1fr;} }
+.v2-docs-grid.comparando{align-items:start;}
+.v2-docs-grid.comparando .v2-docs-viewer{position:sticky;top:0;z-index:2;}
+.v2-pdf-bar{position:sticky;top:0;z-index:1;display:flex;align-items:center;gap:8px;padding:6px 10px;background:var(--s1);border-bottom:1px solid var(--border);font-size:11.5px;color:var(--text3);}
+.v2-pdf-bar button{width:28px;height:26px;border:1px solid var(--border2);background:var(--s2);color:var(--text);border-radius:7px;cursor:pointer;font-weight:800;}
+.v2-pdf{display:flex;flex-direction:column;align-items:center;gap:10px;padding:12px;}
+.v2-pdf canvas{background:#fff;border-radius:4px;box-shadow:0 4px 16px rgba(0,0,0,.25);max-width:none;}
+
 /* ══════════ Dashboards (motor compartilhado app + Portal do Cliente) ══════════ */
 :root, :root[data-theme="light"] {
   --dz-c1:#2a78d6; --dz-c2:#eb6834; --dz-c3:#1baf7a; --dz-c4:#eda100; --dz-c5:#e87ba4; --dz-c6:#008300;
@@ -7621,9 +7663,11 @@ function relMapRegistroSupabase(row) {
     // automático mudou desde então, o override "expirou" e o automático
     // (mais recente, de verdade) vence.
     statusProcessoAuto:   row.status_processo || '',
-    statusProcessoManual: (row.status_processo_manual && row.status_processo_manual_base === (row.status_processo || '')) ? row.status_processo_manual : '',
-    statusProcessoManualObsoleto: !!(row.status_processo_manual && row.status_processo_manual_base !== (row.status_processo || '')),
-    statusProcesso:   (row.status_processo_manual && row.status_processo_manual_base === (row.status_processo || '')) ? row.status_processo_manual : (row.status_processo || ''),
+    statusProcessoManual: v2VezEfetiva(row).valido ? row.status_processo_manual : '',
+    statusProcessoManualObsoleto: v2VezEfetiva(row).obsoleto,
+    statusProcesso:   v2VezEfetiva(row).valido ? row.status_processo_manual : (row.status_processo || ''),
+    _vezManualRaw: row.status_processo_manual || '',
+    _vezBaseRaw: row.status_processo_manual_base || '',
     equipe:           row.equipe || '',
     assistente:       row.assistente || '',
     nf:               row.nf || '',
@@ -8148,7 +8192,7 @@ async function relBuscar() {
     // ⚠️ status_processo/status_processo_manual faltavam aqui (só eram
     // buscados pelo "vigia" à parte) — por isso o Kanban/dashboard nunca
     // refletiam o status real na tela principal. Corrigido em 26/08/2026.
-    const campos = 'linha,origem_planilha,origem_planilha_rotulo,cliente,referencia,local_coleta,local_entrega,data_liberacao,data_carregamento,data_descarga,status,status_processo,status_processo_manual,status_processo_manual_base,equipe,assistente,nf,rastreamento,horas_primeira_resposta,primeira_resposta_ok,horas_programacao,programacao_ok,data_recebimento,hora_recebimento,data_1_resposta,hora_1_resposta,hora_liberacao,data_programacao,hora_programacao,adiantamento_confirmado,todos';
+    const campos = 'linha,origem_planilha,origem_planilha_rotulo,cliente,referencia,local_coleta,local_entrega,data_liberacao,data_carregamento,data_descarga,status,status_processo,status_processo_manual,status_processo_manual_base,status_processo_manual_em,equipe,assistente,nf,rastreamento,horas_primeira_resposta,primeira_resposta_ok,horas_programacao,programacao_ok,data_recebimento,hora_recebimento,data_1_resposta,hora_1_resposta,hora_liberacao,data_programacao,hora_programacao,adiantamento_confirmado,todos';
     let qs = `select=${campos}&order=cliente.asc,referencia.asc`;
     if (!todos) {
       // 1 cliente → cliente=eq.X (mais rápido/simples); 2+ → cliente=in.(A,B,C)
@@ -8668,7 +8712,7 @@ async function relVigiaChecar() {
     for (let i = 0; i < linhas.length; i += TAM_LOTE_VIGIA) {
       const lote = linhas.slice(i, i + TAM_LOTE_VIGIA);
       const filtro = `linha=in.(${lote.join(',')})`;
-      const pagina = await _sbFetchTudo(`${SB_URL}/rest/v1/relatorios_dados?${filtro}&select=linha,cliente,status_processo,status_processo_manual,status_processo_manual_base,status,todos`, hdrs);
+      const pagina = await _sbFetchTudo(`${SB_URL}/rest/v1/relatorios_dados?${filtro}&select=linha,cliente,status_processo,status_processo_manual,status_processo_manual_base,status_processo_manual_em,status,todos`, hdrs);
       linhasAtuais = linhasAtuais.concat(pagina);
     }
     let mudouStatusProcesso = false;
@@ -8677,7 +8721,7 @@ async function relVigiaChecar() {
       // 11ª rodada — mesma regra de expiração do override que
       // relMapRegistroSupabase usa (ver nota lá): só respeita o manual
       // se ele ainda bater com o automático de quando foi setado.
-      const overrideValido = !!row.status_processo_manual && row.status_processo_manual_base === (row.status_processo || '');
+      const overrideValido = v2VezEfetiva(row).valido;
       const efetivo = overrideValido ? row.status_processo_manual : (row.status_processo || '');
       const todosRow = row.todos || {};
       const formTexto = (relTodosBuscar(todosRow, 'Data de envio do formulário ao Terceiro') || relTodosBuscar(todosRow, 'Horário de envio do formulário ao Terceiro'));
@@ -9080,7 +9124,7 @@ async function relConfirmarSaldo(linha, confirmar) {
       const r = await fetch(`${SB_URL}/rest/v1/relatorios_dados?linha=eq.${linha}`, {
         method: 'PATCH',
         headers: hdrs,
-        body: JSON.stringify({ status_processo_manual: 'ADM', status_processo_manual_base: baseAtual }),
+        body: JSON.stringify({ status_processo_manual: 'ADM', status_processo_manual_base: '~', status_processo_manual_em: new Date().toISOString() }),
       });
       if (!r.ok) throw new Error(await r.text());
       if (registro) {
@@ -9217,7 +9261,7 @@ async function relConfirmarAdiantamento(linha, confirmar) {
     const r = await fetch(`${SB_URL}/rest/v1/relatorios_dados?linha=eq.${linha}`, {
       method: 'PATCH',
       headers: hdrs,
-      body: JSON.stringify({ adiantamento_confirmado: true, status_processo_manual: 'ADM', status_processo_manual_base: baseAtual }),
+      body: JSON.stringify({ adiantamento_confirmado: true, status_processo_manual: 'ADM', status_processo_manual_base: '~', status_processo_manual_em: new Date().toISOString() }),
     });
     if (!r.ok) throw new Error(await r.text());
     if (registro) {
@@ -10654,7 +10698,7 @@ async function relPatchStatusProcessoManual(valor) {
     const r = await fetch(`${SB_URL}/rest/v1/relatorios_dados?linha=eq.${relEdtLinhaAtual}`, {
       method: 'PATCH',
       headers: hdrs,
-      body: JSON.stringify({ status_processo_manual: valor, status_processo_manual_base: baseAtual }),
+      body: JSON.stringify({ status_processo_manual: valor, status_processo_manual_base: (valor ? '~' : null), status_processo_manual_em: (valor ? new Date().toISOString() : null) }),
     });
     if (!r.ok) throw new Error(await r.text());
     if (relEdtRegistroAtual) relEdtRegistroAtual.statusProcessoManual = valor || '';
@@ -10674,15 +10718,34 @@ async function relPatchStatusProcessoManual(valor) {
 // arrumação (a tela já mostra o valor certo de qualquer jeito, isso
 // aqui só evita deixar lixo acumulado na tabela e destrava o <select>
 // de "Passar a vez" pra pré-selecionar "Automático" da próxima vez.
+
+// 24/09/2026 — "passei a vez e voltou pro anterior": ao passar a vez, o
+// STATUS novo vai pra planilha e a planilha RECALCULA o automático logo
+// depois. A regra antiga comparava com o automático de ANTES da gravação,
+// então o eco da própria mudança "expirava" o override e o card voltava.
+// Agora o override nasce PENDENTE (base '~'); um gatilho no Supabase
+// (ar_vez_rebase) fixa a base no automático já recalculado, e só uma
+// mudança de verdade depois disso expira o override.
+function v2VezEfetiva(row) {
+  const man = (row && row.status_processo_manual) || '';
+  if (!man) return { valido: false, obsoleto: false };
+  const auto = row.status_processo || '';
+  const base = row.status_processo_manual_base;
+  if (man === auto) return { valido: false, obsoleto: true };      // planilha já concorda — override desnecessário
+  if (base === '~') return { valido: true, obsoleto: false };      // pendente: aguardando a planilha sincronizar
+  const ok = base === auto;
+  return { valido: ok, obsoleto: !ok };
+}
 function relLimparOverridesObsoletos(registros) {
   const obsoletos = registros.filter(r => r.statusProcessoManualObsoleto && r._linha !== undefined && r._linha !== null);
   if (!obsoletos.length) return;
   const hdrs = { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' };
   obsoletos.forEach(r => {
-    fetch(`${SB_URL}/rest/v1/relatorios_dados?linha=eq.${r._linha}`, {
+    const _cond = '&status_processo_manual=eq.' + encodeURIComponent(r._vezManualRaw || '') + (r._vezBaseRaw ? '&status_processo_manual_base=eq.' + encodeURIComponent(r._vezBaseRaw) : '&status_processo_manual_base=is.null');
+    fetch(`${SB_URL}/rest/v1/relatorios_dados?linha=eq.${r._linha}` + _cond, {
       method: 'PATCH',
       headers: hdrs,
-      body: JSON.stringify({ status_processo_manual: null, status_processo_manual_base: null }),
+      body: JSON.stringify({ status_processo_manual: null, status_processo_manual_base: null, status_processo_manual_em: null }),
     }).catch(() => {}); // silencioso — só uma faxina, não é crítico
   });
 }
@@ -13493,7 +13556,7 @@ function v2AbrirConfigDrive() {
         <li>Em <b>APIs e serviços → Biblioteca</b>, ative a <b>Google Drive API</b>.</li>
         <li>Em <b>Tela de consentimento OAuth</b>: tipo <b>Interno</b>, nome "AgenteRodo".</li>
         <li>Em <b>Credenciais → Criar credenciais → ID do cliente OAuth → Aplicativo da Web</b>.</li>
-        <li>Em <b>Origens JavaScript autorizadas</b> coloque: <code>${escH(origem)}</code>${origem.includes('netlify') ? '' : ' e <code>https://agente-rodo.netlify.app</code>'}</li>
+        <li>Em <b>Origens JavaScript autorizadas</b> coloque: <code>${escH(origem)}</code> (exatamente assim, sem barra no final)${origem.startsWith('http') ? '' : ' — ⚠️ você abriu o arquivo direto do computador; o Google só aceita o endereço publicado: <code>https://agente-rodo.vercel.app</code>'}</li>
         <li>Copie o <b>ID do cliente</b> e cole aqui em cima.</li>
       </ol>
     </details>
@@ -13578,8 +13641,9 @@ function v2DocsAbrir(i, opts) {
   m.firstElementChild.innerHTML = `
     <div class="v2-mh"><div><h3>📂 Documentos — ${titulo}</h3><p>Busque os documentos do processo no Drive ou envie do computador. O AgenteRodo lê NF-e, DANFE, HAWB/BL, Packing List, Invoice e DUIMP, preenche os campos e confere com a planilha.</p></div>
       <button class="v2-x" onclick="document.getElementById('modal-v2-docs').style.display='none'">✕</button></div>
-    <div class="v2-docs-grid">
-      <div class="v2-docs-col">
+    <div class="v2-docs-grid" id="v2-docs-grid">
+      <div class="v2-docs-viewer" id="v2-docs-viewer" hidden></div>
+      <div class="v2-docs-col v2-docs-fontes">
         <div class="v2-sec-h"><b>Google Drive</b><span id="v2-drive-status" class="muted"></span>
           <span style="margin-left:auto;display:flex;gap:6px;">
             <input type="text" id="v2-docs-ref" value="${escH(r ? r.referencia || '' : '')}" placeholder="Referência (ex. EST0703/26)" style="width:190px;height:32px;padding:4px 10px;font-size:12.5px;" onkeydown="if(event.key==='Enter')v2DocsBuscarDrive()">
@@ -13673,6 +13737,7 @@ function v2DocsRenderDrive() {
         <span class="v2-arq-i">${v2IconeArq(a.name, a.mimeType)}</span>
         <span class="v2-arq-n" title="${escH(a.name)}">${escH(a.name)}</span>
         <span class="muted">${a.size ? v2Fmt(a.size / 1024, 0) + ' KB' : ''}</span>
+        <button type="button" class="v2-arq-ver" onclick="event.preventDefault();event.stopPropagation();v2DocsVerArquivo('d:${a.id}')" title="Visualizar aqui">👁</button>
         <a href="${escH(a.webViewLink || '#')}" target="_blank" rel="noopener" onclick="event.stopPropagation()" title="Abrir no Drive">↗</a>
       </label>`).join('')}`).join('');
   v2DocsAtualizarContagem();
@@ -13689,7 +13754,8 @@ function v2DocsAddLocais(files) {
       <input type="checkbox" ${v2DocsCtx.selecionados.has(a.id) ? 'checked' : ''} onchange="v2DocsToggle('${a.id}', this.checked)">
       <span class="v2-arq-i">${v2IconeArq(a.name, a.mimeType)}</span>
       <span class="v2-arq-n" title="${escH(a.name)}">${escH(a.name)}</span>
-      <span class="muted">${v2Fmt(a.size / 1024, 0)} KB</span></label>`).join('');
+      <span class="muted">${v2Fmt(a.size / 1024, 0)} KB</span>
+      <button type="button" class="v2-arq-ver" onclick="event.preventDefault();event.stopPropagation();v2DocsVerArquivo('${a.id}')" title="Visualizar aqui">👁</button></label>`).join('');
   v2DocsAtualizarContagem();
 }
 function v2DocsAtualizarContagem() {
@@ -13813,8 +13879,8 @@ async function v2DocsLer() {
   if (!fila.length) return;
   const box = document.getElementById('v2-docs-result');
   const btn = document.getElementById('v2-docs-ler'); btn.disabled = true;
-  ctx.resultados = fila.map(f => ({ nome: f.nome, status: 'fila' }));
-  const render = () => { box.innerHTML = `<div class="v2-docs-lidos">${ctx.resultados.map(v2ChipResultado).join('')}</div>`; };
+  ctx.resultados = fila.map(f => ({ nome: f.nome, status: 'fila', mime: f.mime, driveId: f.drive ? f.drive.id : null, file: f.file || null }));
+  const render = () => { box.innerHTML = `<div class="v2-docs-lidos">${ctx.resultados.map((r, k) => v2ChipResultado(r, k)).join('')}</div>`; };
   render();
   if (window.innerWidth < 860) box.scrollIntoView({ behavior: 'smooth', block: 'start' });
   // até 3 ao mesmo tempo
@@ -13825,6 +13891,7 @@ async function v2DocsLer() {
       res.status = 'lendo'; render();
       try {
         const blob = f.file || await v2DriveBaixar(f.drive.id);
+        res.blob = blob;
         res.dados = await v2LerDocumento(f.nome, f.mime || blob.type || '', blob);
         res.status = 'ok';
       } catch (e) { res.status = 'erro'; res.erro = e.message; }
@@ -13835,13 +13902,15 @@ async function v2DocsLer() {
   btn.disabled = false;
   v2DocsRenderPropostas();
 }
-function v2ChipResultado(r) {
+function v2ChipResultado(r, k) {
   const d = r.dados || {};
   const st = r.status === 'ok' ? '✅' : r.status === 'erro' ? '⚠️' : r.status === 'lendo' ? '<span class="v2-spin"></span>' : '⏳';
   const resumo = r.status === 'ok'
     ? [d.tipo, d.numero_documento, d.volumes ? d.volumes + ' vol' : '', d.peso_bruto_kg ? v2Fmt(d.peso_bruto_kg, 1) + ' kg' : '', d.valor_total_nf_brl ? 'R$ ' + v2Fmt(d.valor_total_nf_brl, 2) : ''].filter(Boolean).join(' · ')
     : (r.erro || (r.status === 'lendo' ? 'lendo…' : 'na fila'));
-  return `<div class="v2-lido ${r.status}"><span>${st}</span><div><b>${escH(r.nome)}</b><small>${escH(resumo)}</small></div></div>`;
+  const ver = (r.blob || r.file || r.driveId) ? ` onclick="v2DocsVer(${k})" title="Ver o documento ao lado da conferência" role="button" tabindex="0"` : '';
+  const ativo = v2DocsCtx && v2DocsCtx.vendo === k ? ' vendo' : '';
+  return `<div class="v2-lido ${r.status}${ver ? ' clicavel' : ''}${ativo}"${ver}><span>${st}</span><div><b>${escH(r.nome)}</b><small>${escH(resumo)}</small></div>${ver ? '<span class="v2-lido-olho">👁</span>' : ''}</div>`;
 }
 
 // ── Consolidação: vários documentos → 1 proposta por campo ────────────
@@ -13952,7 +14021,7 @@ function v2DocsValorAtual(campo) {
 function v2DocsRenderPropostas() {
   const ctx = v2DocsCtx; const box = document.getElementById('v2-docs-result');
   const docs = ctx.resultados.filter(x => x.status === 'ok').map(x => Object.assign({ __nome: x.nome }, x.dados));
-  const lidos = `<div class="v2-docs-lidos">${ctx.resultados.map(v2ChipResultado).join('')}</div>`;
+  const lidos = `<div class="v2-docs-lidos">${ctx.resultados.map((r, k) => v2ChipResultado(r, k)).join('')}</div>`;
   if (!docs.length) { box.innerHTML = lidos + '<div class="muted" style="padding:10px 4px;">Nenhum documento lido com sucesso.</div>'; return; }
   const P = v2Consolidar(docs, ctx.r);
   ctx.propostas = P;
@@ -13970,7 +14039,7 @@ function v2DocsRenderPropostas() {
     return `<tr class="${igual ? 'is-ok' : (!vazio ? 'is-dif' : '')}">
       <td><input type="checkbox" data-v2prop="${campo}" ${marcado ? 'checked' : ''} ${igual ? 'disabled' : ''}></td>
       <td><b>${escH(def ? def.label : campo)}</b><div style="margin-top:4px;">${estado}</div></td>
-      <td class="wrap"><input type="text" class="v2-prop-in" id="v2-prop-${campo}" value="${escH(p.valor)}"><div class="muted">${escH(p.fonte || '')}</div></td>
+      <td class="wrap"><input type="text" class="v2-prop-in" id="v2-prop-${campo}" value="${escH(p.valor)}"><div class="muted">${v2FonteLink(p.fonte)}</div></td>
       <td class="wrap">${atual ? escH(relFormatarDataBR(atual) || atual) : '<span class="muted">(vazio)</span>'}</td></tr>`;
   }).join('');
   const destinoTxt = ctx.modo === 'criar' ? 'no formulário de Novo Processo' : 'no formulário de edição deste processo';
@@ -14073,6 +14142,161 @@ v2RenderDock = function () {
   b.style.display = relLinhasSelecionadas.size === 1 ? '' : 'none';
 };
 v2InjetarBotoesEditor();
+
+
+// ── Visualizador lado a lado (conferir o documento enquanto confere os campos) ──
+let _v2UrlAtual = null;
+function v2FonteLink(fonte) {
+  const ctx = v2DocsCtx; const txt = String(fonte || '');
+  if (!ctx || !txt) return escH(txt);
+  const k = ctx.resultados.findIndex(r => r.status === 'ok' && txt.indexOf(r.nome) > -1);
+  return k > -1 ? `<a href="#" class="v2-fonte" onclick="v2DocsVer(${k});return false;" title="Ver este documento">👁 ${escH(txt)}</a>` : escH(txt);
+}
+function v2DocsVerArquivo(chave) {
+  const ctx = v2DocsCtx; if (!ctx) return;
+  let item;
+  if (chave.startsWith('d:')) { const a = ctx.arquivosDrive.find(x => 'd:' + x.id === chave); if (a) item = { nome: a.name, mime: a.mimeType, driveId: a.id, link: a.webViewLink }; }
+  else { const a = ctx.locais.find(x => x.id === chave); if (a) item = { nome: a.name, mime: a.mimeType, file: a.file }; }
+  if (!item) return;
+  const k = ctx.resultados.findIndex(r => r.nome === item.nome);
+  if (k > -1) return v2DocsVer(k);
+  v2DocsAbrirViewer(item, null);
+}
+function v2DocsVer(k) {
+  const ctx = v2DocsCtx; const r = ctx && ctx.resultados[k]; if (!r) return;
+  ctx.vendo = k;
+  document.querySelectorAll('#v2-docs-result .v2-lido').forEach((el, i) => el.classList.toggle('vendo', i === k));
+  v2DocsAbrirViewer(r, k);
+}
+function v2DocsFecharViewer() {
+  const v = document.getElementById('v2-docs-viewer'); if (!v) return;
+  v.hidden = true; v.innerHTML = '';
+  document.getElementById('v2-docs-grid').classList.remove('comparando');
+  const box = document.querySelector('#modal-v2-docs > div'); if (box) box.style.maxWidth = '1200px';
+  if (_v2UrlAtual) { URL.revokeObjectURL(_v2UrlAtual); _v2UrlAtual = null; }
+  if (v2DocsCtx) v2DocsCtx.vendo = null;
+  document.querySelectorAll('#v2-docs-result .v2-lido').forEach(el => el.classList.remove('vendo'));
+}
+async function v2DocsAbrirViewer(item, k) {
+  const v = document.getElementById('v2-docs-viewer');
+  const grid = document.getElementById('v2-docs-grid');
+  const box = document.querySelector('#modal-v2-docs > div'); if (box) box.style.maxWidth = '1480px';
+  grid.classList.add('comparando'); v.hidden = false;
+  if (box) box.scrollTo({ top: 0, behavior: 'smooth' });
+  const modal = document.getElementById('modal-v2-docs'); if (modal) modal.scrollTo({ top: 0, behavior: 'smooth' });
+  const ctx = v2DocsCtx;
+  const outros = ctx.resultados.map((r, i) => ({ r, i })).filter(x => x.r.blob || x.r.file || x.r.driveId);
+  v.innerHTML = `<div class="v2-vw-h">
+      <div class="v2-vw-tabs">${outros.map(({ r, i }) => `<button type="button" class="${i === k ? 'on' : ''}" onclick="v2DocsVer(${i})" title="${escH(r.nome)}">${v2IconeArq(r.nome, r.mime)} ${escH(r.nome)}</button>`).join('') || `<button type="button" class="on">${v2IconeArq(item.nome, item.mime)} ${escH(item.nome)}</button>`}</div>
+      <div class="v2-vw-acts"><button type="button" class="btn btn-ghost btn-sm" id="v2-vw-novaaba" title="Abrir em tela cheia">⤢</button><button type="button" class="btn btn-ghost btn-sm" onclick="v2DocsFecharViewer()" title="Fechar visualização">✕</button></div>
+    </div><div class="v2-vw-body" id="v2-vw-body"><div class="v2-vw-msg"><span class="v2-spin"></span> Carregando documento…</div></div>`;
+  const corpo = document.getElementById('v2-vw-body');
+  try {
+    let blob = item.blob || item.file || null;
+    if (!blob && item.driveId && v2DriveConectado()) { blob = await v2DriveBaixar(item.driveId); if (k !== null && k !== undefined) ctx.resultados[k].blob = blob; }
+    if (!blob && item.driveId) { corpo.innerHTML = `<iframe src="https://drive.google.com/file/d/${item.driveId}/preview" title="${escH(item.nome)}"></iframe>`; v2VwNovaAba(`https://drive.google.com/file/d/${item.driveId}/view`); return; }
+    if (_v2UrlAtual) URL.revokeObjectURL(_v2UrlAtual);
+    const n = (item.nome || '').toLowerCase(), mime = item.mime || blob.type || '';
+    if (n.endsWith('.xml') || /xml/.test(mime)) {
+      const txt = await v2BlobParaTexto(blob);
+      corpo.innerHTML = /<infNFe/i.test(txt) ? v2DanfeHtml(txt) : `<pre class="v2-vw-pre">${escH(txt.slice(0, 200000))}</pre>`;
+      _v2UrlAtual = URL.createObjectURL(new Blob([txt], { type: 'text/xml' })); v2VwNovaAba(_v2UrlAtual); return;
+    }
+    if (/\.(xls|xlsx|csv)$/.test(n) || /sheet|excel|csv/.test(mime)) {
+      const wb = XLSX.read(await blob.arrayBuffer(), { type: 'array' });
+      corpo.innerHTML = `<div class="v2-vw-sheet">${wb.SheetNames.slice(0, 3).map(sn => `<h4>${escH(sn)}</h4>` + XLSX.utils.sheet_to_html(wb.Sheets[sn], { header: '', footer: '' })).join('')}</div>`;
+      corpo.querySelectorAll('script').forEach(x => x.remove()); return;
+    }
+    const tipo = /\.pdf$/.test(n) ? 'application/pdf' : (mime || 'application/octet-stream');
+    _v2UrlAtual = URL.createObjectURL(new Blob([blob], { type: tipo }));
+    v2VwNovaAba(_v2UrlAtual);
+    if (/^image\//.test(tipo)) { corpo.innerHTML = `<div class="v2-vw-img"><img src="${_v2UrlAtual}" alt="${escH(item.nome)}"></div>`; return; }
+    if (tipo === 'application/pdf') { await v2RenderPdf(corpo, blob); return; }
+    corpo.innerHTML = `<iframe src="${_v2UrlAtual}" title="${escH(item.nome)}"></iframe>`;
+  } catch (e) {
+    corpo.innerHTML = `<div class="v2-vw-msg">⚠️ Não consegui abrir: ${escH(e.message)}${item.driveId ? `<br><a href="https://drive.google.com/file/d/${item.driveId}/view" target="_blank" rel="noopener">Abrir no Google Drive ↗</a>` : ''}</div>`;
+  }
+}
+function v2VwNovaAba(url) { const b = document.getElementById('v2-vw-novaaba'); if (b) b.onclick = () => window.open(url, '_blank', 'noopener'); }
+// NF-e XML → espelho legível (tipo DANFE resumido)
+function v2DanfeHtml(txt) {
+  const doc = new DOMParser().parseFromString(txt, 'application/xml');
+  const g = (el, n) => { if (!el) return ''; const x = el.getElementsByTagName(n)[0]; return x ? x.textContent.trim() : ''; };
+  const inf = doc.getElementsByTagName('infNFe')[0];
+  const ide = inf.getElementsByTagName('ide')[0], emit = inf.getElementsByTagName('emit')[0], dest = inf.getElementsByTagName('dest')[0];
+  const tot = inf.getElementsByTagName('ICMSTot')[0], transp = inf.getElementsByTagName('transp')[0];
+  const eE = emit && emit.getElementsByTagName('enderEmit')[0], eD = dest && dest.getElementsByTagName('enderDest')[0];
+  const vols = transp ? [...transp.getElementsByTagName('vol')] : [];
+  const brl = v => 'R$ ' + (Number(v) || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const itens = [...inf.getElementsByTagName('det')].map(d => `<tr><td>${escH(g(d, 'cProd'))}</td><td>${escH(g(d, 'xProd'))}</td><td class="n">${escH((+g(d, 'qCom') || 0).toLocaleString('pt-BR'))} ${escH(g(d, 'uCom'))}</td><td class="n">${brl(g(d, 'vProd'))}</td></tr>`).join('');
+  const bloco = (t, linhas) => `<div class="v2-nf-b"><div class="v2-nf-t">${t}</div>${linhas.filter(x => x[1]).map(([a, b]) => `<div class="v2-nf-l"><span>${a}</span><b>${escH(b)}</b></div>`).join('')}</div>`;
+  const dh = g(ide, 'dhEmi').slice(0, 10).split('-').reverse().join('/');
+  return `<div class="v2-nf">
+    <div class="v2-nf-top"><div><div class="v2-nf-k">NF-e ${g(ide, 'tpNF') === '0' ? 'de entrada' : 'de saída'} · série ${escH(g(ide, 'serie'))}</div><div class="v2-nf-n">Nº ${escH(g(ide, 'nNF'))}</div><div class="muted">Emitida em ${escH(dh)} · ${escH(g(ide, 'natOp'))}</div></div>
+      <div class="v2-nf-v"><span>Valor total da nota</span><b>${brl(g(tot, 'vNF'))}</b></div></div>
+    <div class="v2-nf-g">
+      ${bloco('Emitente', [['Razão social', g(emit, 'xNome')], ['CNPJ', v2FmtCnpj(g(emit, 'CNPJ'))], ['Cidade', [g(eE, 'xMun'), g(eE, 'UF')].filter(Boolean).join(' / ')]])}
+      ${bloco('Destinatário', [['Razão social', g(dest, 'xNome')], ['CNPJ / ID', v2FmtCnpj(g(dest, 'CNPJ')) || g(dest, 'CPF') || g(dest, 'idEstrangeiro')], ['Cidade', [g(eD, 'xMun'), g(eD, 'UF')].filter(Boolean).join(' / ')]])}
+      ${bloco('Transporte', [['Transportadora', g(transp, 'xNome')], ['Volumes', String(vols.reduce((s, x) => s + (+g(x, 'qVol') || 0), 0) || '')], ['Peso bruto', vols.length ? vols.reduce((s, x) => s + (+g(x, 'pesoB') || 0), 0).toLocaleString('pt-BR') + ' kg' : ''], ['Peso líquido', vols.length ? vols.reduce((s, x) => s + (+g(x, 'pesoL') || 0), 0).toLocaleString('pt-BR') + ' kg' : '']])}
+      ${bloco('Importação', [['DI / DUIMP', g(inf, 'nDI')], ['Desembaraço', [g(inf, 'xLocDesemb'), g(inf, 'UFDesemb')].filter(Boolean).join(' / ')]])}
+    </div>
+    <div class="v2-nf-t" style="margin-top:14px;">Itens</div>
+    <div class="v2-tbl" style="max-height:none;"><table><thead><tr><th>Código</th><th>Descrição</th><th class="n">Qtd</th><th class="n">Valor</th></tr></thead><tbody>${itens}</tbody></table></div>
+    ${g(inf, 'infCpl') ? `<div class="v2-nf-t" style="margin-top:14px;">Informações complementares</div><div class="v2-nf-obs">${escH(g(inf, 'infCpl'))}</div>` : ''}
+    <details style="margin-top:12px;"><summary class="muted" style="cursor:pointer;">Ver XML original</summary><pre class="v2-vw-pre">${escH(txt.slice(0, 200000))}</pre></details>
+  </div>`;
+}
+
+// PDF desenhado com PDF.js (funciona igual no computador e no celular,
+// onde o navegador não mostra PDF dentro da página)
+let _v2PdfJs = null, _v2PdfZoom = 1;
+function v2CarregarPdfJs() {
+  if (window.pdfjsLib) return Promise.resolve(window.pdfjsLib);
+  if (_v2PdfJs) return _v2PdfJs;
+  _v2PdfJs = new Promise((ok, erro) => {
+    const sc = document.createElement('script');
+    sc.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+    sc.onload = () => { window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'; ok(window.pdfjsLib); };
+    sc.onerror = () => { _v2PdfJs = null; erro(new Error('não carregou o leitor de PDF')); };
+    document.head.appendChild(sc);
+  });
+  return _v2PdfJs;
+}
+async function v2RenderPdf(corpo, blob) {
+  try {
+    const lib = await v2CarregarPdfJs();
+    const pdf = await lib.getDocument({ data: new Uint8Array(await blob.arrayBuffer()) }).promise;
+    const total = Math.min(pdf.numPages, 20);
+    corpo.innerHTML = `<div class="v2-pdf-bar"><span>${pdf.numPages} página(s)</span><span style="margin-left:auto;display:flex;gap:4px;">
+        <button type="button" onclick="v2PdfZoom(-0.2)" title="Diminuir">−</button><button type="button" onclick="v2PdfZoom(0)" title="Ajustar à largura">⤢</button><button type="button" onclick="v2PdfZoom(0.2)" title="Aumentar">+</button></span></div>
+      <div class="v2-pdf" id="v2-pdf"></div>`;
+    corpo._pdf = pdf; corpo._total = total; _v2PdfZoom = 1;
+    await v2PdfDesenhar(corpo);
+  } catch (e) {
+    corpo.innerHTML = `<iframe src="${_v2UrlAtual}" title="PDF"></iframe>`;
+  }
+}
+async function v2PdfDesenhar(corpo) {
+  const alvo = corpo.querySelector('#v2-pdf'); if (!alvo || !corpo._pdf) return;
+  alvo.innerHTML = '';
+  const largura = Math.max(280, corpo.clientWidth - 28);
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  for (let n = 1; n <= corpo._total; n++) {
+    const pg = await corpo._pdf.getPage(n);
+    const base = pg.getViewport({ scale: 1 });
+    const esc = (largura / base.width) * _v2PdfZoom;
+    const vp = pg.getViewport({ scale: esc * dpr });
+    const cv = document.createElement('canvas');
+    cv.width = vp.width; cv.height = vp.height; cv.style.width = (vp.width / dpr) + 'px'; cv.style.height = (vp.height / dpr) + 'px';
+    alvo.appendChild(cv);
+    await pg.render({ canvasContext: cv.getContext('2d'), viewport: vp }).promise;
+  }
+  if (corpo._pdf.numPages > corpo._total) alvo.insertAdjacentHTML('beforeend', `<div class="v2-vw-msg">Mostrando as primeiras ${corpo._total} páginas — use ⤢ no topo para abrir o arquivo inteiro.</div>`);
+}
+function v2PdfZoom(d) {
+  _v2PdfZoom = d === 0 ? 1 : Math.max(0.5, Math.min(3, _v2PdfZoom + d));
+  const corpo = document.getElementById('v2-vw-body'); if (corpo) v2PdfDesenhar(corpo);
+}
 
 // ═══════════════════════════════════════════════════════════════════════
 // AgenteRodo — motor de Dashboards (compartilhado entre o app interno e o
