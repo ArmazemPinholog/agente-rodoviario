@@ -49,6 +49,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-sans);font-si
 .pt-live{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--text2);font-weight:600;white-space:nowrap;}
 .pt-live i{width:7px;height:7px;border-radius:50%;background:#0ca30c;box-shadow:0 0 0 3px rgba(12,163,12,.18);}
 .pt-ic{width:34px;height:34px;border-radius:9px;border:1px solid var(--border2);background:var(--s1);color:var(--text2);cursor:pointer;font-size:14px;display:inline-flex;align-items:center;justify-content:center;}
+.pt-bt{height:34px;border-radius:9px;border:1px solid var(--border2);background:var(--s1);color:var(--text2);cursor:pointer;font:700 12.5px var(--font-sans);display:inline-flex;align-items:center;gap:6px;padding:0 11px;}
+.pt-bt:hover{color:var(--text);border-color:var(--blue);} .pt-bt[disabled]{opacity:.6;cursor:wait;}
+.pt-toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--text);color:var(--bg);font-weight:700;font-size:13px;padding:10px 16px;border-radius:10px;z-index:80;box-shadow:0 8px 24px rgba(0,0,0,.25);}
 .pt-ic:hover{color:var(--text);border-color:var(--blue);}
 main{max-width:1280px;margin:0 auto;padding:26px 24px 60px;}
 .pt-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:18px;}
@@ -65,6 +68,7 @@ main{max-width:1280px;margin:0 auto;padding:26px 24px 60px;}
 @keyframes sk{0%{background-position:100% 0}100%{background-position:0 0}}
 footer{max-width:1280px;margin:0 auto;padding:0 24px 40px;color:var(--text3);font-size:12px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-top:1px solid var(--border);padding-top:18px;}
 @media (max-width:640px){
+  .pt-bt span{display:none;} .pt-bt{padding:0 9px;}
   .pt-top-in{padding:10px 14px;} .pt-marca span{display:none;} .pt-live span{display:none;}
   main{padding:18px 14px 40px;} .pt-h1{font-size:25px;}
   .pt-head .seg{width:100%;} .pt-head .seg button{flex:1;}
@@ -228,6 +232,59 @@ footer{max-width:1280px;margin:0 auto;padding:0 24px 40px;color:var(--text3);fon
 .dz-tiles.n4{grid-template-columns:repeat(2,minmax(0,1fr));}
 @media (max-width:700px){ .dz-tiles.n6,.dz-tiles.n4{grid-template-columns:1fr 1fr;} }
 .dz-mais{font-size:11.5px;color:var(--text3);margin-top:10px;}
+/* ── Ritmo: processos por dia / semana / mês ── */
+.dz-card .dz-rt-h{display:flex!important;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;}
+.dz-rt-h h3{font-size:15px;font-weight:800;letter-spacing:-.01em;color:var(--text);margin:0;}
+.dz-rt-h p{font-size:12px;color:var(--text3);margin-top:2px;}
+.dz-seg{display:inline-flex;gap:2px;background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:3px;}
+.dz-seg button{border:0;background:transparent;color:var(--text2);font:700 12px var(--font-sans);height:28px;padding:0 12px;border-radius:7px;cursor:pointer;}
+.dz-seg button.on{background:var(--s1);color:var(--text);box-shadow:0 0 0 1px var(--border),0 1px 2px rgba(0,0,0,.08);}
+.dz-rt-tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:16px;}
+.dz-rt{background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:2px;min-width:0;}
+.dz-rt-l{font-size:11.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--text3);}
+.dz-rt-v{font-size:30px;font-weight:800;letter-spacing:-.03em;color:var(--text);line-height:1.15;}
+.dz-rt-c{font-size:12px;color:var(--text3);}
+.dz-rt-c b{color:var(--text2);font-weight:700;}
+.dz-rt-c i{font-style:normal;font-size:10px;color:var(--text3);}
+.dz-cols{display:flex;align-items:stretch;gap:6px;height:190px;padding-top:4px;}
+.dz-col{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:stretch;cursor:default;}
+.dz-col-v{height:18px;font-size:11.5px;font-weight:700;color:var(--text2);text-align:center;white-space:nowrap;font-variant-numeric:tabular-nums;}
+.dz-col-t{flex:1;display:flex;align-items:flex-end;border-bottom:1px solid var(--dz-base);}
+.dz-col-f{width:100%;max-width:44px;margin:0 auto;background:var(--dz-c1);opacity:.55;border-radius:4px 4px 0 0;transition:opacity .15s;}
+.dz-col.atual .dz-col-f{opacity:1;}
+.dz-col-k .sm{display:none;}
+.dz-col:hover .dz-col-f{opacity:.9;}
+.dz-col-k{font-size:10.5px;color:var(--text3);text-align:center;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:clip;font-variant-numeric:tabular-nums;}
+@media (max-width:700px){
+  .dz-rt-tiles{grid-template-columns:1fr 1fr 1fr;gap:8px;} .dz-rt{padding:10px;} .dz-rt-v{font-size:22px;}
+  .dz-rt-c{font-size:11px;} .dz-cols{gap:3px;height:160px;}
+  .dz-col-k .lg{display:none;} .dz-col-k .sm{display:inline!important;} .dz-col-k{font-size:10px;overflow:visible;}
+  .dz-col-v{font-size:10.5px;}
+}
+@media (max-width:420px){ .dz-rt-tiles{grid-template-columns:1fr;} .dz-rt{flex-direction:row;align-items:baseline;flex-wrap:wrap;gap:4px 10px;} }
+/* ── Exportação PDF (folha fora da tela) ── */
+.dz-pdf-host{font-family:var(--font-sans);color:var(--text);background:#fff;}
+.dz-pdf-cab{display:flex;align-items:center;gap:18px;padding:22px 24px;margin-bottom:14px;border-radius:16px;background:#0b1f3a;color:#fff;}
+.dz-pdf-logo{background:#fff;border-radius:10px;padding:8px 12px;display:flex;align-items:center;}
+.dz-pdf-logo img{height:34px;width:auto;display:block;}
+.dz-pdf-tit span{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#8fb8ff;}
+.dz-pdf-tit h1{font-size:28px;font-weight:800;letter-spacing:-.02em;margin:2px 0 4px;color:#fff;}
+.dz-pdf-tit p{font-size:12.5px;color:#c9d6ea;margin:0;} .dz-pdf-tit p b{color:#fff;}
+.dz-pdf-host .dz-card,.dz-pdf-host .dz-hero,.dz-pdf-host .dz-stat{box-shadow:none!important;}
+.dz-pdf-host .dz-tbl{max-height:none!important;overflow:visible!important;}
+.dz-pdf-host .dz-seg{display:none!important;}
+/* export modal */
+.dx-opcoes{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:6px 0 12px;}
+.dx-op{display:flex;flex-direction:column;gap:6px;text-align:left;border:1px solid var(--border2);background:var(--s1);border-radius:14px;padding:16px;cursor:pointer;color:var(--text);font:inherit;transition:border-color .15s,transform .15s;}
+.dx-op:hover{border-color:var(--blue);transform:translateY(-1px);}
+.dx-op b{font-size:15px;font-weight:800;} .dx-op span{font-size:12.5px;color:var(--text2);line-height:1.45;}
+.dx-op .dx-ic{font-size:22px;}
+.dx-op[disabled]{opacity:.55;pointer-events:none;}
+.dx-pbi{margin-top:12px;border:1px dashed var(--border2);border-radius:12px;padding:12px 14px;font-size:12.5px;color:var(--text2);line-height:1.55;}
+.dx-pbi b{color:var(--text);} .dx-pbi input{width:100%;margin:6px 0;font-size:12px;}
+.dx-pbi ol{margin:6px 0 0 18px;padding:0;}
+@media (max-width:560px){ .dx-opcoes{grid-template-columns:1fr;} }
+.dz-pdf-host .dz-hero::after{display:none!important;}
 
 </style>
 </head>
@@ -238,7 +295,8 @@ footer{max-width:1280px;margin:0 auto;padding:0 24px 40px;color:var(--text3);fon
   <div class="pt-dir">
     <span class="pt-live" id="pt-live" style="display:none;"><i></i><span id="pt-atualizado"></span></span>
     <button class="pt-ic" onclick="ptTema()" title="Tema claro/escuro"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
-    <button class="pt-ic" onclick="window.print()" title="Imprimir / salvar em PDF"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="7"/></svg></button>
+    <button class="pt-bt" id="pt-bt-pdf" onclick="ptExportar('pdf')" title="Baixar relatório em PDF"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M12 18v-6M9 15l3 3 3-3"/></svg><span>PDF</span></button>
+    <button class="pt-bt" id="pt-bt-xlsx" onclick="ptExportar('xlsx')" title="Baixar planilha (Excel / Power BI)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></svg><span>Excel</span></button>
   </div>
 </div></div>
 <main id="pt-main">
@@ -318,7 +376,8 @@ const Dash = (() => {
     const v = cab => { const k = mapa[norm(cab)]; return k !== undefined ? String(t[k] == null ? '' : t[k]).trim() : ''; };
     const nfTxt = v('NF');
     const volTxt = v('VOLUME');
-    const etapa = (row.status_processo_manual && row.status_processo_manual_base === (row.status_processo || '')) ? row.status_processo_manual : (row.status_processo || '');
+    const _man = row.status_processo_manual || '', _auto = row.status_processo || '';
+    const etapa = (_man && _man !== _auto && (row.status_processo_manual_base === '~' || row.status_processo_manual_base === _auto)) ? _man : _auto;
     return {
       linha: row.linha, cliente: row.cliente || v('CLIENTE'), cnpj: v('CNPJ'), ref: row.referencia || v('REFERÊNCIA CLIENTE'),
       status: row.status || v('STATUS'), etapa,
@@ -420,7 +479,7 @@ const Dash = (() => {
   }
 
   // ── Componentes visuais ────────────────────────────────────────────
-  let _tip;
+  let _tip, _modoPdf = false;
   function tip() {
     if (_tip) return _tip;
     _tip = document.createElement('div'); _tip.className = 'dz-tip'; _tip.setAttribute('role', 'tooltip');
@@ -566,7 +625,7 @@ const Dash = (() => {
     if (!procs.length) return vazio(opts.vazio || 'Nenhum processo.');
     const id = 'dzt' + Math.random().toString(36).slice(2, 7);
     return `<div class="dz-tbl-wrap">
-      ${opts.busca !== false ? `<input type="search" class="dz-busca" placeholder="Buscar referência, rota, status…" oninput="Dash.filtrarTabela('${id}', this.value)">` : ''}
+      ${opts.busca !== false && !_modoPdf ? `<input type="search" class="dz-busca" placeholder="Buscar referência, rota, status…" oninput="Dash.filtrarTabela('${id}', this.value)">` : ''}
       <div class="dz-tbl"><table id="${id}"><thead><tr>${colunas.map(c => `<th class="${c.num ? 'num' : ''}">${esc(c.t)}</th>`).join('')}</tr></thead>
       <tbody>${procs.map(p => `<tr>${colunas.map(c => `<td class="${c.num ? 'num' : ''}">${c.f(p)}</td>`).join('')}</tr>`).join('')}</tbody></table></div></div>`;
   }
@@ -582,9 +641,70 @@ const Dash = (() => {
   const rotaChave = p => `${semAcento(p.origem) || '?'} → ${semAcento(p.destino) || '?'}`;
   const rota = p => `${esc(p.origem || p.localColeta || '—')} <span class="dz-seta">→</span> ${esc(p.destino || p.localEntrega || '—')}`;
 
+  // ── Ritmo: processos por dia / semana / mês ────────────────────────
+  // Independe do período escolhido: sempre olha pra "hoje" e pra trás.
+  // Base da data = coleta (ou recebimento, se não tiver coleta).
+  const MES_CURTO = d => MESES[d.getMonth()] + '/' + String(d.getFullYear()).slice(2);
+  function inicioSemana(d) { return new Date(d.getFullYear(), d.getMonth(), d.getDate() - ((d.getDay() + 6) % 7)); }
+  function ritmoDados(todos) {
+    const ativos = todos.filter(p => fase(p) !== 'cancelado');
+    const hj = new Date(); const hoje = new Date(hj.getFullYear(), hj.getMonth(), hj.getDate());
+    const cD = new Map(), cS = new Map(), cM = new Map();
+    ativos.forEach(p => {
+      const d = paraData(dataRef(p)); if (!d) return;
+      const kd = iso(d), ks = iso(inicioSemana(d)), km = kd.slice(0, 7);
+      cD.set(kd, (cD.get(kd) || 0) + 1); cS.set(ks, (cS.get(ks) || 0) + 1); cM.set(km, (cM.get(km) || 0) + 1);
+    });
+    const dia = [], sem = [], mes = [];
+    for (let i = 13; i >= 0; i--) { const d = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() - i); dia.push({ k: iso(d), d, n: cD.get(iso(d)) || 0, rotSm: String(d.getDate()), rot: `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}`, tit: ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'][d.getDay()] + ', ' + dataCurta(d) }); }
+    const s0 = inicioSemana(hoje);
+    for (let i = 11; i >= 0; i--) { const d = new Date(s0.getFullYear(), s0.getMonth(), s0.getDate() - 7 * i); const f = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 6); sem.push({ k: iso(d), d, n: cS.get(iso(d)) || 0, rotSm: d.getDate() + '/' + (d.getMonth() + 1), rot: dataCurta(d), tit: `Semana de ${dataCurta(d)} a ${dataCurta(f)}` }); }
+    for (let i = 11; i >= 0; i--) { const d = new Date(hoje.getFullYear(), hoje.getMonth() - i, 1); const k = iso(d).slice(0, 7); mes.push({ k, d, n: cM.get(k) || 0, rotSm: MESES[d.getMonth()].slice(0, 1).toUpperCase(), rot: MES_CURTO(d), tit: MESES[d.getMonth()] + ' de ' + d.getFullYear() }); }
+    // médias por dia útil do mês corrente (seg–sex até hoje)
+    let uteis = 0; for (let d = new Date(hoje.getFullYear(), hoje.getMonth(), 1); d <= hoje; d = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1)) if (d.getDay() % 6) uteis++;
+    return { dia, sem, mes, uteis, total: { cD, cS, cM } };
+  }
+  function colunas(serie, unidade, destaqueUlt) {
+    const max = Math.max(1, ...serie.map(x => x.n));
+    const iMax = serie.reduce((b, x, i) => x.n > serie[b].n ? i : b, 0);
+    const ult = serie.length - 1;
+    return `<div class="dz-cols" role="img" aria-label="${esc(unidade)}">${serie.map((x, i) => `
+      <div class="dz-col ${i === ult && destaqueUlt ? 'atual' : ''}" ${tipAttr([{ v: x.tit }, { v: fmtInt(x.n), r: unidade, cor: 'var(--dz-c1)' }])}>
+        <div class="dz-col-v">${(i === iMax && x.n) || i === ult ? fmtInt(x.n) : ''}</div>
+        <div class="dz-col-t"><div class="dz-col-f" style="height:${x.n ? Math.max(2, x.n / max * 100).toFixed(1) : 0}%"></div></div>
+        <div class="dz-col-k"><span class="lg">${esc(x.rot)}</span><span class="sm">${esc(x.rotSm || x.rot)}</span></div></div>`).join('')}</div>`;
+  }
+  function ritmoCard(todos, interno) {
+    const r = ritmoDados(todos);
+    const un = interno ? 'processos' : 'embarques';
+    const ult = a => a[a.length - 1].n, pen = a => a[a.length - 2].n;
+    const comp = (atual, ant, txt) => `<span class="dz-rt-c">${esc(txt)}: <b>${fmtInt(ant)}</b>${ant || atual ? (atual >= ant ? ' <i class="up">▲</i>' : ' <i class="down">▼</i>') : ''}</span>`;
+    const mediaMes = r.uteis ? ult(r.mes) / r.uteis : 0;
+    const semanas8 = r.sem.slice(-9, -1), mediaSem = semanas8.reduce((s, x) => s + x.n, 0) / 8;
+    const id = 'dzr' + Math.random().toString(36).slice(2, 7);
+    return `<section class="dz-card dz-ritmo" id="${id}">
+      <header class="dz-rt-h"><div><h3>${interno ? 'Processos' : 'Embarques'} por dia, semana e mês</h3><p>Pela data de coleta · não depende do período selecionado acima</p></div>
+        <div class="dz-seg" role="tablist">${[['dia', 'Dia'], ['sem', 'Semana'], ['mes', 'Mês']].map(([k, t], i) => `<button type="button" class="${i === 0 ? 'on' : ''}" onclick="Dash.ritmoModo('${id}','${k}',this)">${t}</button>`).join('')}</div></header>
+      <div class="dz-rt-tiles">
+        <div class="dz-rt"><span class="dz-rt-l">Hoje</span><b class="dz-rt-v">${fmtInt(ult(r.dia))}</b>${comp(ult(r.dia), pen(r.dia), 'ontem')}</div>
+        <div class="dz-rt"><span class="dz-rt-l">Esta semana</span><b class="dz-rt-v">${fmtInt(ult(r.sem))}</b>${comp(ult(r.sem), pen(r.sem), 'semana passada')}<span class="dz-rt-c">média 8 sem.: <b>${fmtDec(mediaSem, 1).replace(',0', '')}</b></span></div>
+        <div class="dz-rt"><span class="dz-rt-l">Este mês</span><b class="dz-rt-v">${fmtInt(ult(r.mes))}</b>${comp(ult(r.mes), pen(r.mes), 'mês passado')}<span class="dz-rt-c">≈ <b>${fmtDec(mediaMes, 1).replace(',0', '')}</b> por dia útil</span></div>
+      </div>
+      <div class="dz-rt-g" data-m="dia">${colunas(r.dia, un, true)}</div>
+      <div class="dz-rt-g" data-m="sem" hidden>${colunas(r.sem, un, true)}</div>
+      <div class="dz-rt-g" data-m="mes" hidden>${colunas(r.mes, un, true)}</div>
+    </section>`;
+  }
+  function ritmoModo(id, m, btn) {
+    const el = document.getElementById(id); if (!el) return;
+    el.querySelectorAll('.dz-rt-g').forEach(g => { g.hidden = g.dataset.m !== m; });
+    el.querySelectorAll('.dz-seg button').forEach(b => b.classList.toggle('on', b === btn));
+  }
+
   // ── Montagem do painel ─────────────────────────────────────────────
   // modo: 'interno' (todos os clientes, com custos/equipes) | 'cliente'
   function render(el, todos, cfg) {
+    _modoPdf = !!cfg.pdf;
     const per = cfg.periodo;
     const lista = noPeriodo(todos, per);
     const ant = periodoAnterior(per); const listaAnt = ant ? noPeriodo(todos, ant) : null;
@@ -616,6 +736,7 @@ const Dash = (() => {
 
     const blocos = [];
     blocos.push(`<div class="dz-top">${hero}<div class="dz-tiles n${nTiles}">${tiles.join('')}</div></div>`);
+    blocos.push(ritmoCard(todos, interno));
     blocos.push(`<div class="dz-grid2">
       ${card(interno ? 'Processos ao longo do tempo' : 'Embarques ao longo do tempo', serie.passo === 'semana' ? 'Por semana, pela data de coleta' : 'Por dia, pela data de coleta', '<div class="dz-chart" data-dz-area></div>', 'span2')}
       ${card('Situação dos processos', 'Fase atual de cada processo do período', fases(lista))}
@@ -674,7 +795,7 @@ const Dash = (() => {
     if (alvoArea) area(alvoArea, serie, { aria: 'Processos ao longo do tempo' });
     ligarTips(el);
     // redesenha o gráfico de área quando a largura muda (celular girando, menu abrindo)
-    if (alvoArea && window.ResizeObserver) {
+    if (alvoArea && window.ResizeObserver && !cfg.pdf) {
       let w0 = alvoArea.clientWidth, tmr;
       const ro = new ResizeObserver(() => { if (Math.abs(alvoArea.clientWidth - w0) < 8) return; w0 = alvoArea.clientWidth; clearTimeout(tmr); tmr = setTimeout(() => area(alvoArea, serie, {}), 120); });
       ro.observe(alvoArea);
@@ -682,7 +803,219 @@ const Dash = (() => {
     return { lista, metricas: m };
   }
 
-  return { normalizar, paraCliente, periodo, noPeriodo, metricas, render, filtrarTabela, fase, FASES, esc, norm, dataBR, iso, fmtInt, fmtPeso, fmtBRL, fmtPct, CAMPOS_CLIENTE };
+  return { ritmoModo, ritmoDados, dataRef, paraData, serieTempo, ETAPAS, normalizar, paraCliente, periodo, noPeriodo, metricas, render, filtrarTabela, fase, FASES, esc, norm, dataBR, iso, fmtInt, fmtPeso, fmtBRL, fmtPct, CAMPOS_CLIENTE };
+})();
+
+// ═══════════════════════════════════════════════════════════════════════
+// AgenteRodo — exportação dos Dashboards (PDF e Excel/Power BI)
+// Compartilhado entre o app interno e o Portal do Cliente (painel.html).
+// Bibliotecas carregadas só quando alguém exporta (cdnjs).
+// ═══════════════════════════════════════════════════════════════════════
+const DashExport = (() => {
+  const LIBS = {
+    xlsx: ['https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js', 'XLSX'],
+    h2c: ['https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js', 'html2canvas'],
+    jspdf: ['https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js', 'jspdf'],
+  };
+  const _carr = {};
+  function lib(n) {
+    const [u, g] = LIBS[n];
+    if (window[g]) return Promise.resolve(window[g]);
+    if (_carr[n]) return _carr[n];
+    _carr[n] = new Promise((ok, err) => {
+      const s = document.createElement('script'); s.src = u; s.async = true;
+      s.onload = () => window[g] ? ok(window[g]) : err(new Error('Componente de exportação não carregou.'));
+      s.onerror = () => { delete _carr[n]; err(new Error('Não consegui baixar o componente de exportação — confira a internet e tente de novo.')); };
+      document.head.appendChild(s);
+    });
+    return _carr[n];
+  }
+  const hojeTxt = () => { const d = new Date(); return `${String(d.getDate()).padStart(2, '0')}-${String(d.getMonth() + 1).padStart(2, '0')}-${d.getFullYear()}`; };
+  const nomeArq = (base, ext) => (base || 'Pinholog').replace(/[\\/:*?"<>|]+/g, '-').replace(/\s+/g, ' ').trim() + ' - ' + hojeTxt() + '.' + ext;
+  const semanaIni = d => new Date(d.getFullYear(), d.getMonth(), d.getDate() - ((d.getDay() + 6) % 7));
+  // Data "pura" → número de série do Excel (sem hora e sem fuso): o Power BI lê como data exata.
+  const dataXl = s => { const d = Dash.paraData(s); return d ? Math.round((Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) - Date.UTC(1899, 11, 30)) / 864e5) : null; };
+  const faseRot = p => (Dash.FASES.find(f => f.id === Dash.fase(p)) || {}).rotulo || '';
+  const simNao = v => v === true ? 'Sim' : v === false ? 'Não' : '';
+  const n2 = v => (typeof v === 'number' && isFinite(v)) ? Math.round(v * 100) / 100 : null;
+
+  // ── Planilha (tabela "fato" + agregados) — formato amigável pro Power BI:
+  //    1 linha de cabeçalho, sem células mescladas, datas e números tipados.
+  function colunas(procs, modo) {
+    const tem = k => procs.some(p => p[k] !== undefined && p[k] !== null && p[k] !== '');
+    const c = [];
+    const add = (t, f, w, tipo) => c.push({ t, f, w: w || 14, tipo });
+    if (modo === 'interno') add('Linha planilha', p => p.linha, 9, 'n');
+    add('Cliente', p => p.cliente || '', 24);
+    add('Referência', p => p.ref || '', 26);
+    add('Status', p => p.status || '', 22);
+    add('Fase', faseRot, 14);
+    if (modo === 'interno') add('Vez de', p => Dash.ETAPAS[p.etapa] || p.etapa || '', 16);
+    add('Categoria', p => p.categoria || '', 11);
+    add('Tipo de carga', p => p.tipoCarga || '', 16);
+    add('Origem', p => p.origem || '', 18);
+    add('Destino', p => p.destino || '', 18);
+    add('Local de coleta', p => p.localColeta || '', 26);
+    add('Local de entrega', p => p.localEntrega || '', 26);
+    add('Data recebimento', p => dataXl(p.dataReceb), 12, 'd');
+    add('Data coleta', p => dataXl(p.dataColeta), 12, 'd');
+    add('Data entrega', p => dataXl(p.dataEntrega), 12, 'd');
+    add('Data referência', p => dataXl(Dash.dataRef(p)), 12, 'd');
+    add('Semana (início)', p => { const d = Dash.paraData(Dash.dataRef(p)); return d ? dataXl(Dash.iso(semanaIni(d))) : null; }, 12, 'd');
+    add('Mês', p => (Dash.dataRef(p) || '').slice(0, 7), 9);
+    add('Volumes', p => p.volume || 0, 9, 'n');
+    add('Peso (kg)', p => n2(p.peso) || 0, 11, 'n2');
+    add('Valor NF (R$)', p => n2(p.nfValor) || 0, 14, 'brl');
+    add('Medidas / obs. carga', p => p.medidas || '', 34);
+    add('Tipo de veículo', p => p.tipoVeiculo || '', 16);
+    if (modo === 'interno' || tem('placa')) add('Placa', p => p.placa || '', 10);
+    if (modo === 'interno' || tem('motorista')) add('Motorista', p => p.motorista || '', 22);
+    if (modo === 'interno' || tem('ok1') || tem('h1')) {
+      add('1ª resposta (h)', p => n2(p.h1), 11, 'n2'); add('1ª resposta no prazo', p => simNao(p.ok1), 11);
+      add('Programação (h)', p => n2(p.hProg), 11, 'n2'); add('Programação no prazo', p => simNao(p.okProg), 11);
+    }
+    if (modo === 'interno') {
+      add('Equipe', p => p.equipe || '', 14); add('Analista', p => p.assistente || '', 18); add('Tipo contrato', p => p.tipoContrato || '', 14);
+      add('Custo total (R$)', p => n2(p.custo) || 0, 14, 'brl'); add('Valor frete (R$)', p => n2(p.frete) || 0, 14, 'brl'); add('Valor proposta (R$)', p => n2(p.proposta) || 0, 14, 'brl');
+      add('Houve trava', p => p.trava ? 'Sim' : 'Não', 9); add('Motivo trava', p => p.motivoTrava || '', 22);
+    }
+    return c;
+  }
+  const FMT = { d: 'dd/mm/yyyy', n: '#,##0', n2: '#,##0.00', brl: '"R$" #,##0.00' };
+  function folha(X, cab, linhas, cols) {
+    const ws = X.utils.aoa_to_sheet([cab].concat(linhas));
+    const ref = X.utils.decode_range(ws['!ref']);
+    cols.forEach((c, j) => {
+      if (!c.tipo) return;
+      for (let i = 1; i <= ref.e.r; i++) { const cel = ws[X.utils.encode_cell({ r: i, c: j })]; if (cel && cel.v !== null && cel.v !== '') cel.z = FMT[c.tipo]; }
+    });
+    ws['!cols'] = cols.map(c => ({ wch: c.w || 14 }));
+    ws['!autofilter'] = { ref: ws['!ref'] };
+    return ws;
+  }
+  function agregado(procs, chaveFn) {
+    const m = new Map();
+    procs.forEach(p => {
+      const k = chaveFn(p); if (!k) return;
+      const o = m.get(k) || { k, n: 0, entregues: 0, andamento: 0, cancelados: 0, peso: 0, vol: 0, nf: 0 };
+      const f = Dash.fase(p);
+      if (f === 'cancelado') o.cancelados++;
+      else { o.n++; if (f === 'entregue') o.entregues++; else o.andamento++; o.peso += p.peso || 0; o.vol += p.volume || 0; o.nf += p.nfValor || 0; }
+      m.set(k, o);
+    });
+    return [...m.values()].sort((a, b) => a.k.localeCompare(b.k));
+  }
+  function planilha(X, procs, meta) {
+    const modo = meta.modo === 'interno' ? 'interno' : 'cliente';
+    const wb = X.utils.book_new();
+    wb.Props = { Title: meta.titulo || 'Dashboard Pinholog', Author: 'Pinholog', Company: 'Pinholog' };
+    const cols = colunas(procs, modo);
+    const ordenados = procs.slice().sort((a, b) => (Dash.dataRef(b) || '').localeCompare(Dash.dataRef(a) || ''));
+    X.utils.book_append_sheet(wb, folha(X, cols.map(c => c.t), ordenados.map(p => cols.map(c => { const v = c.f(p); return v === undefined ? null : v; })), cols), 'Processos');
+    const cAg = [{ t: '', w: 13 }, { t: 'Processos', tipo: 'n', w: 11 }, { t: 'Entregues', tipo: 'n', w: 11 }, { t: 'Em andamento', tipo: 'n', w: 13 }, { t: 'Cancelados', tipo: 'n', w: 11 }, { t: 'Peso (kg)', tipo: 'n2', w: 13 }, { t: 'Volumes', tipo: 'n', w: 10 }, { t: 'Valor NF (R$)', tipo: 'brl', w: 16 }];
+    const linhaAg = (o, primeira) => [primeira, o.n, o.entregues, o.andamento, o.cancelados, n2(o.peso), o.vol, n2(o.nf)];
+    const agDia = agregado(procs, p => Dash.dataRef(p) ? Dash.dataRef(p).slice(0, 10) : '');
+    X.utils.book_append_sheet(wb, folha(X, ['Data'].concat(cAg.slice(1).map(c => c.t)), agDia.map(o => linhaAg(o, dataXl(o.k))), [Object.assign({}, cAg[0], { tipo: 'd' })].concat(cAg.slice(1))), 'Por dia');
+    const agSem = agregado(procs, p => { const d = Dash.paraData(Dash.dataRef(p)); return d ? Dash.iso(semanaIni(d)) : ''; });
+    X.utils.book_append_sheet(wb, folha(X, ['Semana (início)'].concat(cAg.slice(1).map(c => c.t)), agSem.map(o => linhaAg(o, dataXl(o.k))), [Object.assign({}, cAg[0], { tipo: 'd', w: 15 })].concat(cAg.slice(1))), 'Por semana');
+    const agMes = agregado(procs, p => (Dash.dataRef(p) || '').slice(0, 7));
+    X.utils.book_append_sheet(wb, folha(X, ['Mês'].concat(cAg.slice(1).map(c => c.t)), agMes.map(o => linhaAg(o, o.k)), cAg), 'Por mês');
+    const m = Dash.metricas(procs);
+    const res = [
+      ['Relatório', meta.titulo || 'Dashboard Pinholog'], ['Cliente', meta.cliente || 'Todos os clientes'],
+      ['Gerado em', new Date().toLocaleString('pt-BR')], ['Processos (sem cancelados)', m.total], ['Entregues', m.entregues], ['Em andamento', m.andamento],
+      ['Cancelados', m.cancelados], ['Peso total (kg)', n2(m.peso)], ['Volumes', m.volumes], ['Valor de mercadoria (R$)', n2(m.nf)],
+      ['1ª resposta no prazo', m.sla1 == null ? '' : n2(m.sla1 * 100) + '%'], ['Programação no prazo', m.slaProg == null ? '' : n2(m.slaProg * 100) + '%'],
+      [], ['Como usar no Power BI', 'Obter dados → Excel (ou Web, se recebeu o link) → marque a tabela "Processos" (e as de agregados, se quiser) → Carregar.'],
+      ['', 'A coluna "Data referência" é a data de coleta (ou recebimento, quando não há coleta) — use-a para séries por dia, semana e mês.'],
+    ];
+    const wsR = X.utils.aoa_to_sheet(res); wsR['!cols'] = [{ wch: 28 }, { wch: 90 }];
+    X.utils.book_append_sheet(wb, wsR, 'Resumo');
+    return wb;
+  }
+  async function bytesXlsx(procs, meta) { const X = await lib('xlsx'); return X.write(planilha(X, procs, meta), { bookType: 'xlsx', type: 'array', compression: true }); }
+  async function baixarXlsx(procs, meta) {
+    const X = await lib('xlsx');
+    X.writeFile(planilha(X, procs, meta), nomeArq(meta.arquivo || ('Pinholog - ' + (meta.cliente || 'Operação')), 'xlsx'), { compression: true });
+  }
+
+  // ── PDF: renderiza o painel numa folha fora da tela (tema claro, largura
+  //    de desktop), fotografa bloco a bloco e monta A4 sem cortar cartões.
+  const LINHAS_POR_BLOCO = 26;
+  function logoSrc() {
+    const img = document.querySelector('img[src^="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAsoAAACk"]');
+    return img ? img.src : '';
+  }
+  function quebrarTabelas(root) {
+    root.querySelectorAll('.dz-card').forEach(card => {
+      const tb = card.querySelector('table'); if (!tb) return;
+      const trs = [...tb.tBodies[0].rows]; if (trs.length <= LINHAS_POR_BLOCO + 4) return;
+      const titulo = (card.querySelector('h3') || {}).textContent || '';
+      let ref = card;
+      for (let i = LINHAS_POR_BLOCO; i < trs.length; i += LINHAS_POR_BLOCO) {
+        const novo = card.cloneNode(true);
+        const h = novo.querySelector('h3'); if (h) h.textContent = titulo + ' — continuação';
+        const p = novo.querySelector('header p'); if (p) p.remove();
+        const corpo = novo.querySelector('tbody'); corpo.innerHTML = '';
+        trs.slice(i, i + LINHAS_POR_BLOCO).forEach(tr => corpo.appendChild(tr.cloneNode(true)));
+        ref.after(novo); ref = novo;
+      }
+      trs.slice(LINHAS_POR_BLOCO).forEach(tr => tr.remove());
+    });
+  }
+  async function gerarPdf(procs, meta, aoProgresso) {
+    const prog = aoProgresso || (() => {});
+    prog('Preparando…');
+    const [h2c, jsp] = await Promise.all([lib('h2c'), lib('jspdf')]);
+    const host = document.createElement('div');
+    host.className = 'dz-pdf-host';
+    host.style.cssText = 'position:absolute;left:-14000px;top:0;width:1180px;padding:0;background:#fff;';
+    const per = meta.periodo;
+    const txtPer = per && per.de ? `${Dash.dataBR(Dash.iso(per.de))} a ${Dash.dataBR(Dash.iso(per.ate))}` : 'Todo o histórico';
+    const logo = logoSrc();
+    host.innerHTML = `<div class="dz-pdf-cab">
+        ${logo ? `<div class="dz-pdf-logo"><img src="${logo}" alt=""></div>` : ''}
+        <div class="dz-pdf-tit"><span>${Dash.esc(meta.kicker || 'Relatório de embarques')}</span><h1>${Dash.esc(meta.cliente || 'Operação Pinholog')}</h1>
+        <p>Período: <b>${Dash.esc(txtPer)}</b> · Gerado em ${Dash.esc(new Date().toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' }))}</p></div>
+      </div><div class="dz-pdf-corpo"></div>`;
+    document.body.appendChild(host);
+    try {
+      Dash.render(host.querySelector('.dz-pdf-corpo'), procs, { modo: meta.modo, periodo: per, opcoes: meta.opcoes || {}, pdf: true });
+      quebrarTabelas(host);
+      const blocos = [host.querySelector('.dz-pdf-cab')];
+      host.querySelector('.dz-pdf-corpo').childNodes.forEach(n => { if (n.nodeType === 1) blocos.push(n); });
+      // grades (2/3 colunas) viram um bloco só; já estão agrupadas no DOM
+      await new Promise(r => setTimeout(r, 60));
+      const doc = new jsp.jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4', compress: true });
+      const PW = 210, PH = 297, M = 10, LW = PW - 2 * M, TOPO = 12, BASE = PH - 12;
+      let y = TOPO, pagina = 1;
+      for (let i = 0; i < blocos.length; i++) {
+        prog(`Montando página ${pagina}… (${Math.round((i / blocos.length) * 100)}%)`);
+        const canvas = await h2c(blocos[i], {
+          scale: 2, backgroundColor: '#ffffff', logging: false, useCORS: true, windowWidth: 1280,
+          onclone: d => { d.documentElement.setAttribute('data-theme', 'light'); d.documentElement.classList.add('dz-pdf-modo'); },
+        });
+        let w = LW, h = canvas.height * LW / canvas.width;
+        if (h > BASE - TOPO) { h = BASE - TOPO; w = canvas.width * h / canvas.height; }
+        if (y + h > BASE && y > TOPO) { doc.addPage(); pagina++; y = TOPO; }
+        doc.addImage(canvas.toDataURL('image/jpeg', 0.92), 'JPEG', M + (LW - w) / 2, y, w, h, undefined, 'FAST');
+        y += h + 3.5;
+      }
+      const total = doc.getNumberOfPages();
+      for (let p = 1; p <= total; p++) {
+        doc.setPage(p); doc.setFontSize(8); doc.setTextColor(120);
+        doc.text(`Pinholog · ${meta.cliente || 'Operação'} · ${txtPer}`, M, PH - 6);
+        doc.text(`página ${p} de ${total}`, PW - M, PH - 6, { align: 'right' });
+      }
+      prog('Pronto');
+      return doc;
+    } finally { host.remove(); }
+  }
+  async function baixarPdf(procs, meta, aoProgresso) {
+    const doc = await gerarPdf(procs, meta, aoProgresso);
+    doc.save(nomeArq(meta.arquivo || ('Pinholog - ' + (meta.cliente || 'Operação')), 'pdf'));
+  }
+  return { lib, planilha, bytesXlsx, baixarXlsx, gerarPdf, baixarPdf, nomeArq };
 })();
 
 </script>
@@ -733,6 +1066,25 @@ function ptRender() {
   document.getElementById('pt-live').style.display = '';
   document.getElementById('pt-atualizado').textContent = 'Atualizado ' + ptRelativo(d.gerado_em);
   document.getElementById('pt-foot').style.display = '';
+}
+function ptToast(t, ms) {
+  let el = document.getElementById('pt-toast');
+  if (!el) { el = document.createElement('div'); el.id = 'pt-toast'; el.className = 'pt-toast'; document.body.appendChild(el); }
+  el.textContent = t; el.style.display = ''; clearTimeout(el._t); if (ms) el._t = setTimeout(() => { el.style.display = 'none'; }, ms);
+}
+async function ptExportar(tipo) {
+  if (!ptDados) return;
+  const d = ptDados, bts = [document.getElementById('pt-bt-pdf'), document.getElementById('pt-bt-xlsx')];
+  const procs = (d.processos || []).map(p => Object.assign({ cliente: d.cliente }, p));
+  const per = Dash.periodo(ptPreset);
+  const meta = { modo: 'cliente', periodo: per, opcoes: d.opcoes || {}, cliente: d.cliente, titulo: d.titulo, kicker: 'Relatório de embarques', arquivo: 'Pinholog - ' + d.cliente };
+  bts.forEach(b => b.disabled = true);
+  try {
+    if (tipo === 'pdf') await DashExport.baixarPdf(procs, meta, t => ptToast('⏳ ' + t));
+    else { ptToast('⏳ Gerando planilha…'); await DashExport.baixarXlsx(Dash.noPeriodo(procs, per), meta); }
+    ptToast('✅ Arquivo baixado', 2500);
+  } catch (e) { ptToast('Não foi possível gerar o arquivo: ' + e.message, 5000); }
+  finally { bts.forEach(b => b.disabled = false); }
 }
 window.addEventListener('hashchange', ptCarregar);
 ptCarregar();

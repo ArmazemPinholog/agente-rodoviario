@@ -1038,6 +1038,48 @@ body.has-dock{padding-bottom:120px;}
 .v2-tbl tr.is-dif td{background:var(--orange4);}
 .v2-edt-docs{display:flex;gap:8px;flex-wrap:wrap;margin:-4px 0 12px;}
 
+/* ── Visualizador lado a lado na conferência de documentos ── */
+.v2-docs-viewer{display:flex;flex-direction:column;min-width:0;border:1px solid var(--border);border-radius:14px;overflow:hidden;background:var(--s2);}
+.v2-docs-viewer[hidden]{display:none;}
+.v2-docs-grid.comparando{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);}
+.v2-docs-grid.comparando .v2-docs-fontes{display:none;}
+.v2-vw-h{display:flex;align-items:center;gap:8px;padding:8px;border-bottom:1px solid var(--border);background:var(--s1);}
+.v2-vw-tabs{display:flex;gap:4px;overflow-x:auto;flex:1;min-width:0;scrollbar-width:thin;}
+.v2-vw-tabs button{flex:none;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border:1px solid transparent;background:transparent;color:var(--text2);font:600 12px var(--font-sans);padding:6px 10px;border-radius:8px;cursor:pointer;}
+.v2-vw-tabs button:hover{background:var(--s3);}
+.v2-vw-tabs button.on{background:var(--blue4);border-color:var(--blue3);color:var(--text);}
+.v2-vw-acts{display:flex;gap:4px;flex:none;}
+.v2-vw-body{flex:1;min-height:0;height:calc(88vh - 190px);min-height:420px;overflow:auto;background:var(--s2);}
+.v2-vw-body iframe{width:100%;height:100%;border:0;background:#fff;display:block;}
+.v2-vw-msg{padding:40px 20px;text-align:center;color:var(--text2);font-size:13px;line-height:1.7;}
+.v2-vw-img{padding:12px;display:flex;justify-content:center;} .v2-vw-img img{max-width:100%;height:auto;border-radius:8px;box-shadow:var(--shadow-md);}
+.v2-vw-pre{font:11.5px/1.5 var(--font-mono);white-space:pre-wrap;word-break:break-all;padding:12px;margin:0;color:var(--text2);}
+.v2-vw-sheet{padding:12px;font-size:12px;} .v2-vw-sheet h4{margin:10px 0 6px;font-size:12px;color:var(--text2);}
+.v2-vw-sheet table{border-collapse:collapse;background:var(--s1);} .v2-vw-sheet td{border:1px solid var(--border);padding:4px 8px;white-space:nowrap;}
+.v2-lido.clicavel{cursor:pointer;position:relative;} .v2-lido.clicavel:hover{border-color:var(--blue);}
+.v2-lido.vendo{border-color:var(--blue);box-shadow:0 0 0 1px var(--blue);background:var(--blue4);}
+.v2-lido-olho{margin-left:auto;opacity:.55;font-size:13px;} .v2-lido.clicavel:hover .v2-lido-olho{opacity:1;}
+.v2-fonte{color:var(--blue);text-decoration:none;font-weight:600;} .v2-fonte:hover{text-decoration:underline;}
+.v2-arq-ver{border:none;background:none;cursor:pointer;font-size:13px;padding:2px 4px;border-radius:6px;opacity:.6;} .v2-arq-ver:hover{opacity:1;background:var(--s3);}
+.v2-nf{padding:16px;background:var(--s1);min-height:100%;}
+.v2-nf-top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-bottom:14px;border-bottom:1px solid var(--border);margin-bottom:14px;}
+.v2-nf-k{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);}
+.v2-nf-n{font-size:24px;font-weight:800;letter-spacing:-.02em;color:var(--text);}
+.v2-nf-v{text-align:right;} .v2-nf-v span{display:block;font-size:11.5px;color:var(--text3);} .v2-nf-v b{font-size:22px;color:var(--text);letter-spacing:-.02em;}
+.v2-nf-g{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.v2-nf-b{background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;}
+.v2-nf-t{font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:6px;}
+.v2-nf-l{display:flex;justify-content:space-between;gap:10px;font-size:12px;padding:2px 0;} .v2-nf-l span{color:var(--text3);} .v2-nf-l b{color:var(--text);text-align:right;}
+.v2-nf-obs{font-size:12px;color:var(--text2);background:var(--s2);border-radius:10px;padding:10px 12px;line-height:1.55;}
+.v2-nf .n{text-align:right;white-space:nowrap;}
+@media (max-width:860px){ .v2-docs-grid.comparando{grid-template-columns:minmax(0,1fr);} .v2-vw-body{height:62vh;min-height:320px;} .v2-nf-g{grid-template-columns:1fr;} }
+.v2-docs-grid.comparando{align-items:start;}
+.v2-docs-grid.comparando .v2-docs-viewer{position:sticky;top:0;z-index:2;}
+.v2-pdf-bar{position:sticky;top:0;z-index:1;display:flex;align-items:center;gap:8px;padding:6px 10px;background:var(--s1);border-bottom:1px solid var(--border);font-size:11.5px;color:var(--text3);}
+.v2-pdf-bar button{width:28px;height:26px;border:1px solid var(--border2);background:var(--s2);color:var(--text);border-radius:7px;cursor:pointer;font-weight:800;}
+.v2-pdf{display:flex;flex-direction:column;align-items:center;gap:10px;padding:12px;}
+.v2-pdf canvas{background:#fff;border-radius:4px;box-shadow:0 4px 16px rgba(0,0,0,.25);max-width:none;}
+
 /* ══════════ Dashboards (motor compartilhado app + Portal do Cliente) ══════════ */
 :root, :root[data-theme="light"] {
   --dz-c1:#2a78d6; --dz-c2:#eb6834; --dz-c3:#1baf7a; --dz-c4:#eda100; --dz-c5:#e87ba4; --dz-c6:#008300;
@@ -1195,6 +1237,59 @@ body.has-dock{padding-bottom:120px;}
 .dz-tiles.n4{grid-template-columns:repeat(2,minmax(0,1fr));}
 @media (max-width:700px){ .dz-tiles.n6,.dz-tiles.n4{grid-template-columns:1fr 1fr;} }
 .dz-mais{font-size:11.5px;color:var(--text3);margin-top:10px;}
+/* ── Ritmo: processos por dia / semana / mês ── */
+.dz-card .dz-rt-h{display:flex!important;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;}
+.dz-rt-h h3{font-size:15px;font-weight:800;letter-spacing:-.01em;color:var(--text);margin:0;}
+.dz-rt-h p{font-size:12px;color:var(--text3);margin-top:2px;}
+.dz-seg{display:inline-flex;gap:2px;background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:3px;}
+.dz-seg button{border:0;background:transparent;color:var(--text2);font:700 12px var(--font-sans);height:28px;padding:0 12px;border-radius:7px;cursor:pointer;}
+.dz-seg button.on{background:var(--s1);color:var(--text);box-shadow:0 0 0 1px var(--border),0 1px 2px rgba(0,0,0,.08);}
+.dz-rt-tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:16px;}
+.dz-rt{background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:2px;min-width:0;}
+.dz-rt-l{font-size:11.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--text3);}
+.dz-rt-v{font-size:30px;font-weight:800;letter-spacing:-.03em;color:var(--text);line-height:1.15;}
+.dz-rt-c{font-size:12px;color:var(--text3);}
+.dz-rt-c b{color:var(--text2);font-weight:700;}
+.dz-rt-c i{font-style:normal;font-size:10px;color:var(--text3);}
+.dz-cols{display:flex;align-items:stretch;gap:6px;height:190px;padding-top:4px;}
+.dz-col{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:stretch;cursor:default;}
+.dz-col-v{height:18px;font-size:11.5px;font-weight:700;color:var(--text2);text-align:center;white-space:nowrap;font-variant-numeric:tabular-nums;}
+.dz-col-t{flex:1;display:flex;align-items:flex-end;border-bottom:1px solid var(--dz-base);}
+.dz-col-f{width:100%;max-width:44px;margin:0 auto;background:var(--dz-c1);opacity:.55;border-radius:4px 4px 0 0;transition:opacity .15s;}
+.dz-col.atual .dz-col-f{opacity:1;}
+.dz-col-k .sm{display:none;}
+.dz-col:hover .dz-col-f{opacity:.9;}
+.dz-col-k{font-size:10.5px;color:var(--text3);text-align:center;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:clip;font-variant-numeric:tabular-nums;}
+@media (max-width:700px){
+  .dz-rt-tiles{grid-template-columns:1fr 1fr 1fr;gap:8px;} .dz-rt{padding:10px;} .dz-rt-v{font-size:22px;}
+  .dz-rt-c{font-size:11px;} .dz-cols{gap:3px;height:160px;}
+  .dz-col-k .lg{display:none;} .dz-col-k .sm{display:inline!important;} .dz-col-k{font-size:10px;overflow:visible;}
+  .dz-col-v{font-size:10.5px;}
+}
+@media (max-width:420px){ .dz-rt-tiles{grid-template-columns:1fr;} .dz-rt{flex-direction:row;align-items:baseline;flex-wrap:wrap;gap:4px 10px;} }
+/* ── Exportação PDF (folha fora da tela) ── */
+.dz-pdf-host{font-family:var(--font-sans);color:var(--text);background:#fff;}
+.dz-pdf-cab{display:flex;align-items:center;gap:18px;padding:22px 24px;margin-bottom:14px;border-radius:16px;background:#0b1f3a;color:#fff;}
+.dz-pdf-logo{background:#fff;border-radius:10px;padding:8px 12px;display:flex;align-items:center;}
+.dz-pdf-logo img{height:34px;width:auto;display:block;}
+.dz-pdf-tit span{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#8fb8ff;}
+.dz-pdf-tit h1{font-size:28px;font-weight:800;letter-spacing:-.02em;margin:2px 0 4px;color:#fff;}
+.dz-pdf-tit p{font-size:12.5px;color:#c9d6ea;margin:0;} .dz-pdf-tit p b{color:#fff;}
+.dz-pdf-host .dz-card,.dz-pdf-host .dz-hero,.dz-pdf-host .dz-stat{box-shadow:none!important;}
+.dz-pdf-host .dz-tbl{max-height:none!important;overflow:visible!important;}
+.dz-pdf-host .dz-seg{display:none!important;}
+/* export modal */
+.dx-opcoes{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:6px 0 12px;}
+.dx-op{display:flex;flex-direction:column;gap:6px;text-align:left;border:1px solid var(--border2);background:var(--s1);border-radius:14px;padding:16px;cursor:pointer;color:var(--text);font:inherit;transition:border-color .15s,transform .15s;}
+.dx-op:hover{border-color:var(--blue);transform:translateY(-1px);}
+.dx-op b{font-size:15px;font-weight:800;} .dx-op span{font-size:12.5px;color:var(--text2);line-height:1.45;}
+.dx-op .dx-ic{font-size:22px;}
+.dx-op[disabled]{opacity:.55;pointer-events:none;}
+.dx-pbi{margin-top:12px;border:1px dashed var(--border2);border-radius:12px;padding:12px 14px;font-size:12.5px;color:var(--text2);line-height:1.55;}
+.dx-pbi b{color:var(--text);} .dx-pbi input{width:100%;margin:6px 0;font-size:12px;}
+.dx-pbi ol{margin:6px 0 0 18px;padding:0;}
+@media (max-width:560px){ .dx-opcoes{grid-template-columns:1fr;} }
+.dz-pdf-host .dz-hero::after{display:none!important;}
 
 /* ══════════ Login · AgenteRodo ══════════ */
 #ar-progress{position:fixed;top:0;left:0;height:2px;width:0;z-index:30000;background:linear-gradient(90deg,var(--blue),#ff8a2a);box-shadow:0 0 8px rgba(255,138,42,.5);opacity:0;pointer-events:none;}
@@ -7621,9 +7716,11 @@ function relMapRegistroSupabase(row) {
     // automático mudou desde então, o override "expirou" e o automático
     // (mais recente, de verdade) vence.
     statusProcessoAuto:   row.status_processo || '',
-    statusProcessoManual: (row.status_processo_manual && row.status_processo_manual_base === (row.status_processo || '')) ? row.status_processo_manual : '',
-    statusProcessoManualObsoleto: !!(row.status_processo_manual && row.status_processo_manual_base !== (row.status_processo || '')),
-    statusProcesso:   (row.status_processo_manual && row.status_processo_manual_base === (row.status_processo || '')) ? row.status_processo_manual : (row.status_processo || ''),
+    statusProcessoManual: v2VezEfetiva(row).valido ? row.status_processo_manual : '',
+    statusProcessoManualObsoleto: v2VezEfetiva(row).obsoleto,
+    statusProcesso:   v2VezEfetiva(row).valido ? row.status_processo_manual : (row.status_processo || ''),
+    _vezManualRaw: row.status_processo_manual || '',
+    _vezBaseRaw: row.status_processo_manual_base || '',
     equipe:           row.equipe || '',
     assistente:       row.assistente || '',
     nf:               row.nf || '',
@@ -8148,7 +8245,7 @@ async function relBuscar() {
     // ⚠️ status_processo/status_processo_manual faltavam aqui (só eram
     // buscados pelo "vigia" à parte) — por isso o Kanban/dashboard nunca
     // refletiam o status real na tela principal. Corrigido em 26/08/2026.
-    const campos = 'linha,origem_planilha,origem_planilha_rotulo,cliente,referencia,local_coleta,local_entrega,data_liberacao,data_carregamento,data_descarga,status,status_processo,status_processo_manual,status_processo_manual_base,equipe,assistente,nf,rastreamento,horas_primeira_resposta,primeira_resposta_ok,horas_programacao,programacao_ok,data_recebimento,hora_recebimento,data_1_resposta,hora_1_resposta,hora_liberacao,data_programacao,hora_programacao,adiantamento_confirmado,todos';
+    const campos = 'linha,origem_planilha,origem_planilha_rotulo,cliente,referencia,local_coleta,local_entrega,data_liberacao,data_carregamento,data_descarga,status,status_processo,status_processo_manual,status_processo_manual_base,status_processo_manual_em,equipe,assistente,nf,rastreamento,horas_primeira_resposta,primeira_resposta_ok,horas_programacao,programacao_ok,data_recebimento,hora_recebimento,data_1_resposta,hora_1_resposta,hora_liberacao,data_programacao,hora_programacao,adiantamento_confirmado,todos';
     let qs = `select=${campos}&order=cliente.asc,referencia.asc`;
     if (!todos) {
       // 1 cliente → cliente=eq.X (mais rápido/simples); 2+ → cliente=in.(A,B,C)
@@ -8668,7 +8765,7 @@ async function relVigiaChecar() {
     for (let i = 0; i < linhas.length; i += TAM_LOTE_VIGIA) {
       const lote = linhas.slice(i, i + TAM_LOTE_VIGIA);
       const filtro = `linha=in.(${lote.join(',')})`;
-      const pagina = await _sbFetchTudo(`${SB_URL}/rest/v1/relatorios_dados?${filtro}&select=linha,cliente,status_processo,status_processo_manual,status_processo_manual_base,status,todos`, hdrs);
+      const pagina = await _sbFetchTudo(`${SB_URL}/rest/v1/relatorios_dados?${filtro}&select=linha,cliente,status_processo,status_processo_manual,status_processo_manual_base,status_processo_manual_em,status,todos`, hdrs);
       linhasAtuais = linhasAtuais.concat(pagina);
     }
     let mudouStatusProcesso = false;
@@ -8677,7 +8774,7 @@ async function relVigiaChecar() {
       // 11ª rodada — mesma regra de expiração do override que
       // relMapRegistroSupabase usa (ver nota lá): só respeita o manual
       // se ele ainda bater com o automático de quando foi setado.
-      const overrideValido = !!row.status_processo_manual && row.status_processo_manual_base === (row.status_processo || '');
+      const overrideValido = v2VezEfetiva(row).valido;
       const efetivo = overrideValido ? row.status_processo_manual : (row.status_processo || '');
       const todosRow = row.todos || {};
       const formTexto = (relTodosBuscar(todosRow, 'Data de envio do formulário ao Terceiro') || relTodosBuscar(todosRow, 'Horário de envio do formulário ao Terceiro'));
@@ -9080,7 +9177,7 @@ async function relConfirmarSaldo(linha, confirmar) {
       const r = await fetch(`${SB_URL}/rest/v1/relatorios_dados?linha=eq.${linha}`, {
         method: 'PATCH',
         headers: hdrs,
-        body: JSON.stringify({ status_processo_manual: 'ADM', status_processo_manual_base: baseAtual }),
+        body: JSON.stringify({ status_processo_manual: 'ADM', status_processo_manual_base: '~', status_processo_manual_em: new Date().toISOString() }),
       });
       if (!r.ok) throw new Error(await r.text());
       if (registro) {
@@ -9217,7 +9314,7 @@ async function relConfirmarAdiantamento(linha, confirmar) {
     const r = await fetch(`${SB_URL}/rest/v1/relatorios_dados?linha=eq.${linha}`, {
       method: 'PATCH',
       headers: hdrs,
-      body: JSON.stringify({ adiantamento_confirmado: true, status_processo_manual: 'ADM', status_processo_manual_base: baseAtual }),
+      body: JSON.stringify({ adiantamento_confirmado: true, status_processo_manual: 'ADM', status_processo_manual_base: '~', status_processo_manual_em: new Date().toISOString() }),
     });
     if (!r.ok) throw new Error(await r.text());
     if (registro) {
@@ -10654,7 +10751,7 @@ async function relPatchStatusProcessoManual(valor) {
     const r = await fetch(`${SB_URL}/rest/v1/relatorios_dados?linha=eq.${relEdtLinhaAtual}`, {
       method: 'PATCH',
       headers: hdrs,
-      body: JSON.stringify({ status_processo_manual: valor, status_processo_manual_base: baseAtual }),
+      body: JSON.stringify({ status_processo_manual: valor, status_processo_manual_base: (valor ? '~' : null), status_processo_manual_em: (valor ? new Date().toISOString() : null) }),
     });
     if (!r.ok) throw new Error(await r.text());
     if (relEdtRegistroAtual) relEdtRegistroAtual.statusProcessoManual = valor || '';
@@ -10674,15 +10771,34 @@ async function relPatchStatusProcessoManual(valor) {
 // arrumação (a tela já mostra o valor certo de qualquer jeito, isso
 // aqui só evita deixar lixo acumulado na tabela e destrava o <select>
 // de "Passar a vez" pra pré-selecionar "Automático" da próxima vez.
+
+// 24/09/2026 — "passei a vez e voltou pro anterior": ao passar a vez, o
+// STATUS novo vai pra planilha e a planilha RECALCULA o automático logo
+// depois. A regra antiga comparava com o automático de ANTES da gravação,
+// então o eco da própria mudança "expirava" o override e o card voltava.
+// Agora o override nasce PENDENTE (base '~'); um gatilho no Supabase
+// (ar_vez_rebase) fixa a base no automático já recalculado, e só uma
+// mudança de verdade depois disso expira o override.
+function v2VezEfetiva(row) {
+  const man = (row && row.status_processo_manual) || '';
+  if (!man) return { valido: false, obsoleto: false };
+  const auto = row.status_processo || '';
+  const base = row.status_processo_manual_base;
+  if (man === auto) return { valido: false, obsoleto: true };      // planilha já concorda — override desnecessário
+  if (base === '~') return { valido: true, obsoleto: false };      // pendente: aguardando a planilha sincronizar
+  const ok = base === auto;
+  return { valido: ok, obsoleto: !ok };
+}
 function relLimparOverridesObsoletos(registros) {
   const obsoletos = registros.filter(r => r.statusProcessoManualObsoleto && r._linha !== undefined && r._linha !== null);
   if (!obsoletos.length) return;
   const hdrs = { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' };
   obsoletos.forEach(r => {
-    fetch(`${SB_URL}/rest/v1/relatorios_dados?linha=eq.${r._linha}`, {
+    const _cond = '&status_processo_manual=eq.' + encodeURIComponent(r._vezManualRaw || '') + (r._vezBaseRaw ? '&status_processo_manual_base=eq.' + encodeURIComponent(r._vezBaseRaw) : '&status_processo_manual_base=is.null');
+    fetch(`${SB_URL}/rest/v1/relatorios_dados?linha=eq.${r._linha}` + _cond, {
       method: 'PATCH',
       headers: hdrs,
-      body: JSON.stringify({ status_processo_manual: null, status_processo_manual_base: null }),
+      body: JSON.stringify({ status_processo_manual: null, status_processo_manual_base: null, status_processo_manual_em: null }),
     }).catch(() => {}); // silencioso — só uma faxina, não é crítico
   });
 }
@@ -13493,7 +13609,7 @@ function v2AbrirConfigDrive() {
         <li>Em <b>APIs e serviços → Biblioteca</b>, ative a <b>Google Drive API</b>.</li>
         <li>Em <b>Tela de consentimento OAuth</b>: tipo <b>Interno</b>, nome "AgenteRodo".</li>
         <li>Em <b>Credenciais → Criar credenciais → ID do cliente OAuth → Aplicativo da Web</b>.</li>
-        <li>Em <b>Origens JavaScript autorizadas</b> coloque: <code>${escH(origem)}</code>${origem.includes('netlify') ? '' : ' e <code>https://agente-rodo.netlify.app</code>'}</li>
+        <li>Em <b>Origens JavaScript autorizadas</b> coloque: <code>${escH(origem)}</code> (exatamente assim, sem barra no final)${origem.startsWith('http') ? '' : ' — ⚠️ você abriu o arquivo direto do computador; o Google só aceita o endereço publicado: <code>https://agente-rodo.vercel.app</code>'}</li>
         <li>Copie o <b>ID do cliente</b> e cole aqui em cima.</li>
       </ol>
     </details>
@@ -13578,8 +13694,9 @@ function v2DocsAbrir(i, opts) {
   m.firstElementChild.innerHTML = `
     <div class="v2-mh"><div><h3>📂 Documentos — ${titulo}</h3><p>Busque os documentos do processo no Drive ou envie do computador. O AgenteRodo lê NF-e, DANFE, HAWB/BL, Packing List, Invoice e DUIMP, preenche os campos e confere com a planilha.</p></div>
       <button class="v2-x" onclick="document.getElementById('modal-v2-docs').style.display='none'">✕</button></div>
-    <div class="v2-docs-grid">
-      <div class="v2-docs-col">
+    <div class="v2-docs-grid" id="v2-docs-grid">
+      <div class="v2-docs-viewer" id="v2-docs-viewer" hidden></div>
+      <div class="v2-docs-col v2-docs-fontes">
         <div class="v2-sec-h"><b>Google Drive</b><span id="v2-drive-status" class="muted"></span>
           <span style="margin-left:auto;display:flex;gap:6px;">
             <input type="text" id="v2-docs-ref" value="${escH(r ? r.referencia || '' : '')}" placeholder="Referência (ex. EST0703/26)" style="width:190px;height:32px;padding:4px 10px;font-size:12.5px;" onkeydown="if(event.key==='Enter')v2DocsBuscarDrive()">
@@ -13673,6 +13790,7 @@ function v2DocsRenderDrive() {
         <span class="v2-arq-i">${v2IconeArq(a.name, a.mimeType)}</span>
         <span class="v2-arq-n" title="${escH(a.name)}">${escH(a.name)}</span>
         <span class="muted">${a.size ? v2Fmt(a.size / 1024, 0) + ' KB' : ''}</span>
+        <button type="button" class="v2-arq-ver" onclick="event.preventDefault();event.stopPropagation();v2DocsVerArquivo('d:${a.id}')" title="Visualizar aqui">👁</button>
         <a href="${escH(a.webViewLink || '#')}" target="_blank" rel="noopener" onclick="event.stopPropagation()" title="Abrir no Drive">↗</a>
       </label>`).join('')}`).join('');
   v2DocsAtualizarContagem();
@@ -13689,7 +13807,8 @@ function v2DocsAddLocais(files) {
       <input type="checkbox" ${v2DocsCtx.selecionados.has(a.id) ? 'checked' : ''} onchange="v2DocsToggle('${a.id}', this.checked)">
       <span class="v2-arq-i">${v2IconeArq(a.name, a.mimeType)}</span>
       <span class="v2-arq-n" title="${escH(a.name)}">${escH(a.name)}</span>
-      <span class="muted">${v2Fmt(a.size / 1024, 0)} KB</span></label>`).join('');
+      <span class="muted">${v2Fmt(a.size / 1024, 0)} KB</span>
+      <button type="button" class="v2-arq-ver" onclick="event.preventDefault();event.stopPropagation();v2DocsVerArquivo('${a.id}')" title="Visualizar aqui">👁</button></label>`).join('');
   v2DocsAtualizarContagem();
 }
 function v2DocsAtualizarContagem() {
@@ -13813,8 +13932,8 @@ async function v2DocsLer() {
   if (!fila.length) return;
   const box = document.getElementById('v2-docs-result');
   const btn = document.getElementById('v2-docs-ler'); btn.disabled = true;
-  ctx.resultados = fila.map(f => ({ nome: f.nome, status: 'fila' }));
-  const render = () => { box.innerHTML = `<div class="v2-docs-lidos">${ctx.resultados.map(v2ChipResultado).join('')}</div>`; };
+  ctx.resultados = fila.map(f => ({ nome: f.nome, status: 'fila', mime: f.mime, driveId: f.drive ? f.drive.id : null, file: f.file || null }));
+  const render = () => { box.innerHTML = `<div class="v2-docs-lidos">${ctx.resultados.map((r, k) => v2ChipResultado(r, k)).join('')}</div>`; };
   render();
   if (window.innerWidth < 860) box.scrollIntoView({ behavior: 'smooth', block: 'start' });
   // até 3 ao mesmo tempo
@@ -13825,6 +13944,7 @@ async function v2DocsLer() {
       res.status = 'lendo'; render();
       try {
         const blob = f.file || await v2DriveBaixar(f.drive.id);
+        res.blob = blob;
         res.dados = await v2LerDocumento(f.nome, f.mime || blob.type || '', blob);
         res.status = 'ok';
       } catch (e) { res.status = 'erro'; res.erro = e.message; }
@@ -13835,13 +13955,15 @@ async function v2DocsLer() {
   btn.disabled = false;
   v2DocsRenderPropostas();
 }
-function v2ChipResultado(r) {
+function v2ChipResultado(r, k) {
   const d = r.dados || {};
   const st = r.status === 'ok' ? '✅' : r.status === 'erro' ? '⚠️' : r.status === 'lendo' ? '<span class="v2-spin"></span>' : '⏳';
   const resumo = r.status === 'ok'
     ? [d.tipo, d.numero_documento, d.volumes ? d.volumes + ' vol' : '', d.peso_bruto_kg ? v2Fmt(d.peso_bruto_kg, 1) + ' kg' : '', d.valor_total_nf_brl ? 'R$ ' + v2Fmt(d.valor_total_nf_brl, 2) : ''].filter(Boolean).join(' · ')
     : (r.erro || (r.status === 'lendo' ? 'lendo…' : 'na fila'));
-  return `<div class="v2-lido ${r.status}"><span>${st}</span><div><b>${escH(r.nome)}</b><small>${escH(resumo)}</small></div></div>`;
+  const ver = (r.blob || r.file || r.driveId) ? ` onclick="v2DocsVer(${k})" title="Ver o documento ao lado da conferência" role="button" tabindex="0"` : '';
+  const ativo = v2DocsCtx && v2DocsCtx.vendo === k ? ' vendo' : '';
+  return `<div class="v2-lido ${r.status}${ver ? ' clicavel' : ''}${ativo}"${ver}><span>${st}</span><div><b>${escH(r.nome)}</b><small>${escH(resumo)}</small></div>${ver ? '<span class="v2-lido-olho">👁</span>' : ''}</div>`;
 }
 
 // ── Consolidação: vários documentos → 1 proposta por campo ────────────
@@ -13952,7 +14074,7 @@ function v2DocsValorAtual(campo) {
 function v2DocsRenderPropostas() {
   const ctx = v2DocsCtx; const box = document.getElementById('v2-docs-result');
   const docs = ctx.resultados.filter(x => x.status === 'ok').map(x => Object.assign({ __nome: x.nome }, x.dados));
-  const lidos = `<div class="v2-docs-lidos">${ctx.resultados.map(v2ChipResultado).join('')}</div>`;
+  const lidos = `<div class="v2-docs-lidos">${ctx.resultados.map((r, k) => v2ChipResultado(r, k)).join('')}</div>`;
   if (!docs.length) { box.innerHTML = lidos + '<div class="muted" style="padding:10px 4px;">Nenhum documento lido com sucesso.</div>'; return; }
   const P = v2Consolidar(docs, ctx.r);
   ctx.propostas = P;
@@ -13970,7 +14092,7 @@ function v2DocsRenderPropostas() {
     return `<tr class="${igual ? 'is-ok' : (!vazio ? 'is-dif' : '')}">
       <td><input type="checkbox" data-v2prop="${campo}" ${marcado ? 'checked' : ''} ${igual ? 'disabled' : ''}></td>
       <td><b>${escH(def ? def.label : campo)}</b><div style="margin-top:4px;">${estado}</div></td>
-      <td class="wrap"><input type="text" class="v2-prop-in" id="v2-prop-${campo}" value="${escH(p.valor)}"><div class="muted">${escH(p.fonte || '')}</div></td>
+      <td class="wrap"><input type="text" class="v2-prop-in" id="v2-prop-${campo}" value="${escH(p.valor)}"><div class="muted">${v2FonteLink(p.fonte)}</div></td>
       <td class="wrap">${atual ? escH(relFormatarDataBR(atual) || atual) : '<span class="muted">(vazio)</span>'}</td></tr>`;
   }).join('');
   const destinoTxt = ctx.modo === 'criar' ? 'no formulário de Novo Processo' : 'no formulário de edição deste processo';
@@ -14074,6 +14196,161 @@ v2RenderDock = function () {
 };
 v2InjetarBotoesEditor();
 
+
+// ── Visualizador lado a lado (conferir o documento enquanto confere os campos) ──
+let _v2UrlAtual = null;
+function v2FonteLink(fonte) {
+  const ctx = v2DocsCtx; const txt = String(fonte || '');
+  if (!ctx || !txt) return escH(txt);
+  const k = ctx.resultados.findIndex(r => r.status === 'ok' && txt.indexOf(r.nome) > -1);
+  return k > -1 ? `<a href="#" class="v2-fonte" onclick="v2DocsVer(${k});return false;" title="Ver este documento">👁 ${escH(txt)}</a>` : escH(txt);
+}
+function v2DocsVerArquivo(chave) {
+  const ctx = v2DocsCtx; if (!ctx) return;
+  let item;
+  if (chave.startsWith('d:')) { const a = ctx.arquivosDrive.find(x => 'd:' + x.id === chave); if (a) item = { nome: a.name, mime: a.mimeType, driveId: a.id, link: a.webViewLink }; }
+  else { const a = ctx.locais.find(x => x.id === chave); if (a) item = { nome: a.name, mime: a.mimeType, file: a.file }; }
+  if (!item) return;
+  const k = ctx.resultados.findIndex(r => r.nome === item.nome);
+  if (k > -1) return v2DocsVer(k);
+  v2DocsAbrirViewer(item, null);
+}
+function v2DocsVer(k) {
+  const ctx = v2DocsCtx; const r = ctx && ctx.resultados[k]; if (!r) return;
+  ctx.vendo = k;
+  document.querySelectorAll('#v2-docs-result .v2-lido').forEach((el, i) => el.classList.toggle('vendo', i === k));
+  v2DocsAbrirViewer(r, k);
+}
+function v2DocsFecharViewer() {
+  const v = document.getElementById('v2-docs-viewer'); if (!v) return;
+  v.hidden = true; v.innerHTML = '';
+  document.getElementById('v2-docs-grid').classList.remove('comparando');
+  const box = document.querySelector('#modal-v2-docs > div'); if (box) box.style.maxWidth = '1200px';
+  if (_v2UrlAtual) { URL.revokeObjectURL(_v2UrlAtual); _v2UrlAtual = null; }
+  if (v2DocsCtx) v2DocsCtx.vendo = null;
+  document.querySelectorAll('#v2-docs-result .v2-lido').forEach(el => el.classList.remove('vendo'));
+}
+async function v2DocsAbrirViewer(item, k) {
+  const v = document.getElementById('v2-docs-viewer');
+  const grid = document.getElementById('v2-docs-grid');
+  const box = document.querySelector('#modal-v2-docs > div'); if (box) box.style.maxWidth = '1480px';
+  grid.classList.add('comparando'); v.hidden = false;
+  if (box) box.scrollTo({ top: 0, behavior: 'smooth' });
+  const modal = document.getElementById('modal-v2-docs'); if (modal) modal.scrollTo({ top: 0, behavior: 'smooth' });
+  const ctx = v2DocsCtx;
+  const outros = ctx.resultados.map((r, i) => ({ r, i })).filter(x => x.r.blob || x.r.file || x.r.driveId);
+  v.innerHTML = `<div class="v2-vw-h">
+      <div class="v2-vw-tabs">${outros.map(({ r, i }) => `<button type="button" class="${i === k ? 'on' : ''}" onclick="v2DocsVer(${i})" title="${escH(r.nome)}">${v2IconeArq(r.nome, r.mime)} ${escH(r.nome)}</button>`).join('') || `<button type="button" class="on">${v2IconeArq(item.nome, item.mime)} ${escH(item.nome)}</button>`}</div>
+      <div class="v2-vw-acts"><button type="button" class="btn btn-ghost btn-sm" id="v2-vw-novaaba" title="Abrir em tela cheia">⤢</button><button type="button" class="btn btn-ghost btn-sm" onclick="v2DocsFecharViewer()" title="Fechar visualização">✕</button></div>
+    </div><div class="v2-vw-body" id="v2-vw-body"><div class="v2-vw-msg"><span class="v2-spin"></span> Carregando documento…</div></div>`;
+  const corpo = document.getElementById('v2-vw-body');
+  try {
+    let blob = item.blob || item.file || null;
+    if (!blob && item.driveId && v2DriveConectado()) { blob = await v2DriveBaixar(item.driveId); if (k !== null && k !== undefined) ctx.resultados[k].blob = blob; }
+    if (!blob && item.driveId) { corpo.innerHTML = `<iframe src="https://drive.google.com/file/d/${item.driveId}/preview" title="${escH(item.nome)}"></iframe>`; v2VwNovaAba(`https://drive.google.com/file/d/${item.driveId}/view`); return; }
+    if (_v2UrlAtual) URL.revokeObjectURL(_v2UrlAtual);
+    const n = (item.nome || '').toLowerCase(), mime = item.mime || blob.type || '';
+    if (n.endsWith('.xml') || /xml/.test(mime)) {
+      const txt = await v2BlobParaTexto(blob);
+      corpo.innerHTML = /<infNFe/i.test(txt) ? v2DanfeHtml(txt) : `<pre class="v2-vw-pre">${escH(txt.slice(0, 200000))}</pre>`;
+      _v2UrlAtual = URL.createObjectURL(new Blob([txt], { type: 'text/xml' })); v2VwNovaAba(_v2UrlAtual); return;
+    }
+    if (/\.(xls|xlsx|csv)$/.test(n) || /sheet|excel|csv/.test(mime)) {
+      const wb = XLSX.read(await blob.arrayBuffer(), { type: 'array' });
+      corpo.innerHTML = `<div class="v2-vw-sheet">${wb.SheetNames.slice(0, 3).map(sn => `<h4>${escH(sn)}</h4>` + XLSX.utils.sheet_to_html(wb.Sheets[sn], { header: '', footer: '' })).join('')}</div>`;
+      corpo.querySelectorAll('script').forEach(x => x.remove()); return;
+    }
+    const tipo = /\.pdf$/.test(n) ? 'application/pdf' : (mime || 'application/octet-stream');
+    _v2UrlAtual = URL.createObjectURL(new Blob([blob], { type: tipo }));
+    v2VwNovaAba(_v2UrlAtual);
+    if (/^image\//.test(tipo)) { corpo.innerHTML = `<div class="v2-vw-img"><img src="${_v2UrlAtual}" alt="${escH(item.nome)}"></div>`; return; }
+    if (tipo === 'application/pdf') { await v2RenderPdf(corpo, blob); return; }
+    corpo.innerHTML = `<iframe src="${_v2UrlAtual}" title="${escH(item.nome)}"></iframe>`;
+  } catch (e) {
+    corpo.innerHTML = `<div class="v2-vw-msg">⚠️ Não consegui abrir: ${escH(e.message)}${item.driveId ? `<br><a href="https://drive.google.com/file/d/${item.driveId}/view" target="_blank" rel="noopener">Abrir no Google Drive ↗</a>` : ''}</div>`;
+  }
+}
+function v2VwNovaAba(url) { const b = document.getElementById('v2-vw-novaaba'); if (b) b.onclick = () => window.open(url, '_blank', 'noopener'); }
+// NF-e XML → espelho legível (tipo DANFE resumido)
+function v2DanfeHtml(txt) {
+  const doc = new DOMParser().parseFromString(txt, 'application/xml');
+  const g = (el, n) => { if (!el) return ''; const x = el.getElementsByTagName(n)[0]; return x ? x.textContent.trim() : ''; };
+  const inf = doc.getElementsByTagName('infNFe')[0];
+  const ide = inf.getElementsByTagName('ide')[0], emit = inf.getElementsByTagName('emit')[0], dest = inf.getElementsByTagName('dest')[0];
+  const tot = inf.getElementsByTagName('ICMSTot')[0], transp = inf.getElementsByTagName('transp')[0];
+  const eE = emit && emit.getElementsByTagName('enderEmit')[0], eD = dest && dest.getElementsByTagName('enderDest')[0];
+  const vols = transp ? [...transp.getElementsByTagName('vol')] : [];
+  const brl = v => 'R$ ' + (Number(v) || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const itens = [...inf.getElementsByTagName('det')].map(d => `<tr><td>${escH(g(d, 'cProd'))}</td><td>${escH(g(d, 'xProd'))}</td><td class="n">${escH((+g(d, 'qCom') || 0).toLocaleString('pt-BR'))} ${escH(g(d, 'uCom'))}</td><td class="n">${brl(g(d, 'vProd'))}</td></tr>`).join('');
+  const bloco = (t, linhas) => `<div class="v2-nf-b"><div class="v2-nf-t">${t}</div>${linhas.filter(x => x[1]).map(([a, b]) => `<div class="v2-nf-l"><span>${a}</span><b>${escH(b)}</b></div>`).join('')}</div>`;
+  const dh = g(ide, 'dhEmi').slice(0, 10).split('-').reverse().join('/');
+  return `<div class="v2-nf">
+    <div class="v2-nf-top"><div><div class="v2-nf-k">NF-e ${g(ide, 'tpNF') === '0' ? 'de entrada' : 'de saída'} · série ${escH(g(ide, 'serie'))}</div><div class="v2-nf-n">Nº ${escH(g(ide, 'nNF'))}</div><div class="muted">Emitida em ${escH(dh)} · ${escH(g(ide, 'natOp'))}</div></div>
+      <div class="v2-nf-v"><span>Valor total da nota</span><b>${brl(g(tot, 'vNF'))}</b></div></div>
+    <div class="v2-nf-g">
+      ${bloco('Emitente', [['Razão social', g(emit, 'xNome')], ['CNPJ', v2FmtCnpj(g(emit, 'CNPJ'))], ['Cidade', [g(eE, 'xMun'), g(eE, 'UF')].filter(Boolean).join(' / ')]])}
+      ${bloco('Destinatário', [['Razão social', g(dest, 'xNome')], ['CNPJ / ID', v2FmtCnpj(g(dest, 'CNPJ')) || g(dest, 'CPF') || g(dest, 'idEstrangeiro')], ['Cidade', [g(eD, 'xMun'), g(eD, 'UF')].filter(Boolean).join(' / ')]])}
+      ${bloco('Transporte', [['Transportadora', g(transp, 'xNome')], ['Volumes', String(vols.reduce((s, x) => s + (+g(x, 'qVol') || 0), 0) || '')], ['Peso bruto', vols.length ? vols.reduce((s, x) => s + (+g(x, 'pesoB') || 0), 0).toLocaleString('pt-BR') + ' kg' : ''], ['Peso líquido', vols.length ? vols.reduce((s, x) => s + (+g(x, 'pesoL') || 0), 0).toLocaleString('pt-BR') + ' kg' : '']])}
+      ${bloco('Importação', [['DI / DUIMP', g(inf, 'nDI')], ['Desembaraço', [g(inf, 'xLocDesemb'), g(inf, 'UFDesemb')].filter(Boolean).join(' / ')]])}
+    </div>
+    <div class="v2-nf-t" style="margin-top:14px;">Itens</div>
+    <div class="v2-tbl" style="max-height:none;"><table><thead><tr><th>Código</th><th>Descrição</th><th class="n">Qtd</th><th class="n">Valor</th></tr></thead><tbody>${itens}</tbody></table></div>
+    ${g(inf, 'infCpl') ? `<div class="v2-nf-t" style="margin-top:14px;">Informações complementares</div><div class="v2-nf-obs">${escH(g(inf, 'infCpl'))}</div>` : ''}
+    <details style="margin-top:12px;"><summary class="muted" style="cursor:pointer;">Ver XML original</summary><pre class="v2-vw-pre">${escH(txt.slice(0, 200000))}</pre></details>
+  </div>`;
+}
+
+// PDF desenhado com PDF.js (funciona igual no computador e no celular,
+// onde o navegador não mostra PDF dentro da página)
+let _v2PdfJs = null, _v2PdfZoom = 1;
+function v2CarregarPdfJs() {
+  if (window.pdfjsLib) return Promise.resolve(window.pdfjsLib);
+  if (_v2PdfJs) return _v2PdfJs;
+  _v2PdfJs = new Promise((ok, erro) => {
+    const sc = document.createElement('script');
+    sc.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+    sc.onload = () => { window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'; ok(window.pdfjsLib); };
+    sc.onerror = () => { _v2PdfJs = null; erro(new Error('não carregou o leitor de PDF')); };
+    document.head.appendChild(sc);
+  });
+  return _v2PdfJs;
+}
+async function v2RenderPdf(corpo, blob) {
+  try {
+    const lib = await v2CarregarPdfJs();
+    const pdf = await lib.getDocument({ data: new Uint8Array(await blob.arrayBuffer()) }).promise;
+    const total = Math.min(pdf.numPages, 20);
+    corpo.innerHTML = `<div class="v2-pdf-bar"><span>${pdf.numPages} página(s)</span><span style="margin-left:auto;display:flex;gap:4px;">
+        <button type="button" onclick="v2PdfZoom(-0.2)" title="Diminuir">−</button><button type="button" onclick="v2PdfZoom(0)" title="Ajustar à largura">⤢</button><button type="button" onclick="v2PdfZoom(0.2)" title="Aumentar">+</button></span></div>
+      <div class="v2-pdf" id="v2-pdf"></div>`;
+    corpo._pdf = pdf; corpo._total = total; _v2PdfZoom = 1;
+    await v2PdfDesenhar(corpo);
+  } catch (e) {
+    corpo.innerHTML = `<iframe src="${_v2UrlAtual}" title="PDF"></iframe>`;
+  }
+}
+async function v2PdfDesenhar(corpo) {
+  const alvo = corpo.querySelector('#v2-pdf'); if (!alvo || !corpo._pdf) return;
+  alvo.innerHTML = '';
+  const largura = Math.max(280, corpo.clientWidth - 28);
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  for (let n = 1; n <= corpo._total; n++) {
+    const pg = await corpo._pdf.getPage(n);
+    const base = pg.getViewport({ scale: 1 });
+    const esc = (largura / base.width) * _v2PdfZoom;
+    const vp = pg.getViewport({ scale: esc * dpr });
+    const cv = document.createElement('canvas');
+    cv.width = vp.width; cv.height = vp.height; cv.style.width = (vp.width / dpr) + 'px'; cv.style.height = (vp.height / dpr) + 'px';
+    alvo.appendChild(cv);
+    await pg.render({ canvasContext: cv.getContext('2d'), viewport: vp }).promise;
+  }
+  if (corpo._pdf.numPages > corpo._total) alvo.insertAdjacentHTML('beforeend', `<div class="v2-vw-msg">Mostrando as primeiras ${corpo._total} páginas — use ⤢ no topo para abrir o arquivo inteiro.</div>`);
+}
+function v2PdfZoom(d) {
+  _v2PdfZoom = d === 0 ? 1 : Math.max(0.5, Math.min(3, _v2PdfZoom + d));
+  const corpo = document.getElementById('v2-vw-body'); if (corpo) v2PdfDesenhar(corpo);
+}
+
 // ═══════════════════════════════════════════════════════════════════════
 // AgenteRodo — motor de Dashboards (compartilhado entre o app interno e o
 // Portal do Cliente painel.html). Sem dependências: HTML + SVG puros.
@@ -14143,7 +14420,8 @@ const Dash = (() => {
     const v = cab => { const k = mapa[norm(cab)]; return k !== undefined ? String(t[k] == null ? '' : t[k]).trim() : ''; };
     const nfTxt = v('NF');
     const volTxt = v('VOLUME');
-    const etapa = (row.status_processo_manual && row.status_processo_manual_base === (row.status_processo || '')) ? row.status_processo_manual : (row.status_processo || '');
+    const _man = row.status_processo_manual || '', _auto = row.status_processo || '';
+    const etapa = (_man && _man !== _auto && (row.status_processo_manual_base === '~' || row.status_processo_manual_base === _auto)) ? _man : _auto;
     return {
       linha: row.linha, cliente: row.cliente || v('CLIENTE'), cnpj: v('CNPJ'), ref: row.referencia || v('REFERÊNCIA CLIENTE'),
       status: row.status || v('STATUS'), etapa,
@@ -14245,7 +14523,7 @@ const Dash = (() => {
   }
 
   // ── Componentes visuais ────────────────────────────────────────────
-  let _tip;
+  let _tip, _modoPdf = false;
   function tip() {
     if (_tip) return _tip;
     _tip = document.createElement('div'); _tip.className = 'dz-tip'; _tip.setAttribute('role', 'tooltip');
@@ -14391,7 +14669,7 @@ const Dash = (() => {
     if (!procs.length) return vazio(opts.vazio || 'Nenhum processo.');
     const id = 'dzt' + Math.random().toString(36).slice(2, 7);
     return `<div class="dz-tbl-wrap">
-      ${opts.busca !== false ? `<input type="search" class="dz-busca" placeholder="Buscar referência, rota, status…" oninput="Dash.filtrarTabela('${id}', this.value)">` : ''}
+      ${opts.busca !== false && !_modoPdf ? `<input type="search" class="dz-busca" placeholder="Buscar referência, rota, status…" oninput="Dash.filtrarTabela('${id}', this.value)">` : ''}
       <div class="dz-tbl"><table id="${id}"><thead><tr>${colunas.map(c => `<th class="${c.num ? 'num' : ''}">${esc(c.t)}</th>`).join('')}</tr></thead>
       <tbody>${procs.map(p => `<tr>${colunas.map(c => `<td class="${c.num ? 'num' : ''}">${c.f(p)}</td>`).join('')}</tr>`).join('')}</tbody></table></div></div>`;
   }
@@ -14407,9 +14685,70 @@ const Dash = (() => {
   const rotaChave = p => `${semAcento(p.origem) || '?'} → ${semAcento(p.destino) || '?'}`;
   const rota = p => `${esc(p.origem || p.localColeta || '—')} <span class="dz-seta">→</span> ${esc(p.destino || p.localEntrega || '—')}`;
 
+  // ── Ritmo: processos por dia / semana / mês ────────────────────────
+  // Independe do período escolhido: sempre olha pra "hoje" e pra trás.
+  // Base da data = coleta (ou recebimento, se não tiver coleta).
+  const MES_CURTO = d => MESES[d.getMonth()] + '/' + String(d.getFullYear()).slice(2);
+  function inicioSemana(d) { return new Date(d.getFullYear(), d.getMonth(), d.getDate() - ((d.getDay() + 6) % 7)); }
+  function ritmoDados(todos) {
+    const ativos = todos.filter(p => fase(p) !== 'cancelado');
+    const hj = new Date(); const hoje = new Date(hj.getFullYear(), hj.getMonth(), hj.getDate());
+    const cD = new Map(), cS = new Map(), cM = new Map();
+    ativos.forEach(p => {
+      const d = paraData(dataRef(p)); if (!d) return;
+      const kd = iso(d), ks = iso(inicioSemana(d)), km = kd.slice(0, 7);
+      cD.set(kd, (cD.get(kd) || 0) + 1); cS.set(ks, (cS.get(ks) || 0) + 1); cM.set(km, (cM.get(km) || 0) + 1);
+    });
+    const dia = [], sem = [], mes = [];
+    for (let i = 13; i >= 0; i--) { const d = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() - i); dia.push({ k: iso(d), d, n: cD.get(iso(d)) || 0, rotSm: String(d.getDate()), rot: `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}`, tit: ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'][d.getDay()] + ', ' + dataCurta(d) }); }
+    const s0 = inicioSemana(hoje);
+    for (let i = 11; i >= 0; i--) { const d = new Date(s0.getFullYear(), s0.getMonth(), s0.getDate() - 7 * i); const f = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 6); sem.push({ k: iso(d), d, n: cS.get(iso(d)) || 0, rotSm: d.getDate() + '/' + (d.getMonth() + 1), rot: dataCurta(d), tit: `Semana de ${dataCurta(d)} a ${dataCurta(f)}` }); }
+    for (let i = 11; i >= 0; i--) { const d = new Date(hoje.getFullYear(), hoje.getMonth() - i, 1); const k = iso(d).slice(0, 7); mes.push({ k, d, n: cM.get(k) || 0, rotSm: MESES[d.getMonth()].slice(0, 1).toUpperCase(), rot: MES_CURTO(d), tit: MESES[d.getMonth()] + ' de ' + d.getFullYear() }); }
+    // médias por dia útil do mês corrente (seg–sex até hoje)
+    let uteis = 0; for (let d = new Date(hoje.getFullYear(), hoje.getMonth(), 1); d <= hoje; d = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1)) if (d.getDay() % 6) uteis++;
+    return { dia, sem, mes, uteis, total: { cD, cS, cM } };
+  }
+  function colunas(serie, unidade, destaqueUlt) {
+    const max = Math.max(1, ...serie.map(x => x.n));
+    const iMax = serie.reduce((b, x, i) => x.n > serie[b].n ? i : b, 0);
+    const ult = serie.length - 1;
+    return `<div class="dz-cols" role="img" aria-label="${esc(unidade)}">${serie.map((x, i) => `
+      <div class="dz-col ${i === ult && destaqueUlt ? 'atual' : ''}" ${tipAttr([{ v: x.tit }, { v: fmtInt(x.n), r: unidade, cor: 'var(--dz-c1)' }])}>
+        <div class="dz-col-v">${(i === iMax && x.n) || i === ult ? fmtInt(x.n) : ''}</div>
+        <div class="dz-col-t"><div class="dz-col-f" style="height:${x.n ? Math.max(2, x.n / max * 100).toFixed(1) : 0}%"></div></div>
+        <div class="dz-col-k"><span class="lg">${esc(x.rot)}</span><span class="sm">${esc(x.rotSm || x.rot)}</span></div></div>`).join('')}</div>`;
+  }
+  function ritmoCard(todos, interno) {
+    const r = ritmoDados(todos);
+    const un = interno ? 'processos' : 'embarques';
+    const ult = a => a[a.length - 1].n, pen = a => a[a.length - 2].n;
+    const comp = (atual, ant, txt) => `<span class="dz-rt-c">${esc(txt)}: <b>${fmtInt(ant)}</b>${ant || atual ? (atual >= ant ? ' <i class="up">▲</i>' : ' <i class="down">▼</i>') : ''}</span>`;
+    const mediaMes = r.uteis ? ult(r.mes) / r.uteis : 0;
+    const semanas8 = r.sem.slice(-9, -1), mediaSem = semanas8.reduce((s, x) => s + x.n, 0) / 8;
+    const id = 'dzr' + Math.random().toString(36).slice(2, 7);
+    return `<section class="dz-card dz-ritmo" id="${id}">
+      <header class="dz-rt-h"><div><h3>${interno ? 'Processos' : 'Embarques'} por dia, semana e mês</h3><p>Pela data de coleta · não depende do período selecionado acima</p></div>
+        <div class="dz-seg" role="tablist">${[['dia', 'Dia'], ['sem', 'Semana'], ['mes', 'Mês']].map(([k, t], i) => `<button type="button" class="${i === 0 ? 'on' : ''}" onclick="Dash.ritmoModo('${id}','${k}',this)">${t}</button>`).join('')}</div></header>
+      <div class="dz-rt-tiles">
+        <div class="dz-rt"><span class="dz-rt-l">Hoje</span><b class="dz-rt-v">${fmtInt(ult(r.dia))}</b>${comp(ult(r.dia), pen(r.dia), 'ontem')}</div>
+        <div class="dz-rt"><span class="dz-rt-l">Esta semana</span><b class="dz-rt-v">${fmtInt(ult(r.sem))}</b>${comp(ult(r.sem), pen(r.sem), 'semana passada')}<span class="dz-rt-c">média 8 sem.: <b>${fmtDec(mediaSem, 1).replace(',0', '')}</b></span></div>
+        <div class="dz-rt"><span class="dz-rt-l">Este mês</span><b class="dz-rt-v">${fmtInt(ult(r.mes))}</b>${comp(ult(r.mes), pen(r.mes), 'mês passado')}<span class="dz-rt-c">≈ <b>${fmtDec(mediaMes, 1).replace(',0', '')}</b> por dia útil</span></div>
+      </div>
+      <div class="dz-rt-g" data-m="dia">${colunas(r.dia, un, true)}</div>
+      <div class="dz-rt-g" data-m="sem" hidden>${colunas(r.sem, un, true)}</div>
+      <div class="dz-rt-g" data-m="mes" hidden>${colunas(r.mes, un, true)}</div>
+    </section>`;
+  }
+  function ritmoModo(id, m, btn) {
+    const el = document.getElementById(id); if (!el) return;
+    el.querySelectorAll('.dz-rt-g').forEach(g => { g.hidden = g.dataset.m !== m; });
+    el.querySelectorAll('.dz-seg button').forEach(b => b.classList.toggle('on', b === btn));
+  }
+
   // ── Montagem do painel ─────────────────────────────────────────────
   // modo: 'interno' (todos os clientes, com custos/equipes) | 'cliente'
   function render(el, todos, cfg) {
+    _modoPdf = !!cfg.pdf;
     const per = cfg.periodo;
     const lista = noPeriodo(todos, per);
     const ant = periodoAnterior(per); const listaAnt = ant ? noPeriodo(todos, ant) : null;
@@ -14441,6 +14780,7 @@ const Dash = (() => {
 
     const blocos = [];
     blocos.push(`<div class="dz-top">${hero}<div class="dz-tiles n${nTiles}">${tiles.join('')}</div></div>`);
+    blocos.push(ritmoCard(todos, interno));
     blocos.push(`<div class="dz-grid2">
       ${card(interno ? 'Processos ao longo do tempo' : 'Embarques ao longo do tempo', serie.passo === 'semana' ? 'Por semana, pela data de coleta' : 'Por dia, pela data de coleta', '<div class="dz-chart" data-dz-area></div>', 'span2')}
       ${card('Situação dos processos', 'Fase atual de cada processo do período', fases(lista))}
@@ -14499,7 +14839,7 @@ const Dash = (() => {
     if (alvoArea) area(alvoArea, serie, { aria: 'Processos ao longo do tempo' });
     ligarTips(el);
     // redesenha o gráfico de área quando a largura muda (celular girando, menu abrindo)
-    if (alvoArea && window.ResizeObserver) {
+    if (alvoArea && window.ResizeObserver && !cfg.pdf) {
       let w0 = alvoArea.clientWidth, tmr;
       const ro = new ResizeObserver(() => { if (Math.abs(alvoArea.clientWidth - w0) < 8) return; w0 = alvoArea.clientWidth; clearTimeout(tmr); tmr = setTimeout(() => area(alvoArea, serie, {}), 120); });
       ro.observe(alvoArea);
@@ -14507,7 +14847,219 @@ const Dash = (() => {
     return { lista, metricas: m };
   }
 
-  return { normalizar, paraCliente, periodo, noPeriodo, metricas, render, filtrarTabela, fase, FASES, esc, norm, dataBR, iso, fmtInt, fmtPeso, fmtBRL, fmtPct, CAMPOS_CLIENTE };
+  return { ritmoModo, ritmoDados, dataRef, paraData, serieTempo, ETAPAS, normalizar, paraCliente, periodo, noPeriodo, metricas, render, filtrarTabela, fase, FASES, esc, norm, dataBR, iso, fmtInt, fmtPeso, fmtBRL, fmtPct, CAMPOS_CLIENTE };
+})();
+
+// ═══════════════════════════════════════════════════════════════════════
+// AgenteRodo — exportação dos Dashboards (PDF e Excel/Power BI)
+// Compartilhado entre o app interno e o Portal do Cliente (painel.html).
+// Bibliotecas carregadas só quando alguém exporta (cdnjs).
+// ═══════════════════════════════════════════════════════════════════════
+const DashExport = (() => {
+  const LIBS = {
+    xlsx: ['https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js', 'XLSX'],
+    h2c: ['https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js', 'html2canvas'],
+    jspdf: ['https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js', 'jspdf'],
+  };
+  const _carr = {};
+  function lib(n) {
+    const [u, g] = LIBS[n];
+    if (window[g]) return Promise.resolve(window[g]);
+    if (_carr[n]) return _carr[n];
+    _carr[n] = new Promise((ok, err) => {
+      const s = document.createElement('script'); s.src = u; s.async = true;
+      s.onload = () => window[g] ? ok(window[g]) : err(new Error('Componente de exportação não carregou.'));
+      s.onerror = () => { delete _carr[n]; err(new Error('Não consegui baixar o componente de exportação — confira a internet e tente de novo.')); };
+      document.head.appendChild(s);
+    });
+    return _carr[n];
+  }
+  const hojeTxt = () => { const d = new Date(); return `${String(d.getDate()).padStart(2, '0')}-${String(d.getMonth() + 1).padStart(2, '0')}-${d.getFullYear()}`; };
+  const nomeArq = (base, ext) => (base || 'Pinholog').replace(/[\\/:*?"<>|]+/g, '-').replace(/\s+/g, ' ').trim() + ' - ' + hojeTxt() + '.' + ext;
+  const semanaIni = d => new Date(d.getFullYear(), d.getMonth(), d.getDate() - ((d.getDay() + 6) % 7));
+  // Data "pura" → número de série do Excel (sem hora e sem fuso): o Power BI lê como data exata.
+  const dataXl = s => { const d = Dash.paraData(s); return d ? Math.round((Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) - Date.UTC(1899, 11, 30)) / 864e5) : null; };
+  const faseRot = p => (Dash.FASES.find(f => f.id === Dash.fase(p)) || {}).rotulo || '';
+  const simNao = v => v === true ? 'Sim' : v === false ? 'Não' : '';
+  const n2 = v => (typeof v === 'number' && isFinite(v)) ? Math.round(v * 100) / 100 : null;
+
+  // ── Planilha (tabela "fato" + agregados) — formato amigável pro Power BI:
+  //    1 linha de cabeçalho, sem células mescladas, datas e números tipados.
+  function colunas(procs, modo) {
+    const tem = k => procs.some(p => p[k] !== undefined && p[k] !== null && p[k] !== '');
+    const c = [];
+    const add = (t, f, w, tipo) => c.push({ t, f, w: w || 14, tipo });
+    if (modo === 'interno') add('Linha planilha', p => p.linha, 9, 'n');
+    add('Cliente', p => p.cliente || '', 24);
+    add('Referência', p => p.ref || '', 26);
+    add('Status', p => p.status || '', 22);
+    add('Fase', faseRot, 14);
+    if (modo === 'interno') add('Vez de', p => Dash.ETAPAS[p.etapa] || p.etapa || '', 16);
+    add('Categoria', p => p.categoria || '', 11);
+    add('Tipo de carga', p => p.tipoCarga || '', 16);
+    add('Origem', p => p.origem || '', 18);
+    add('Destino', p => p.destino || '', 18);
+    add('Local de coleta', p => p.localColeta || '', 26);
+    add('Local de entrega', p => p.localEntrega || '', 26);
+    add('Data recebimento', p => dataXl(p.dataReceb), 12, 'd');
+    add('Data coleta', p => dataXl(p.dataColeta), 12, 'd');
+    add('Data entrega', p => dataXl(p.dataEntrega), 12, 'd');
+    add('Data referência', p => dataXl(Dash.dataRef(p)), 12, 'd');
+    add('Semana (início)', p => { const d = Dash.paraData(Dash.dataRef(p)); return d ? dataXl(Dash.iso(semanaIni(d))) : null; }, 12, 'd');
+    add('Mês', p => (Dash.dataRef(p) || '').slice(0, 7), 9);
+    add('Volumes', p => p.volume || 0, 9, 'n');
+    add('Peso (kg)', p => n2(p.peso) || 0, 11, 'n2');
+    add('Valor NF (R$)', p => n2(p.nfValor) || 0, 14, 'brl');
+    add('Medidas / obs. carga', p => p.medidas || '', 34);
+    add('Tipo de veículo', p => p.tipoVeiculo || '', 16);
+    if (modo === 'interno' || tem('placa')) add('Placa', p => p.placa || '', 10);
+    if (modo === 'interno' || tem('motorista')) add('Motorista', p => p.motorista || '', 22);
+    if (modo === 'interno' || tem('ok1') || tem('h1')) {
+      add('1ª resposta (h)', p => n2(p.h1), 11, 'n2'); add('1ª resposta no prazo', p => simNao(p.ok1), 11);
+      add('Programação (h)', p => n2(p.hProg), 11, 'n2'); add('Programação no prazo', p => simNao(p.okProg), 11);
+    }
+    if (modo === 'interno') {
+      add('Equipe', p => p.equipe || '', 14); add('Analista', p => p.assistente || '', 18); add('Tipo contrato', p => p.tipoContrato || '', 14);
+      add('Custo total (R$)', p => n2(p.custo) || 0, 14, 'brl'); add('Valor frete (R$)', p => n2(p.frete) || 0, 14, 'brl'); add('Valor proposta (R$)', p => n2(p.proposta) || 0, 14, 'brl');
+      add('Houve trava', p => p.trava ? 'Sim' : 'Não', 9); add('Motivo trava', p => p.motivoTrava || '', 22);
+    }
+    return c;
+  }
+  const FMT = { d: 'dd/mm/yyyy', n: '#,##0', n2: '#,##0.00', brl: '"R$" #,##0.00' };
+  function folha(X, cab, linhas, cols) {
+    const ws = X.utils.aoa_to_sheet([cab].concat(linhas));
+    const ref = X.utils.decode_range(ws['!ref']);
+    cols.forEach((c, j) => {
+      if (!c.tipo) return;
+      for (let i = 1; i <= ref.e.r; i++) { const cel = ws[X.utils.encode_cell({ r: i, c: j })]; if (cel && cel.v !== null && cel.v !== '') cel.z = FMT[c.tipo]; }
+    });
+    ws['!cols'] = cols.map(c => ({ wch: c.w || 14 }));
+    ws['!autofilter'] = { ref: ws['!ref'] };
+    return ws;
+  }
+  function agregado(procs, chaveFn) {
+    const m = new Map();
+    procs.forEach(p => {
+      const k = chaveFn(p); if (!k) return;
+      const o = m.get(k) || { k, n: 0, entregues: 0, andamento: 0, cancelados: 0, peso: 0, vol: 0, nf: 0 };
+      const f = Dash.fase(p);
+      if (f === 'cancelado') o.cancelados++;
+      else { o.n++; if (f === 'entregue') o.entregues++; else o.andamento++; o.peso += p.peso || 0; o.vol += p.volume || 0; o.nf += p.nfValor || 0; }
+      m.set(k, o);
+    });
+    return [...m.values()].sort((a, b) => a.k.localeCompare(b.k));
+  }
+  function planilha(X, procs, meta) {
+    const modo = meta.modo === 'interno' ? 'interno' : 'cliente';
+    const wb = X.utils.book_new();
+    wb.Props = { Title: meta.titulo || 'Dashboard Pinholog', Author: 'Pinholog', Company: 'Pinholog' };
+    const cols = colunas(procs, modo);
+    const ordenados = procs.slice().sort((a, b) => (Dash.dataRef(b) || '').localeCompare(Dash.dataRef(a) || ''));
+    X.utils.book_append_sheet(wb, folha(X, cols.map(c => c.t), ordenados.map(p => cols.map(c => { const v = c.f(p); return v === undefined ? null : v; })), cols), 'Processos');
+    const cAg = [{ t: '', w: 13 }, { t: 'Processos', tipo: 'n', w: 11 }, { t: 'Entregues', tipo: 'n', w: 11 }, { t: 'Em andamento', tipo: 'n', w: 13 }, { t: 'Cancelados', tipo: 'n', w: 11 }, { t: 'Peso (kg)', tipo: 'n2', w: 13 }, { t: 'Volumes', tipo: 'n', w: 10 }, { t: 'Valor NF (R$)', tipo: 'brl', w: 16 }];
+    const linhaAg = (o, primeira) => [primeira, o.n, o.entregues, o.andamento, o.cancelados, n2(o.peso), o.vol, n2(o.nf)];
+    const agDia = agregado(procs, p => Dash.dataRef(p) ? Dash.dataRef(p).slice(0, 10) : '');
+    X.utils.book_append_sheet(wb, folha(X, ['Data'].concat(cAg.slice(1).map(c => c.t)), agDia.map(o => linhaAg(o, dataXl(o.k))), [Object.assign({}, cAg[0], { tipo: 'd' })].concat(cAg.slice(1))), 'Por dia');
+    const agSem = agregado(procs, p => { const d = Dash.paraData(Dash.dataRef(p)); return d ? Dash.iso(semanaIni(d)) : ''; });
+    X.utils.book_append_sheet(wb, folha(X, ['Semana (início)'].concat(cAg.slice(1).map(c => c.t)), agSem.map(o => linhaAg(o, dataXl(o.k))), [Object.assign({}, cAg[0], { tipo: 'd', w: 15 })].concat(cAg.slice(1))), 'Por semana');
+    const agMes = agregado(procs, p => (Dash.dataRef(p) || '').slice(0, 7));
+    X.utils.book_append_sheet(wb, folha(X, ['Mês'].concat(cAg.slice(1).map(c => c.t)), agMes.map(o => linhaAg(o, o.k)), cAg), 'Por mês');
+    const m = Dash.metricas(procs);
+    const res = [
+      ['Relatório', meta.titulo || 'Dashboard Pinholog'], ['Cliente', meta.cliente || 'Todos os clientes'],
+      ['Gerado em', new Date().toLocaleString('pt-BR')], ['Processos (sem cancelados)', m.total], ['Entregues', m.entregues], ['Em andamento', m.andamento],
+      ['Cancelados', m.cancelados], ['Peso total (kg)', n2(m.peso)], ['Volumes', m.volumes], ['Valor de mercadoria (R$)', n2(m.nf)],
+      ['1ª resposta no prazo', m.sla1 == null ? '' : n2(m.sla1 * 100) + '%'], ['Programação no prazo', m.slaProg == null ? '' : n2(m.slaProg * 100) + '%'],
+      [], ['Como usar no Power BI', 'Obter dados → Excel (ou Web, se recebeu o link) → marque a tabela "Processos" (e as de agregados, se quiser) → Carregar.'],
+      ['', 'A coluna "Data referência" é a data de coleta (ou recebimento, quando não há coleta) — use-a para séries por dia, semana e mês.'],
+    ];
+    const wsR = X.utils.aoa_to_sheet(res); wsR['!cols'] = [{ wch: 28 }, { wch: 90 }];
+    X.utils.book_append_sheet(wb, wsR, 'Resumo');
+    return wb;
+  }
+  async function bytesXlsx(procs, meta) { const X = await lib('xlsx'); return X.write(planilha(X, procs, meta), { bookType: 'xlsx', type: 'array', compression: true }); }
+  async function baixarXlsx(procs, meta) {
+    const X = await lib('xlsx');
+    X.writeFile(planilha(X, procs, meta), nomeArq(meta.arquivo || ('Pinholog - ' + (meta.cliente || 'Operação')), 'xlsx'), { compression: true });
+  }
+
+  // ── PDF: renderiza o painel numa folha fora da tela (tema claro, largura
+  //    de desktop), fotografa bloco a bloco e monta A4 sem cortar cartões.
+  const LINHAS_POR_BLOCO = 26;
+  function logoSrc() {
+    const img = document.querySelector('img[src^="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAsoAAACk"]');
+    return img ? img.src : '';
+  }
+  function quebrarTabelas(root) {
+    root.querySelectorAll('.dz-card').forEach(card => {
+      const tb = card.querySelector('table'); if (!tb) return;
+      const trs = [...tb.tBodies[0].rows]; if (trs.length <= LINHAS_POR_BLOCO + 4) return;
+      const titulo = (card.querySelector('h3') || {}).textContent || '';
+      let ref = card;
+      for (let i = LINHAS_POR_BLOCO; i < trs.length; i += LINHAS_POR_BLOCO) {
+        const novo = card.cloneNode(true);
+        const h = novo.querySelector('h3'); if (h) h.textContent = titulo + ' — continuação';
+        const p = novo.querySelector('header p'); if (p) p.remove();
+        const corpo = novo.querySelector('tbody'); corpo.innerHTML = '';
+        trs.slice(i, i + LINHAS_POR_BLOCO).forEach(tr => corpo.appendChild(tr.cloneNode(true)));
+        ref.after(novo); ref = novo;
+      }
+      trs.slice(LINHAS_POR_BLOCO).forEach(tr => tr.remove());
+    });
+  }
+  async function gerarPdf(procs, meta, aoProgresso) {
+    const prog = aoProgresso || (() => {});
+    prog('Preparando…');
+    const [h2c, jsp] = await Promise.all([lib('h2c'), lib('jspdf')]);
+    const host = document.createElement('div');
+    host.className = 'dz-pdf-host';
+    host.style.cssText = 'position:absolute;left:-14000px;top:0;width:1180px;padding:0;background:#fff;';
+    const per = meta.periodo;
+    const txtPer = per && per.de ? `${Dash.dataBR(Dash.iso(per.de))} a ${Dash.dataBR(Dash.iso(per.ate))}` : 'Todo o histórico';
+    const logo = logoSrc();
+    host.innerHTML = `<div class="dz-pdf-cab">
+        ${logo ? `<div class="dz-pdf-logo"><img src="${logo}" alt=""></div>` : ''}
+        <div class="dz-pdf-tit"><span>${Dash.esc(meta.kicker || 'Relatório de embarques')}</span><h1>${Dash.esc(meta.cliente || 'Operação Pinholog')}</h1>
+        <p>Período: <b>${Dash.esc(txtPer)}</b> · Gerado em ${Dash.esc(new Date().toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' }))}</p></div>
+      </div><div class="dz-pdf-corpo"></div>`;
+    document.body.appendChild(host);
+    try {
+      Dash.render(host.querySelector('.dz-pdf-corpo'), procs, { modo: meta.modo, periodo: per, opcoes: meta.opcoes || {}, pdf: true });
+      quebrarTabelas(host);
+      const blocos = [host.querySelector('.dz-pdf-cab')];
+      host.querySelector('.dz-pdf-corpo').childNodes.forEach(n => { if (n.nodeType === 1) blocos.push(n); });
+      // grades (2/3 colunas) viram um bloco só; já estão agrupadas no DOM
+      await new Promise(r => setTimeout(r, 60));
+      const doc = new jsp.jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4', compress: true });
+      const PW = 210, PH = 297, M = 10, LW = PW - 2 * M, TOPO = 12, BASE = PH - 12;
+      let y = TOPO, pagina = 1;
+      for (let i = 0; i < blocos.length; i++) {
+        prog(`Montando página ${pagina}… (${Math.round((i / blocos.length) * 100)}%)`);
+        const canvas = await h2c(blocos[i], {
+          scale: 2, backgroundColor: '#ffffff', logging: false, useCORS: true, windowWidth: 1280,
+          onclone: d => { d.documentElement.setAttribute('data-theme', 'light'); d.documentElement.classList.add('dz-pdf-modo'); },
+        });
+        let w = LW, h = canvas.height * LW / canvas.width;
+        if (h > BASE - TOPO) { h = BASE - TOPO; w = canvas.width * h / canvas.height; }
+        if (y + h > BASE && y > TOPO) { doc.addPage(); pagina++; y = TOPO; }
+        doc.addImage(canvas.toDataURL('image/jpeg', 0.92), 'JPEG', M + (LW - w) / 2, y, w, h, undefined, 'FAST');
+        y += h + 3.5;
+      }
+      const total = doc.getNumberOfPages();
+      for (let p = 1; p <= total; p++) {
+        doc.setPage(p); doc.setFontSize(8); doc.setTextColor(120);
+        doc.text(`Pinholog · ${meta.cliente || 'Operação'} · ${txtPer}`, M, PH - 6);
+        doc.text(`página ${p} de ${total}`, PW - M, PH - 6, { align: 'right' });
+      }
+      prog('Pronto');
+      return doc;
+    } finally { host.remove(); }
+  }
+  async function baixarPdf(procs, meta, aoProgresso) {
+    const doc = await gerarPdf(procs, meta, aoProgresso);
+    doc.save(nomeArq(meta.arquivo || ('Pinholog - ' + (meta.cliente || 'Operação')), 'pdf'));
+  }
+  return { lib, planilha, bytesXlsx, baixarXlsx, gerarPdf, baixarPdf, nomeArq };
 })();
 
 // ═══════════════════════════════════════════════════════════════════════
@@ -14573,8 +15125,8 @@ function dzInit() {
         <button class="btn btn-primary" id="dz-btn-share" onclick="dzAbrirCompartilhar()" style="display:none;">🔗 Compartilhar com o cliente</button>
         <div class="btn-group">
           <button class="btn btn-icon" onclick="dzAtualizar(true)" title="Recarregar dados">↻</button>
-          <button class="btn btn-icon" onclick="window.print()" title="Imprimir / salvar em PDF">⎙</button>
         </div>
+        <button class="btn btn-ghost" onclick="dzAbrirExportar()" title="Baixar em PDF ou Excel (Power BI)">⬇ Exportar</button>
       </div>
     </div>
     <div class="dz-filtros">
@@ -14640,6 +15192,76 @@ function dzRender() {
   } else document.getElementById('dz-links').innerHTML = '';
 }
 
+// ── Exportar (PDF / Excel para Power BI) ─────────────────────────────
+function dzUrlPowerBi(token) { return `${SB_URL}/storage/v1/object/public/${DZ_BUCKET}/${token}.xlsx`; }
+async function dzCopiarPowerBi(token) {
+  const ok = await v2CopiarTexto(dzUrlPowerBi(token));
+  toastMsg(ok ? '📊 Link do Power BI copiado — no Power BI: Obter dados → Web → colar o link.' : dzUrlPowerBi(token));
+}
+function dzExportDados() {
+  const e = dzEstado, cliente = e.visao === 'cliente';
+  const sla = !!(document.getElementById('dx-sla') || {}).checked, mot = !!(document.getElementById('dx-mot') || {}).checked;
+  let lista = dzProcs;
+  if (e.cliente) lista = lista.filter(p => p.cliente === e.cliente);
+  if (!cliente && e.equipe) lista = lista.filter(p => p.equipe === e.equipe);
+  const opcoes = cliente ? { sla, motorista: mot } : { sla: true, motorista: true };
+  if (cliente) lista = lista.map(p => Object.assign({ cliente: p.cliente }, Dash.paraCliente(p, opcoes)));
+  const per = Dash.periodo(e.preset, e.de, e.ate);
+  return {
+    procs: lista, periodo: per,
+    meta: {
+      modo: cliente ? 'cliente' : 'interno', periodo: per, opcoes,
+      cliente: e.cliente || (e.equipe ? 'Operação Pinholog · ' + e.equipe : 'Operação Pinholog'),
+      kicker: cliente ? 'Relatório de embarques' : 'Relatório interno de operação',
+      titulo: cliente ? 'Painel de embarques — ' + e.cliente : 'Operação Pinholog',
+      arquivo: cliente ? 'Pinholog - ' + e.cliente : 'Pinholog - Operação' + (e.cliente ? ' - ' + e.cliente : ''),
+    },
+  };
+}
+function dzAbrirExportar() {
+  const e = dzEstado, cliente = e.visao === 'cliente' && e.cliente;
+  const per = Dash.periodo(e.preset, e.de, e.ate);
+  const txtPer = per.de ? `${Dash.dataBR(Dash.iso(per.de))} a ${Dash.dataBR(Dash.iso(per.ate))}` : 'todo o histórico';
+  const m = v2GarantirModal('modal-v2-export', 640);
+  m.firstElementChild.innerHTML = `
+    <div class="v2-mh"><div><h3>Exportar dashboard${cliente ? ' — ' + Dash.esc(e.cliente) : ''}</h3>
+      <p>${cliente ? 'Versão do cliente: só os processos dele, sem custos, equipes ou dados internos.' : 'Visão <b>interna</b> da operação' + (e.cliente ? ' · ' + Dash.esc(e.cliente) : '') + '.'} Período: <b>${Dash.esc(txtPer)}</b>.</p></div>
+      <button class="v2-x" onclick="document.getElementById('modal-v2-export').style.display='none'">✕</button></div>
+    ${cliente ? `<label class="dz-opt"><input type="checkbox" id="dx-sla" checked> Incluir nível de serviço (SLA de resposta e programação)</label>
+      <label class="dz-opt"><input type="checkbox" id="dx-mot"> Incluir placa e motorista</label>`
+      : `<div class="v2-warn" style="margin-bottom:10px;">⚠️ Contém custos, equipes e travas — é para uso interno. Para mandar a um cliente, troque para <b>👤 Por cliente</b>.</div>`}
+    <div class="dx-opcoes">
+      <button class="dx-op" id="dx-pdf" onclick="dzExportar('pdf')"><span class="dx-ic">📄</span><b>PDF</b><span>Relatório pronto para enviar por e-mail ou WhatsApp — com gráficos, ritmo por dia/semana/mês e a lista de processos.</span></button>
+      <button class="dx-op" id="dx-xlsx" onclick="dzExportar('xlsx')"><span class="dx-ic">📊</span><b>Excel para Power BI</b><span>Planilha .xlsx com a tabela de processos e os totais por dia, semana e mês — abre direto no Power BI ou no Excel.</span></button>
+    </div>
+    <div id="dx-status" class="muted" style="min-height:18px;font-size:12.5px;"></div>
+    ${cliente ? '<div id="dx-pbi"></div>' : ''}`;
+  m.style.display = 'flex';
+  if (cliente) dzMostrarPbi();
+}
+async function dzMostrarPbi() {
+  const box = document.getElementById('dx-pbi'); if (!box) return;
+  let links = [];
+  try { links = (await dzListar(dzEstado.cliente)).filter(l => l.ativo && (!l.expira_em || new Date(l.expira_em) > new Date())); } catch (e) {}
+  box.innerHTML = links.length ? `<div class="dx-pbi"><b>📡 Power BI que atualiza sozinho</b> — envie este link ao cliente (é o mesmo painel compartilhado, em formato de dados):
+      <input type="text" readonly value="${Dash.esc(dzUrlPowerBi(links[0].token))}" onclick="this.select()">
+      <button class="btn btn-ghost btn-sm" onclick="dzCopiarPowerBi('${links[0].token}')">Copiar link Power BI</button>
+      <ol><li>Power BI Desktop → <b>Obter dados</b> → <b>Web</b></li><li>Colar o link → OK → marcar a tabela <b>Processos</b> → Carregar</li><li>Pronto: o botão <b>Atualizar</b> puxa os dados novos (atualizamos a cada ~15 min).</li></ol></div>`
+    : `<div class="dx-pbi">📡 Quer que o Power BI do cliente <b>atualize sozinho</b>? Crie um link em <b>🔗 Compartilhar com o cliente</b> — junto com o painel, geramos um link de dados para o Power BI.</div>`;
+}
+async function dzExportar(tipo) {
+  const st = document.getElementById('dx-status'), bP = document.getElementById('dx-pdf'), bX = document.getElementById('dx-xlsx');
+  bP.disabled = bX.disabled = true;
+  try {
+    await dzCarregar();
+    const d = dzExportDados();
+    if (tipo === 'pdf') await DashExport.baixarPdf(d.procs, d.meta, t => { st.textContent = '⏳ ' + t; });
+    else { st.textContent = '⏳ Gerando planilha…'; await DashExport.baixarXlsx(Dash.noPeriodo(d.procs, d.periodo), d.meta); }
+    st.textContent = '✅ Arquivo baixado.';
+  } catch (e) { st.textContent = '❌ ' + e.message; console.error(e); }
+  finally { bP.disabled = bX.disabled = false; }
+}
+
 // ── Compartilhamento ──────────────────────────────────────────────────
 function dzUrlPortal(token) {
   const base = location.href.split('#')[0].split('?')[0].replace(/[^/]*$/, '');
@@ -14667,6 +15289,12 @@ async function dzPublicar(link) {
     method: 'POST', headers: dzHdrs({ 'Content-Type': 'application/json', 'x-upsert': 'true', 'cache-control': 'max-age=60' }), body: JSON.stringify(snap),
   });
   if (!r.ok) { const t = await r.text(); const err = new Error('Storage ' + r.status + ': ' + t.slice(0, 160)); err.setup = /bucket|not found|policy|row-level|security/i.test(t); throw err; }
+  try {
+    const bytes = await DashExport.bytesXlsx(snap.processos.map(p => Object.assign({ cliente: link.cliente }, p)), { modo: 'cliente', cliente: link.cliente, titulo: snap.titulo });
+    await fetch(`${SB_URL}/storage/v1/object/${DZ_BUCKET}/${link.token}.xlsx`, {
+      method: 'POST', headers: dzHdrs({ 'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'x-upsert': 'true', 'cache-control': 'max-age=60' }), body: new Blob([bytes]),
+    });
+  } catch (e) { console.warn('xlsx power bi', e.message); }
   await fetch(`${SB_URL}/rest/v1/${DZ_TABELA}?token=eq.${link.token}`, { method: 'PATCH', headers: dzHdrs({ 'Content-Type': 'application/json', Prefer: 'return=minimal' }), body: JSON.stringify({ atualizado_em: new Date().toISOString() }) });
   return snap;
 }
@@ -14689,6 +15317,7 @@ async function dzListarLinks() {
         <div class="dz-link-a">
           <button class="btn btn-ghost btn-sm" onclick="dzCopiarLink('${l.token}')">Copiar link</button>
           <button class="btn btn-ghost btn-sm" onclick="window.open(dzUrlPortal('${l.token}'),'_blank')">Abrir</button>
+          <button class="btn btn-ghost btn-sm" onclick="dzCopiarPowerBi('${l.token}')" title="Link de dados para o Power BI do cliente (atualiza sozinho)">Power BI</button>
           <button class="btn btn-ghost btn-sm" onclick="dzAtualizarLink('${l.token}')">↻</button>
           <button class="btn btn-ghost btn-sm" onclick="dzRevogar('${l.token}')" title="O link para de funcionar na hora">Revogar</button>
         </div></div>`;
@@ -14706,6 +15335,7 @@ async function dzAtualizarLink(token) {
 async function dzRevogar(token) {
   if (!confirm('Revogar este link? O cliente deixa de ver o painel imediatamente.')) return;
   await fetch(`${SB_URL}/storage/v1/object/${DZ_BUCKET}/${token}.json`, { method: 'DELETE', headers: dzHdrs() });
+  await fetch(`${SB_URL}/storage/v1/object/${DZ_BUCKET}/${token}.xlsx`, { method: 'DELETE', headers: dzHdrs() }).catch(() => {});
   await fetch(`${SB_URL}/rest/v1/${DZ_TABELA}?token=eq.${token}`, { method: 'PATCH', headers: dzHdrs({ 'Content-Type': 'application/json', Prefer: 'return=minimal' }), body: JSON.stringify({ ativo: false }) });
   toastMsg('Link revogado.'); dzListarLinks();
 }
@@ -14753,6 +15383,7 @@ async function dzCriarLink() {
         <button class="btn btn-primary btn-sm" onclick="dzCopiarLink('${link.token}')">Copiar link</button>
         <a class="btn btn-ghost btn-sm" style="text-decoration:none;" href="https://wa.me/?text=${msgWpp}" target="_blank" rel="noopener">Enviar pelo WhatsApp</a>
         <button class="btn btn-ghost btn-sm" onclick="window.open('${url}','_blank')">Ver como o cliente</button>
+        <button class="btn btn-ghost btn-sm" onclick="dzCopiarPowerBi('${link.token}')">Copiar link Power BI</button>
       </div></div>`;
     btn.style.display = 'none';
     const canc = btn.previousElementSibling; if (canc) canc.textContent = 'Fechar';
