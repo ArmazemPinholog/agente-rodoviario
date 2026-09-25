@@ -285,6 +285,47 @@ footer{max-width:1280px;margin:0 auto;padding:0 24px 40px;color:var(--text3);fon
 .dx-pbi ol{margin:6px 0 0 18px;padding:0;}
 @media (max-width:560px){ .dx-opcoes{grid-template-columns:1fr;} }
 .dz-pdf-host .dz-hero::after{display:none!important;}
+/* ── Barras: listas completas ── */
+.dz-hbars.longo{max-height:318px;overflow-y:auto;padding-right:6px;scrollbar-width:thin;}
+.dz-hbar-v small{font-size:11px;font-weight:600;color:var(--text3);margin-left:6px;}
+.dz-cat .dz-hbar-k{display:flex;flex-direction:column;line-height:1.25;}
+.dz-cat .dz-hbar-k b{color:var(--text);font-weight:700;} .dz-cat .dz-hbar-k span{font-size:11px;color:var(--text3);}
+.dz-cat .dz-hbar-f{height:12px;}
+/* ── Matriz de detalhamento ── */
+:root{--dz-seq:42 120 214;}
+:root[data-theme="dark"]{--dz-seq:57 135 229;}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--dz-seq:57 135 229;}}
+.dz-kick{font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);}
+.dz-card .dz-mz-h{display:flex!important;justify-content:space-between;align-items:flex-end;gap:10px;flex-wrap:wrap;}
+.dz-mz-h h3{font-size:16px;font-weight:800;color:var(--text);margin:2px 0 0;}
+.dz-mz-n{font-size:12px;color:var(--text3);font-variant-numeric:tabular-nums;} .dz-mz-n b{color:var(--text);}
+.dz-mz-ctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px;}
+.dz-mz-ctl .dz-seg{overflow-x:auto;max-width:100%;scrollbar-width:none;}
+.dz-mz-ctl .dz-seg button{white-space:nowrap;}
+.dz-mz-busca{flex:1 1 180px;min-width:150px;margin:0!important;height:34px;}
+.dz-chip{height:32px;border-radius:9px;border:1px solid var(--border2);background:var(--s1);color:var(--text2);font:700 12px var(--font-sans);padding:0 12px;cursor:pointer;white-space:nowrap;}
+.dz-chip:hover{color:var(--text);border-color:var(--blue);}
+.dz-mz-tbl{overflow:auto;max-height:470px;border:1px solid var(--border);border-radius:12px;}
+.dz-mz-tbl table{border-collapse:separate;border-spacing:0;width:100%;font-size:12.5px;font-variant-numeric:tabular-nums;}
+.dz-mz-tbl th,.dz-mz-tbl td{padding:7px 12px;border-bottom:1px solid var(--border);white-space:nowrap;}
+.dz-mz-tbl th{position:sticky;top:0;z-index:2;background:var(--s2);color:var(--text2);font-weight:700;text-align:left;}
+.dz-mz-tbl th.num,.dz-mz-tbl td.num{text-align:center;min-width:64px;}
+.dz-mz-tbl th:first-child,.dz-mz-tbl td:first-child{position:sticky;left:0;z-index:1;background:var(--s1);max-width:260px;overflow:hidden;text-overflow:ellipsis;border-right:1px solid var(--border);}
+.dz-mz-tbl th:first-child{z-index:3;background:var(--s2);}
+.dz-mz-k{color:var(--text);font-weight:600;}
+.dz-mz-c{background:rgb(var(--dz-seq) / var(--a));color:var(--text);font-weight:600;}
+.dz-mz-tbl td.dz-mz-tot{font-weight:800;color:var(--text);border-left:1px solid var(--border);}
+.dz-mz-tbl th.dz-mz-tot{border-left:1px solid var(--border);}
+.dz-mz-tbl tfoot td{position:sticky;bottom:0;background:var(--s2);font-weight:800;color:var(--text);border-top:1px solid var(--border2);border-bottom:0;}
+.dz-mz-tbl tfoot td:first-child{z-index:3;background:var(--s2);}
+.dz-mz-tbl tbody tr:hover td{filter:brightness(.97);}
+.dz-pdf-host .dz-mz-ctl{display:none!important;}
+.dz-pdf-host .dz-mz-tbl{max-height:none!important;overflow:visible!important;}
+@media (max-width:700px){ .dz-mz-tbl{max-height:420px;} .dz-mz-tbl th,.dz-mz-tbl td{padding:6px 9px;} .dz-mz-tbl th:first-child,.dz-mz-tbl td:first-child{max-width:150px;} }
+.dz-mz-acts{display:flex;gap:6px;flex-wrap:nowrap;}
+.dz-hbar-k{white-space:normal!important;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;line-height:1.3;word-break:break-word;}
+.dz-cat .dz-hbar-k{display:flex;}
+.dz-pdf-host .dz-mz-tbl th,.dz-pdf-host .dz-mz-tbl td,.dz-pdf-host .dz-tbl th{position:static!important;}
 
 </style>
 </head>
@@ -583,12 +624,13 @@ const Dash = (() => {
     itens = itens.filter(i => !i.outros);
     const max = Math.max(...itens.map(i => i.n)) || 1;
     const rodape = outros ? `<div class="dz-mais">+ ${fmt(outros.n)} ${esc(opts.unidade || '')} nos demais</div>` : '';
-    return `<div class="dz-hbars">${itens.map(i => `
+    const longo = itens.length > 10 && !_modoPdf;
+    return `<div class="dz-hbars ${longo ? 'longo' : ''}">${itens.map(i => `
       <div class="dz-hbar" ${tipAttr([{ v: i.k }, { v: fmt(i.n), r: opts.unidade || '' }, { v: fmtPct(i.n / total), r: 'do total' }])}>
         <div class="dz-hbar-k" title="${esc(i.k)}">${esc(i.k)}</div>
         <div class="dz-hbar-t"><div class="dz-hbar-f ${i.outros ? 'outros' : ''}" style="width:${Math.max(1.5, i.n / max * 100).toFixed(1)}%;${opts.cor ? 'background:' + opts.cor : ''}"></div></div>
-        <div class="dz-hbar-v">${fmt(i.n)}</div>
-      </div>`).join('')}</div>${rodape}`;
+        <div class="dz-hbar-v">${fmt(i.n)}${opts.pct ? `<small>${fmtPct(i.n / total)}</small>` : ''}</div>
+      </div>`).join('')}</div>${longo ? `<div class="dz-mais">${fmtInt(itens.length)} itens · role para ver todos</div>` : ''}${rodape}`;
   }
   // Barra 100% empilhada + legenda (mix) — até 6 categorias, gap de 2px
   const CORES = ['var(--dz-c1)', 'var(--dz-c2)', 'var(--dz-c3)', 'var(--dz-c4)', 'var(--dz-c5)', 'var(--dz-c6)'];
@@ -598,6 +640,23 @@ const Dash = (() => {
     const cor = (i, j) => (cores && cores[i.k]) || (i.outros ? 'var(--dz-mute)' : CORES[j % CORES.length]);
     return `<div class="dz-mix" role="img" aria-label="Distribuição">${itens.map((i, j) => `<div class="dz-mix-s" style="flex:${i.n};background:${cor(i, j)}" ${tipAttr([{ v: i.k }, { v: fmt(i.n), cor: cor(i, j) }, { v: fmtPct(i.n / total), r: 'do total' }])}></div>`).join('')}</div>
       <ul class="dz-leg">${itens.map((i, j) => `<li><i style="background:${cor(i, j)}"></i><span>${esc(i.k)}</span><b>${fmtPct(i.n / total)}</b><em>${fmt(i.n)}</em></li>`).join('')}</ul>`;
+  }
+  function dist(itens, un) {
+    if (itens.length <= 5) return mix(itens, n => fmtInt(n) + ' ' + un);
+    return barrasH(itens, n => fmtInt(n), { unidade: un, pct: true });
+  }
+  function categorias(lista, un) {
+    const itens = contar(lista, p => (p.categoria || '').trim() || '(não informado)');
+    if (!itens.length) return vazio();
+    const total = itens.reduce((s, i) => s + i.n, 0);
+    const pesoDe = k => lista.filter(p => ((p.categoria || '').trim() || '(não informado)') === k).reduce((s, p) => s + (p.peso || 0), 0);
+    const max = Math.max(...itens.map(i => i.n)) || 1;
+    return `<div class="dz-hbars">${itens.map(i => { const pk = pesoDe(i.k); return `
+      <div class="dz-hbar dz-cat" ${tipAttr([{ v: i.k }, { v: fmtInt(i.n), r: un }, { v: fmtPct(i.n / total), r: 'do total' }, { v: fmtPeso(pk), r: 'de carga' }])}>
+        <div class="dz-hbar-k" title="${esc(i.k)}"><b>${esc(i.k)}</b><span>${fmtPeso(pk)}</span></div>
+        <div class="dz-hbar-t"><div class="dz-hbar-f" style="width:${Math.max(1.5, i.n / max * 100).toFixed(1)}%"></div></div>
+        <div class="dz-hbar-v">${fmtInt(i.n)}<small>${fmtPct(i.n / total)}</small></div>
+      </div>`; }).join('')}</div>`;
   }
   // Medidor de SLA com meta
   function medidor(p, meta, rotulo, detalhe) {
@@ -701,6 +760,110 @@ const Dash = (() => {
     el.querySelectorAll('.dz-seg button').forEach(b => b.classList.toggle('on', b === btn));
   }
 
+  // ── Detalhamento: matriz (dimensão × tempo) com mapa de calor ───────
+  const _mz = {};
+  const MZ_DIMS = [
+    { id: 'origem', t: 'Origem', f: p => semAcento(p.origem || p.localColeta) },
+    { id: 'destino', t: 'Destino', f: p => semAcento(p.destino || p.localEntrega) },
+    { id: 'rota', t: 'Rota', f: p => rotaChave(p) },
+    { id: 'categoria', t: 'Categoria', f: p => semAcento(p.categoria) },
+    { id: 'entrega', t: 'Local de entrega', f: p => semAcento(p.localEntrega) },
+    { id: 'cliente', t: 'Cliente', f: p => (p.cliente || '').trim(), interno: true },
+  ];
+  const MZ_GRAN = [
+    { id: 'ano', t: 'Ano', k: d => String(d.getFullYear()), r: k => k },
+    { id: 'mes', t: 'Mês', k: d => iso(d).slice(0, 7), r: k => { const [a, m] = k.split('-'); return MESES[+m - 1].replace(/^./, c => c.toUpperCase()) + '/' + a.slice(2); } },
+    { id: 'semana', t: 'Semana', k: d => iso(inicioSemana(d)), r: k => { const d = paraData(k); return String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0'); } },
+    { id: 'dia', t: 'Dia', k: d => iso(d), r: k => { const d = paraData(k); return String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0'); } },
+  ];
+  function mzCalc(st) {
+    const dim = MZ_DIMS.find(d => d.id === st.dim), gr = MZ_GRAN.find(g => g.id === st.gran);
+    const linhas = new Map(), cols = new Set();
+    st.lista.forEach(p => {
+      const d = paraData(dataRef(p)); if (!d) return;
+      const kr = dim.f(p) || '(não informado)', kc = gr.k(d);
+      cols.add(kc);
+      if (!linhas.has(kr)) linhas.set(kr, { k: kr, total: 0, c: new Map() });
+      const l = linhas.get(kr); l.total++; l.c.set(kc, (l.c.get(kc) || 0) + 1);
+    });
+    const colArr = [...cols].sort();
+    const termos = norm(st.q).split(' ').filter(Boolean);
+    let arr = [...linhas.values()].filter(l => termos.every(t => norm(l.k).includes(t)));
+    arr.sort(st.ordem === 'az' ? (a, b) => a.k.localeCompare(b.k, 'pt-BR') : (a, b) => b.total - a.total || a.k.localeCompare(b.k, 'pt-BR'));
+    const totCol = colArr.map(c => arr.reduce((s, l) => s + (l.c.get(c) || 0), 0));
+    return { dim, gr, cols: colArr, rotulos: colArr.map(gr.r), linhas: arr, totCol, total: totCol.reduce((a, b) => a + b, 0) };
+  }
+  function mzCorpo(id) {
+    const st = _mz[id], r = mzCalc(st);
+    const maxCel = Math.max(1, ...r.linhas.flatMap(l => [...l.c.values()]));
+    const n = document.getElementById(id + '-n');
+    if (n) n.innerHTML = `${fmtInt(r.linhas.length)} × ${fmtInt(r.cols.length)} · <b>${fmtInt(r.total)}</b> ${st.interno ? 'processos' : 'embarques'}`;
+    if (!r.linhas.length) return vazio(st.q ? 'Nada encontrado para essa busca.' : 'Sem dados no período.');
+    const cel = (v, lin, col) => v ? `<td class="num dz-mz-c" style="--a:${(0.07 + 0.5 * v / maxCel).toFixed(3)}" ${tipAttr([{ v: lin }, { v: col }, { v: fmtInt(v), r: st.interno ? 'processos' : 'embarques' }])}>${fmtInt(v)}</td>` : '<td class="num dz-mz-0"></td>';
+    return `<div class="dz-mz-tbl"><table>
+      <thead><tr><th>${esc(r.dim.t)}</th>${r.rotulos.map(t => `<th class="num">${esc(t)}</th>`).join('')}<th class="num dz-mz-tot">Total</th></tr></thead>
+      <tbody>${r.linhas.map(l => `<tr><td class="dz-mz-k" title="${esc(l.k)}">${esc(l.k)}</td>${r.cols.map((c, j) => cel(l.c.get(c) || 0, l.k, r.rotulos[j])).join('')}<td class="num dz-mz-tot">${fmtInt(l.total)}</td></tr>`).join('')}</tbody>
+      <tfoot><tr><td>Total</td>${r.totCol.map(v => `<td class="num">${fmtInt(v)}</td>`).join('')}<td class="num">${fmtInt(r.total)}</td></tr></tfoot>
+    </table></div>`;
+  }
+  function mzControles(id) {
+    const st = _mz[id];
+    const dims = MZ_DIMS.filter(d => !d.interno || st.interno);
+    return `<div class="dz-mz-ctl">
+      <div class="dz-seg">${dims.map(d => `<button type="button" class="${d.id === st.dim ? 'on' : ''}" onclick="Dash.mzSet('${id}','dim','${d.id}')">${d.t}</button>`).join('')}</div>
+      <div class="dz-seg">${MZ_GRAN.map(g => `<button type="button" class="${g.id === st.gran ? 'on' : ''}" onclick="Dash.mzSet('${id}','gran','${g.id}')">${g.t}</button>`).join('')}</div>
+      <input type="search" class="dz-busca dz-mz-busca" placeholder="Buscar ${esc(MZ_DIMS.find(d => d.id === st.dim).t.toLowerCase())}…" value="${esc(st.q)}" oninput="Dash.mzSet('${id}','q',this.value)">
+      <div class="dz-mz-acts">
+      <button type="button" class="dz-chip" onclick="Dash.mzSet('${id}','ordem','${st.ordem === 'az' ? 'total' : 'az'}')" title="Ordenar">${st.ordem === 'az' ? 'A–Z' : '↓ Total'}</button>
+      <button type="button" class="dz-chip" onclick="Dash.mzExportar('${id}','csv')">⬇ CSV</button>
+      <button type="button" class="dz-chip" onclick="Dash.mzExportar('${id}','xlsx')">⬇ .xlsx</button></div>
+    </div>`;
+  }
+  function mzTitulo(id) { const st = _mz[id]; return `Matriz ${MZ_DIMS.find(d => d.id === st.dim).t} × ${MZ_GRAN.find(g => g.id === st.gran).t}`; }
+  function matrizCard(lista, interno) {
+    Object.keys(_mz).forEach(k => { if (!document.getElementById(k)) delete _mz[k]; });
+    const id = 'dzm' + Math.random().toString(36).slice(2, 7);
+    let prev = {}; try { prev = JSON.parse(localStorage.getItem('dz_matriz') || '{}'); } catch (e) {}
+    _mz[id] = { lista, interno, dim: (prev.dim && (interno || prev.dim !== 'cliente')) ? prev.dim : 'origem', gran: prev.gran || 'mes', q: '', ordem: prev.ordem || 'total' };
+    return `<section class="dz-card dz-mz" id="${id}">
+      <header class="dz-mz-h"><div><span class="dz-kick">Detalhamento</span><h3 id="${id}-t">${esc(mzTitulo(id))}</h3></div><span class="dz-mz-n" id="${id}-n"></span></header>
+      <div id="${id}-ctl">${mzControles(id)}</div>
+      <div id="${id}-b"></div></section>`;
+  }
+  function mzMontar(root) {
+    root.querySelectorAll('.dz-mz').forEach(sec => { const b = document.getElementById(sec.id + '-b'); if (b && _mz[sec.id]) { b.innerHTML = mzCorpo(sec.id); ligarTips(b); } });
+  }
+  function mzSet(id, k, v) {
+    const st = _mz[id]; if (!st) return;
+    st[k] = v;
+    if (k !== 'q') {
+      if (k === 'dim') st.q = '';
+      try { localStorage.setItem('dz_matriz', JSON.stringify({ dim: st.dim, gran: st.gran, ordem: st.ordem })); } catch (e) {}
+      document.getElementById(id + '-ctl').innerHTML = mzControles(id);
+      document.getElementById(id + '-t').textContent = mzTitulo(id);
+    }
+    const b = document.getElementById(id + '-b'); b.innerHTML = mzCorpo(id); ligarTips(b);
+  }
+  function mzExportar(id, tipo) {
+    const st = _mz[id]; if (!st) return;
+    const r = mzCalc(st);
+    const aoa = [[r.dim.t].concat(r.rotulos, ['Total'])]
+      .concat(r.linhas.map(l => [l.k].concat(r.cols.map(c => l.c.get(c) || 0), [l.total])))
+      .concat([['Total'].concat(r.totCol, [r.total])]);
+    const nome = 'Pinholog - ' + mzTitulo(id).replace('×', 'x');
+    if (tipo === 'csv') {
+      const csv = '﻿' + aoa.map(l => l.map(v => { const t = String(v); return /[";\n]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t; }).join(';')).join('\r\n');
+      const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+      a.download = nome + '.csv'; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+      return;
+    }
+    if (typeof DashExport === 'undefined') return;
+    DashExport.lib('xlsx').then(X => {
+      const ws = X.utils.aoa_to_sheet(aoa); ws['!cols'] = [{ wch: 34 }].concat(r.cols.map(() => ({ wch: 9 })), [{ wch: 9 }]);
+      const wb = X.utils.book_new(); X.utils.book_append_sheet(wb, ws, 'Matriz'); X.writeFile(wb, nome + '.xlsx');
+    });
+  }
+
   // ── Montagem do painel ─────────────────────────────────────────────
   // modo: 'interno' (todos os clientes, com custos/equipes) | 'cliente'
   function render(el, todos, cfg) {
@@ -749,24 +912,25 @@ const Dash = (() => {
     }
     if (interno) {
       blocos.push(`<div class="dz-grid3">
-        ${card('Clientes com mais processos', 'Top 8 no período', barrasH(contar(ativos, 'cliente', 8), n => fmtInt(n), { unidade: 'processos' }))}
-        ${card('Carga por cliente', 'Peso bruto movimentado', barrasH(somar(ativos, 'peso', p => p.cliente, 8), fmtPeso, { unidade: 'de carga' }))}
-        ${card('Rotas mais usadas', 'Origem → destino', barrasH(contar(ativos, rotaChave, 8), n => fmtInt(n), { unidade: 'processos' }))}
+        ${card('Processos por cliente', 'Todos os clientes do período', barrasH(contar(ativos, 'cliente'), n => fmtInt(n), { unidade: 'processos' }))}
+        ${card('Carga por cliente', 'Peso bruto movimentado', barrasH(somar(ativos, 'peso', p => p.cliente), fmtPeso, { unidade: 'de carga' }))}
+        ${card('Rotas mais usadas', 'Origem → destino', barrasH(contar(ativos, rotaChave), n => fmtInt(n), { unidade: 'processos' }))}
       </div>`);
       blocos.push(`<div class="dz-grid3">
-        ${card('Tipo de contrato', 'Frota própria × terceiros', mix(contar(ativos, 'tipoContrato', 6), n => fmtInt(n) + ' proc.'))}
-        ${card('Modal de origem', 'Categoria da carga', mix(contar(ativos, 'categoria', 6), n => fmtInt(n) + ' proc.'))}
-        ${card('Tipo de veículo', 'Top 6', mix(contar(ativos, 'tipoVeiculo', 6), n => fmtInt(n) + ' proc.'))}
+        ${card('Categoria de carga', 'LCL, FCL, aéreo… — processos e peso', categorias(ativos, 'proc.'))}
+        ${card('Tipo de contrato', 'Frota própria × terceiros', dist(contar(ativos, 'tipoContrato'), 'proc.'))}
+        ${card('Tipo de veículo', 'Veículos utilizados', dist(contar(ativos, 'tipoVeiculo'), 'proc.'))}
       </div>`);
-      const slaEquipe = contar(ativos.filter(p => p.equipe), 'equipe', 8).filter(x => !x.outros).map(x => {
+      const slaEquipe = contar(ativos.filter(p => p.equipe), 'equipe').filter(x => !x.outros).map(x => {
         const g = ativos.filter(p => (p.equipe || '(não informado)') === x.k && (p.ok1 === true || p.ok1 === false));
         return { k: x.k, n: g.length ? g.filter(p => p.ok1).length / g.length : 0, qtd: x.n, med: g.length };
       }).filter(x => x.med);
       blocos.push(`<div class="dz-grid3">
         ${card('SLA de 1ª resposta por equipe', '% dentro do prazo', barrasH(slaEquipe.sort((a, b) => b.n - a.n), fmtPct, { unidade: 'no prazo', total: 1 }))}
-        ${card('Travas na emissão', `${fmtInt(m.travas)} de ${fmtInt(m.total)} processos (${fmtPct(m.total ? m.travas / m.total : null)}) tiveram trava`, barrasH(contar(ativos.filter(p => p.trava), p => p.motivoTrava || 'Sem motivo informado', 6), n => fmtInt(n), { unidade: 'travas', cor: 'var(--dz-c2)' }))}
-        ${card('Custo de frete (terceiros)', m.comCusto ? `${fmtBRL(m.custo)} em ${fmtInt(m.comCusto)} processos · média ${fmtBRL(m.custo / m.comCusto)}` : 'Sem valores no período', barrasH(somar(ativos, 'custo', p => p.cliente, 6), fmtBRL, { unidade: 'de custo' }))}
+        ${card('Travas na emissão', `${fmtInt(m.travas)} de ${fmtInt(m.total)} processos (${fmtPct(m.total ? m.travas / m.total : null)}) tiveram trava`, barrasH(contar(ativos.filter(p => p.trava), p => p.motivoTrava || 'Sem motivo informado'), n => fmtInt(n), { unidade: 'travas', cor: 'var(--dz-c2)' }))}
+        ${card('Custo de frete (terceiros)', m.comCusto ? `${fmtBRL(m.custo)} em ${fmtInt(m.comCusto)} processos · média ${fmtBRL(m.custo / m.comCusto)}` : 'Sem valores no período', barrasH(somar(ativos, 'custo', p => p.cliente), fmtBRL, { unidade: 'de custo' }))}
       </div>`);
+      blocos.push(matrizCard(ativos, true));
       const abertos = ativos.filter(p => fase(p) !== 'entregue').sort((a, b) => (dataRef(a) || '').localeCompare(dataRef(b) || ''));
       blocos.push(card(`Em aberto agora (${fmtInt(abertos.length)})`, 'Processos do período que ainda não foram entregues', tabela(abertos, [
         { t: 'Cliente', f: p => `<b>${esc(p.cliente)}</b>` }, { t: 'Referência', f: p => esc(p.ref) }, { t: 'Situação', f: pilulaFase },
@@ -775,10 +939,12 @@ const Dash = (() => {
       ])));
     } else {
       blocos.push(`<div class="dz-grid3">
-        ${card('Rotas mais usadas', 'Origem → destino', barrasH(contar(ativos, rotaChave, 6), n => fmtInt(n), { unidade: 'embarques' }))}
-        ${card('Locais de entrega', 'Onde mais entregamos', barrasH(contar(ativos, p => semAcento(p.localEntrega), 6), n => fmtInt(n), { unidade: 'entregas' }))}
-        ${card('Tipo de veículo', 'Veículos utilizados', mix(contar(ativos, 'tipoVeiculo', 6), n => fmtInt(n) + ' emb.'))}
+        ${card('Rotas mais usadas', 'Origem → destino', barrasH(contar(ativos, rotaChave), n => fmtInt(n), { unidade: 'embarques' }))}
+        ${card('Locais de entrega', 'Onde entregamos', barrasH(contar(ativos, p => semAcento(p.localEntrega)), n => fmtInt(n), { unidade: 'entregas' }))}
+        ${card('Tipo de veículo', 'Veículos utilizados', dist(contar(ativos, 'tipoVeiculo'), 'emb.'))}
       </div>`);
+      blocos.push(card('Categoria de carga', 'LCL, FCL, aéreo… — embarques, participação e peso', categorias(ativos, 'emb.')));
+      blocos.push(matrizCard(ativos, false));
       const cols = [
         { t: 'Referência', f: p => `<b>${esc(p.ref || '—')}</b>` }, { t: 'Situação', f: pilulaFase }, { t: 'Rota', f: rota },
         { t: 'Coleta', f: p => esc(dataBR(p.dataColeta)) }, { t: 'Entrega', f: p => esc(dataBR(p.dataEntrega)) },
@@ -793,6 +959,7 @@ const Dash = (() => {
     el.innerHTML = blocos.join('');
     const alvoArea = el.querySelector('[data-dz-area]');
     if (alvoArea) area(alvoArea, serie, { aria: 'Processos ao longo do tempo' });
+    mzMontar(el);
     ligarTips(el);
     // redesenha o gráfico de área quando a largura muda (celular girando, menu abrindo)
     if (alvoArea && window.ResizeObserver && !cfg.pdf) {
@@ -803,7 +970,7 @@ const Dash = (() => {
     return { lista, metricas: m };
   }
 
-  return { ritmoModo, ritmoDados, dataRef, paraData, serieTempo, ETAPAS, normalizar, paraCliente, periodo, noPeriodo, metricas, render, filtrarTabela, fase, FASES, esc, norm, dataBR, iso, fmtInt, fmtPeso, fmtBRL, fmtPct, CAMPOS_CLIENTE };
+  return { mzSet, mzExportar, ritmoModo, ritmoDados, dataRef, paraData, serieTempo, ETAPAS, normalizar, paraCliente, periodo, noPeriodo, metricas, render, filtrarTabela, fase, FASES, esc, norm, dataBR, iso, fmtInt, fmtPeso, fmtBRL, fmtPct, CAMPOS_CLIENTE };
 })();
 
 // ═══════════════════════════════════════════════════════════════════════
@@ -961,6 +1128,8 @@ const DashExport = (() => {
         ref.after(novo); ref = novo;
       }
       trs.slice(LINHAS_POR_BLOCO).forEach(tr => tr.remove());
+      // total (tfoot) só no último pedaço
+      let c = card; while (c && c !== ref) { const tf = c.querySelector('tfoot'); if (tf) tf.remove(); c = c.nextElementSibling; }
     });
   }
   async function gerarPdf(procs, meta, aoProgresso) {
