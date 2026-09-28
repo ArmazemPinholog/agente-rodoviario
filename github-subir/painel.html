@@ -983,6 +983,8 @@ const DashExport = (() => {
     xlsx: ['https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js', 'XLSX'],
     h2c: ['https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js', 'html2canvas'],
     jspdf: ['https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js', 'jspdf'],
+    exceljs: ['https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js', 'ExcelJS'],
+    jszip: ['https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js', 'JSZip'],
   };
   const _carr = {};
   function lib(n) {
@@ -1049,17 +1051,8 @@ const DashExport = (() => {
     return c;
   }
   const FMT = { d: 'dd/mm/yyyy', n: '#,##0', n2: '#,##0.00', brl: '"R$" #,##0.00' };
-  function folha(X, cab, linhas, cols) {
-    const ws = X.utils.aoa_to_sheet([cab].concat(linhas));
-    const ref = X.utils.decode_range(ws['!ref']);
-    cols.forEach((c, j) => {
-      if (!c.tipo) return;
-      for (let i = 1; i <= ref.e.r; i++) { const cel = ws[X.utils.encode_cell({ r: i, c: j })]; if (cel && cel.v !== null && cel.v !== '') cel.z = FMT[c.tipo]; }
-    });
-    ws['!cols'] = cols.map(c => ({ wch: c.w || 14 }));
-    ws['!autofilter'] = { ref: ws['!ref'] };
-    return ws;
-  }
+  const COR = { navy: '0B1F3A', azul: '2A78D6', texto: '111827', cinza: '6B7280', borda: 'E5E7EB', claro: 'F4F6FA', grade: 'EEF0F3' };
+  const argb = h => 'FF' + h;
   function agregado(procs, chaveFn) {
     const m = new Map();
     procs.forEach(p => {
@@ -1072,38 +1065,258 @@ const DashExport = (() => {
     });
     return [...m.values()].sort((a, b) => a.k.localeCompare(b.k));
   }
-  function planilha(X, procs, meta) {
+  // Aba de dados "tabela" (cabeçalho azul-marinho, filtro, 1ª linha congelada)
+  function abaTabela(wb, nome, cols, linhas) {
+    const ws = wb.addWorksheet(nome, { views: [{ state: 'frozen', ySplit: 1 }], properties: { defaultRowHeight: 17 } });
+    ws.columns = cols.map(c => ({ header: c.t, width: (c.w || 14) + 2, style: c.tipo ? { numFmt: FMT[c.tipo] } : {} }));
+    linhas.forEach(l => ws.addRow(l));
+    const h = ws.getRow(1); h.height = 22;
+    h.eachCell(c => { c.font = { bold: true, color: { argb: 'FFFFFFFF' }, size: 10 }; c.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: argb(COR.navy) } }; c.alignment = { vertical: 'middle', wrapText: true }; });
+    ws.autoFilter = { from: { row: 1, column: 1 }, to: { row: 1, column: cols.length } };
+    return ws;
+  }
+  // ── Séries dos gráficos do Painel ───────────────────────────────────
+  const MES3 = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+  const dd = d => String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0');
+  function contagem(lista, fn) {
+    const m = new Map(); lista.forEach(p => { const k = fn(p) || '(não informado)'; m.set(k, (m.get(k) || 0) + 1); });
+    return [...m.entries()].map(([k, n]) => ({ k, n })).sort((a, b) => b.n - a.n || a.k.localeCompare(b.k));
+  }
+  const semAc = x => String(x || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toUpperCase().trim();
+  function seriesPainel(procs, meta) {
+    const ativos = procs.filter(p => Dash.fase(p) !== 'cancelado');
+    const per = meta.periodo || {};
+    const datas = ativos.map(p => Dash.paraData(Dash.dataRef(p))).filter(Boolean).sort((a, b) => a - b);
+    const fim = per.ate || (datas.length ? datas[datas.length - 1] : new Date());
+    const ini = per.de || (datas.length ? datas[0] : fim);
+    const cD = new Map(), cS = new Map(), cM = new Map();
+    ativos.forEach(p => { const d = Dash.paraData(Dash.dataRef(p)); if (!d) return; const kd = Dash.iso(d); cD.set(kd, (cD.get(kd) || 0) + 1); const ks = Dash.iso(semanaIni(d)); cS.set(ks, (cS.get(ks) || 0) + 1); cM.set(kd.slice(0, 7), (cM.get(kd.slice(0, 7)) || 0) + 1); });
+    const dia = [], sem = [], mes = [];
+    let d0 = new Date(ini.getFullYear(), ini.getMonth(), ini.getDate());
+    if ((fim - d0) / 864e5 > 44) d0 = new Date(fim.getFullYear(), fim.getMonth(), fim.getDate() - 29);
+    for (let d = d0; d <= fim; d = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1)) dia.push({ k: dd(d), n: cD.get(Dash.iso(d)) || 0 });
+    let s0 = semanaIni(ini); const sF = semanaIni(fim);
+    const sMin = new Date(sF.getFullYear(), sF.getMonth(), sF.getDate() - 7 * 15); if (s0 < sMin) s0 = sMin;
+    for (let d = s0; d <= sF; d = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 7)) sem.push({ k: dd(d), n: cS.get(Dash.iso(d)) || 0 });
+    let m0 = new Date(ini.getFullYear(), ini.getMonth(), 1); const mF = new Date(fim.getFullYear(), fim.getMonth(), 1);
+    const mMin = new Date(mF.getFullYear(), mF.getMonth() - 11, 1); if (m0 < mMin) m0 = mMin;
+    for (let d = m0; d <= mF; d = new Date(d.getFullYear(), d.getMonth() + 1, 1)) mes.push({ k: MES3[d.getMonth()] + '/' + String(d.getFullYear()).slice(2), n: cM.get(Dash.iso(d).slice(0, 7)) || 0 });
+    const cores = { preparacao: 'EDA100', programado: '2A78D6', transito: 'EB6834', entregue: '1BAF7A', cancelado: 'B9B8B1' };
+    const fases = Dash.FASES.map(f => ({ k: f.rotulo, n: procs.filter(p => Dash.fase(p) === f.id).length, cor: cores[f.id] })).filter(x => x.n);
+    return {
+      dia, sem, mes, fases, ativos,
+      categoria: contagem(ativos, p => semAc(p.categoria)),
+      veiculo: contagem(ativos, p => (p.tipoVeiculo || '').trim()),
+      rotas: contagem(ativos, p => `${semAc(p.origem || p.localColeta) || '?'} → ${semAc(p.destino || p.localEntrega) || '?'}`),
+      clientes: contagem(ativos, p => (p.cliente || '').trim()),
+    };
+  }
+  // ── DrawingML (gráficos nativos do Excel) ───────────────────────────
+  const xe = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  const txPr = (sz, cor, b) => `<c:txPr><a:bodyPr/><a:lstStyle/><a:p><a:pPr><a:defRPr sz="${sz}"${b ? ' b="1"' : ''}><a:solidFill><a:srgbClr val="${cor}"/></a:solidFill><a:latin typeface="Calibri"/></a:defRPr></a:pPr><a:endParaRPr lang="pt-BR"/></a:p></c:txPr>`;
+  function chartXml(g) {
+    const n = g.itens.length, horiz = g.tipo === 'bar';
+    const ref = (col, ab) => `'${g.aba.replace(/'/g, "''")}'!$${col}$${g.lin0}:$${col}$${g.lin0 + n - 1}`;
+    const strCache = `<c:strCache><c:ptCount val="${n}"/>${g.itens.map((x, i) => `<c:pt idx="${i}"><c:v>${xe(x.k)}</c:v></c:pt>`).join('')}</c:strCache>`;
+    const numCache = `<c:numCache><c:formatCode>General</c:formatCode><c:ptCount val="${n}"/>${g.itens.map((x, i) => `<c:pt idx="${i}"><c:v>${x.n}</c:v></c:pt>`).join('')}</c:numCache>`;
+    const dpts = g.itens.map((x, i) => x.cor ? `<c:dPt><c:idx val="${i}"/><c:invertIfNegative val="0"/><c:bubble3D val="0"/><c:spPr><a:solidFill><a:srgbClr val="${x.cor}"/></a:solidFill></c:spPr></c:dPt>` : '').join('');
+    const rotulos = horiz || n <= 16;
+    const dLbls = rotulos ? `<c:dLbls><c:numFmt formatCode="#,##0;;;" sourceLinked="0"/><c:spPr><a:noFill/><a:ln><a:noFill/></a:ln></c:spPr>${txPr(900, '374151', true)}<c:dLblPos val="outEnd"/><c:showLegendKey val="0"/><c:showVal val="1"/><c:showCatName val="0"/><c:showSerName val="0"/><c:showPercent val="0"/><c:showBubbleSize val="0"/></c:dLbls>` : '';
+    const linha = cor => `<c:spPr><a:ln w="9525"><a:solidFill><a:srgbClr val="${cor}"/></a:solidFill></a:ln></c:spPr>`;
+    return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<c:chartSpace xmlns:c="http://schemas.openxmlformats.org/drawingml/2006/chart" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><c:roundedCorners val="0"/><c:chart>
+<c:title><c:tx><c:rich><a:bodyPr/><a:lstStyle/><a:p><a:pPr><a:defRPr sz="1200" b="1"><a:solidFill><a:srgbClr val="${COR.texto}"/></a:solidFill></a:defRPr></a:pPr><a:r><a:rPr lang="pt-BR" sz="1200" b="1"><a:solidFill><a:srgbClr val="${COR.texto}"/></a:solidFill><a:latin typeface="Calibri"/></a:rPr><a:t>${xe(g.titulo)}</a:t></a:r></a:p></c:rich></c:tx><c:overlay val="0"/></c:title><c:autoTitleDeleted val="0"/>
+<c:plotArea><c:layout/><c:barChart><c:barDir val="${horiz ? 'bar' : 'col'}"/><c:grouping val="clustered"/><c:varyColors val="0"/>
+<c:ser><c:idx val="0"/><c:order val="0"/><c:tx><c:v>${xe(g.serie || 'Processos')}</c:v></c:tx><c:spPr><a:solidFill><a:srgbClr val="${COR.azul}"/></a:solidFill></c:spPr><c:invertIfNegative val="0"/>${dpts}${dLbls}
+<c:cat><c:strRef><c:f>${ref(g.colK)}</c:f>${strCache}</c:strRef></c:cat><c:val><c:numRef><c:f>${ref(g.colV)}</c:f>${numCache}</c:numRef></c:val></c:ser>
+<c:gapWidth val="${horiz ? 45 : 55}"/><c:axId val="5001"/><c:axId val="5002"/></c:barChart>
+<c:catAx><c:axId val="5001"/><c:scaling><c:orientation val="${horiz ? 'maxMin' : 'minMax'}"/></c:scaling><c:delete val="0"/><c:axPos val="${horiz ? 'l' : 'b'}"/><c:numFmt formatCode="General" sourceLinked="0"/><c:majorTickMark val="none"/><c:minorTickMark val="none"/><c:tickLblPos val="nextTo"/>${linha('D1D5DB')}${txPr(900, COR.cinza)}<c:crossAx val="5002"/><c:crosses val="autoZero"/><c:auto val="1"/><c:lblAlgn val="ctr"/><c:lblOffset val="100"/>${!horiz && n > 16 ? '<c:tickLblSkip val="2"/>' : ''}<c:noMultiLvlLbl val="0"/></c:catAx>
+<c:valAx><c:axId val="5002"/><c:scaling><c:orientation val="minMax"/></c:scaling><c:delete val="${horiz ? 1 : 0}"/><c:axPos val="${horiz ? 'b' : 'l'}"/>${horiz ? '' : `<c:majorGridlines>${linha(COR.grade)}</c:majorGridlines>`}<c:numFmt formatCode="#,##0" sourceLinked="0"/><c:majorTickMark val="none"/><c:minorTickMark val="none"/><c:tickLblPos val="nextTo"/><c:spPr><a:ln><a:noFill/></a:ln></c:spPr>${txPr(900, COR.cinza)}<c:crossAx val="5001"/><c:crosses val="${horiz ? 'max' : 'autoZero'}"/><c:crossBetween val="between"/></c:valAx>
+<c:spPr><a:noFill/><a:ln><a:noFill/></a:ln></c:spPr></c:plotArea><c:plotVisOnly val="1"/><c:dispBlanksAs val="gap"/></c:chart>
+<c:spPr><a:solidFill><a:srgbClr val="FFFFFF"/></a:solidFill><a:ln w="9525"><a:solidFill><a:srgbClr val="${COR.borda}"/></a:solidFill></a:ln></c:spPr>
+<c:txPr><a:bodyPr/><a:lstStyle/><a:p><a:pPr><a:defRPr><a:latin typeface="Calibri"/></a:defRPr></a:pPr><a:endParaRPr lang="pt-BR"/></a:p></c:txPr></c:chartSpace>`;
+  }
+  function drawingXml(graficos, logo) {
+    const pos = (c, r) => `<xdr:col>${c}</xdr:col><xdr:colOff>0</xdr:colOff><xdr:row>${r}</xdr:row><xdr:rowOff>0</xdr:rowOff>`;
+    const anc = graficos.map((g, i) => `<xdr:twoCellAnchor editAs="oneCell"><xdr:from>${pos(g.c1, g.r1)}</xdr:from><xdr:to>${pos(g.c2, g.r2)}</xdr:to><xdr:graphicFrame macro=""><xdr:nvGraphicFramePr><xdr:cNvPr id="${i + 2}" name="Gráfico ${i + 1}"/><xdr:cNvGraphicFramePr/></xdr:nvGraphicFramePr><xdr:xfrm><a:off x="0" y="0"/><a:ext cx="0" cy="0"/></xdr:xfrm><a:graphic><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/chart"><c:chart xmlns:c="http://schemas.openxmlformats.org/drawingml/2006/chart" r:id="rIdC${i + 1}"/></a:graphicData></a:graphic></xdr:graphicFrame><xdr:clientData/></xdr:twoCellAnchor>`).join('');
+    const pic = logo ? `<xdr:oneCellAnchor><xdr:from><xdr:col>0</xdr:col><xdr:colOff>95250</xdr:colOff><xdr:row>0</xdr:row><xdr:rowOff>76200</xdr:rowOff></xdr:from><xdr:ext cx="${logo.w * 9525}" cy="${logo.h * 9525}"/><xdr:pic><xdr:nvPicPr><xdr:cNvPr id="1000" name="Logo Pinholog"/><xdr:cNvPicPr><a:picLocks noChangeAspect="1"/></xdr:cNvPicPr></xdr:nvPicPr><xdr:blipFill><a:blip r:embed="rIdLogo"/><a:stretch><a:fillRect/></a:stretch></xdr:blipFill><xdr:spPr><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></xdr:spPr></xdr:pic><xdr:clientData/></xdr:oneCellAnchor>` : '';
+    return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xdr:wsDr xmlns:xdr="http://schemas.openxmlformats.org/drawingml/2006/spreadsheetDrawing" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">${pic}${anc}</xdr:wsDr>`;
+  }
+  // Injeta desenho (logo + gráficos) na aba "Painel" do .xlsx gerado pelo ExcelJS
+  async function injetarGraficos(buf, abaNome, graficos, logoB64) {
+    const Z = await lib('jszip');
+    const zip = await Z.loadAsync(buf);
+    const wbXml = await zip.file('xl/workbook.xml').async('string');
+    const wbRels = await zip.file('xl/_rels/workbook.xml.rels').async('string');
+    const m = wbXml.match(new RegExp(`<sheet[^>]*name="${abaNome}"[^>]*r:id="([^"]+)"`)) || wbXml.match(new RegExp(`<sheet[^>]*r:id="([^"]+)"[^>]*name="${abaNome}"`));
+    const alvo = m && (wbRels.match(new RegExp(`Id="${m[1]}"[^>]*Target="([^"]+)"`)) || wbRels.match(new RegExp(`Target="([^"]+)"[^>]*Id="${m[1]}"`)));
+    if (!alvo) return buf;
+    const sheetPath = 'xl/' + alvo[1].replace(/^\/?xl\//, '').replace(/^\.\.\//, '');
+    const sheetNome = sheetPath.split('/').pop();
+    const relsPath = `xl/worksheets/_rels/${sheetNome}.rels`;
+    // gráficos
+    graficos.forEach((g, i) => zip.file(`xl/charts/chart${i + 1}.xml`, chartXml(g)));
+    let logo = null;
+    if (logoB64) { zip.file('xl/media/pinholog_logo.png', logoB64, { base64: true }); logo = { w: 174, h: 40 }; }
+    zip.file('xl/drawings/drawing1.xml', drawingXml(graficos, logo));
+    zip.file('xl/drawings/_rels/drawing1.xml.rels', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">${graficos.map((g, i) => `<Relationship Id="rIdC${i + 1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/chart" Target="../charts/chart${i + 1}.xml"/>`).join('')}${logo ? '<Relationship Id="rIdLogo" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="../media/pinholog_logo.png"/>' : ''}</Relationships>`);
+    let rels = zip.file(relsPath) ? await zip.file(relsPath).async('string') : '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"></Relationships>';
+    rels = rels.replace('</Relationships>', '<Relationship Id="rIdDrwPh" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/drawing" Target="../drawings/drawing1.xml"/></Relationships>');
+    zip.file(relsPath, rels);
+    let sx = await zip.file(sheetPath).async('string');
+    if (!/xmlns:r=/.test(sx.slice(0, 600))) sx = sx.replace('<worksheet ', '<worksheet xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" ');
+    const tag = '<drawing r:id="rIdDrwPh"/>';
+    const idx = ['<legacyDrawing', '<legacyDrawingHF', '<picture', '<oleObjects', '<controls', '<webPublishItems', '<tableParts', '<extLst', '</worksheet>'].map(t => sx.indexOf(t)).filter(i => i >= 0).sort((a, b) => a - b)[0];
+    sx = sx.slice(0, idx) + tag + sx.slice(idx);
+    zip.file(sheetPath, sx);
+    let ct = await zip.file('[Content_Types].xml').async('string');
+    let add = '<Override PartName="/xl/drawings/drawing1.xml" ContentType="application/vnd.openxmlformats-officedocument.drawing+xml"/>' + graficos.map((g, i) => `<Override PartName="/xl/charts/chart${i + 1}.xml" ContentType="application/vnd.openxmlformats-officedocument.drawingml.chart+xml"/>`).join('');
+    if (logo && !/Extension="png"/i.test(ct)) add = '<Default Extension="png" ContentType="image/png"/>' + add;
+    ct = ct.replace('</Types>', add + '</Types>');
+    zip.file('[Content_Types].xml', ct);
+    return zip.generateAsync({ type: 'arraybuffer', compression: 'DEFLATE' });
+  }
+  function logoBase64() {
+    const img = document.querySelector('img[src^="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAsoAAACk"]');
+    return img ? img.src.split(',')[1] : '';
+  }
+  // ── Planilha completa (ExcelJS): Painel com gráficos + abas de dados ─
+  async function planilhaBytes(procs, meta) {
+    const E = await lib('exceljs');
     const modo = meta.modo === 'interno' ? 'interno' : 'cliente';
-    const wb = X.utils.book_new();
-    wb.Props = { Title: meta.titulo || 'Dashboard Pinholog', Author: 'Pinholog', Company: 'Pinholog' };
+    const un = modo === 'interno' ? 'Processos' : 'Embarques';
+    const wb = new E.Workbook();
+    wb.creator = 'Pinholog'; wb.company = 'Pinholog'; wb.title = meta.titulo || 'Dashboard Pinholog'; wb.created = new Date();
+    const S = seriesPainel(procs, meta);
+    const m = Dash.metricas(procs);
+    const per = meta.periodo || {};
+    const txtPer = per.de ? `${Dash.dataBR(Dash.iso(per.de))} a ${Dash.dataBR(Dash.iso(per.ate))}` : 'todo o histórico';
+
+    // ── Painel
+    const ws = wb.addWorksheet('Painel', { views: [{ showGridLines: false, zoomScale: 90 }], properties: { tabColor: { argb: argb(COR.azul) }, defaultRowHeight: 15 } });
+    ws.columns = Array.from({ length: 18 }, () => ({ width: 10.5 }));
+    ws.getRow(1).height = 30; ws.getRow(2).height = 20; ws.getRow(3).height = 8;
+    const t1 = ws.getCell('E1'); t1.value = (modo === 'interno' ? 'Relatório de operação · ' : 'Relatório de embarques · ') + (meta.cliente || 'Pinholog');
+    t1.font = { bold: true, size: 18, color: { argb: argb(COR.navy) } }; t1.alignment = { vertical: 'middle' };
+    const t2 = ws.getCell('E2'); t2.value = `Período: ${txtPer}  ·  Gerado em ${new Date().toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' })}`;
+    t2.font = { size: 10, color: { argb: argb(COR.cinza) } };
+    for (let c = 1; c <= 18; c++) ws.getCell(3, c).border = { bottom: { style: 'medium', color: { argb: argb(COR.navy) } } };
+    const kpi = (linha, col, rot, val, fmt, sub) => {
+      const r1 = linha, r2 = linha + 1, r3 = linha + 2;
+      [r1, r2, r3].forEach(r => ws.mergeCells(r, col, r, col + 2));
+      const a = ws.getCell(r1, col), b = ws.getCell(r2, col), c = ws.getCell(r3, col);
+      a.value = rot.toUpperCase(); a.font = { bold: true, size: 8.5, color: { argb: argb(COR.cinza) } };
+      b.value = val; b.numFmt = fmt || 'General'; b.font = { bold: true, size: 20, color: { argb: argb(COR.texto) } };
+      c.value = sub || ''; c.font = { size: 8.5, color: { argb: argb(COR.cinza) } };
+      [a, b, c].forEach(x => { x.alignment = { vertical: 'middle', horizontal: 'left', indent: 1 }; });
+      for (let r = r1; r <= r3; r++) for (let k = col; k <= col + 2; k++) {
+        const cel = ws.getCell(r, k); cel.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: argb(COR.claro) } };
+        cel.border = { top: r === r1 ? { style: 'thin', color: { argb: argb(COR.borda) } } : undefined, bottom: r === r3 ? { style: 'thin', color: { argb: argb(COR.borda) } } : undefined, left: k === col ? { style: 'thin', color: { argb: argb(COR.borda) } } : undefined, right: k === col + 2 ? { style: 'thin', color: { argb: argb(COR.borda) } } : undefined };
+      }
+      ws.getRow(r2).height = 28;
+    };
+    kpi(5, 1, un + ' no período', m.total, '#,##0', `${m.cancelados ? m.cancelados + ' cancelado(s) fora da conta' : 'sem cancelados'}`);
+    kpi(5, 4, 'Entregues', m.entregues, '#,##0', m.total ? Math.round(m.entregues / m.total * 100) + '% do total' : '');
+    kpi(5, 7, 'Em andamento', m.andamento, '#,##0', `${m.transito} em trânsito`);
+    kpi(5, 10, 'Carga movimentada (t)', Math.round(m.peso / 100) / 10, '#,##0.0', `${m.volumes.toLocaleString('pt-BR')} volumes`);
+    kpi(5, 13, 'Valor de mercadoria', Math.round(m.nf), '"R$" #,##0', 'soma das NFs');
+    kpi(5, 16, 'Porta a porta', m.leadMed == null ? '—' : Math.round(m.leadMed * 10) / 10, '0.0 "dia(s)"', 'mediana coleta → entrega');
+    let linhaG = 9;
+    const temSla = modo === 'interno' || (meta.opcoes && meta.opcoes.sla);
+    if (temSla) {
+      kpi(9, 1, '1ª resposta no prazo', m.sla1 == null ? '—' : m.sla1, '0%', `${m.sla1n} medições · meta 90%`);
+      kpi(9, 4, 'Programação no prazo', m.slaProg == null ? '—' : m.slaProg, '0%', `${m.slaProgn} medições · meta 90%`);
+      kpi(9, 7, '1ª resposta (mediana)', m.h1med == null ? '—' : Math.round(m.h1med * 60), '#,##0 "min"', 'após a solicitação');
+      if (modo === 'interno') kpi(9, 10, 'Clientes atendidos', m.clientes, '#,##0', 'no período');
+      linhaG = 13;
+    }
+    // ── Dados dos gráficos (aba própria)
+    const wd = wb.addWorksheet('Dados dos gráficos', { properties: { tabColor: { argb: 'FFB9B8B1' } } });
+    let colD = 1; const blocos = {};
+    const bloco = (chave, titulo, itens) => {
+      const L = String.fromCharCode(64 + colD), V = String.fromCharCode(65 + colD);
+      wd.getCell(1, colD).value = titulo; wd.getCell(1, colD).font = { bold: true };
+      wd.getCell(2, colD).value = 'Item'; wd.getCell(2, colD + 1).value = 'Qtde';
+      itens.forEach((x, i) => { wd.getCell(3 + i, colD).value = x.k; wd.getCell(3 + i, colD + 1).value = x.n; });
+      wd.getColumn(colD).width = 34; wd.getColumn(colD + 1).width = 8;
+      blocos[chave] = { col: L, colV: V, lin0: 3 };
+      colD += 3;
+    };
+    const G = [];
+    const graf = (chave, titulo, itens, tipo, c1, r1, c2, r2) => {
+      if (!itens.length) return 0;
+      bloco(chave, titulo, itens);
+      const b = blocos[chave];
+      G.push({ titulo, itens, tipo, aba: 'Dados dos gráficos', lin0: b.lin0, colK: b.col, colV: b.colV, c1, r1, c2, r2, serie: un });
+      return 1;
+    };
+    let r = linhaG - 1; // 0-based
+    graf('dia', `${un} por dia`, S.dia, 'col', 0, r, 18, r + 17); r += 18;
+    graf('sem', `${un} por semana`, S.sem, 'col', 0, r, 9, r + 16);
+    graf('mes', `${un} por mês`, S.mes, 'col', 9, r, 18, r + 16); r += 17;
+    const alt = n => Math.max(12, Math.ceil(n * 1.35) + 4);
+    let h = Math.max(alt(S.categoria.length), alt(S.fases.length));
+    graf('cat', 'Categoria de carga', S.categoria, 'bar', 0, r, 9, r + h);
+    graf('fase', 'Situação dos ' + un.toLowerCase(), S.fases, 'bar', 9, r, 18, r + h); r += h + 1;
+    h = Math.max(alt(S.veiculo.length), alt(Math.min(S.rotas.length, 40)));
+    graf('veic', 'Tipo de veículo', S.veiculo, 'bar', 0, r, 9, r + h);
+    graf('rota', 'Rotas (origem → destino)', S.rotas.slice(0, 40), 'bar', 9, r, 18, r + h); r += h + 1;
+    if (modo === 'interno' && S.clientes.length) { h = alt(Math.min(S.clientes.length, 50)); graf('cli', 'Processos por cliente', S.clientes.slice(0, 50), 'bar', 0, r, 18, r + h); r += h + 1; }
+    const nota = ws.getCell(r + 2, 1);
+    nota.value = 'Dados completos nas abas Processos, Matriz de rotas, Por dia, Por semana e Por mês. Para o Power BI, use a aba Processos.';
+    nota.font = { italic: true, size: 9, color: { argb: argb(COR.cinza) } };
+    ws.pageSetup = { orientation: 'portrait', fitToPage: true, fitToWidth: 1, fitToHeight: 0, paperSize: 9, margins: { left: 0.4, right: 0.4, top: 0.5, bottom: 0.5, header: 0.2, footer: 0.2 } };
+
+    // ── Processos (tabela fato)
     const cols = colunas(procs, modo);
     const ordenados = procs.slice().sort((a, b) => (Dash.dataRef(b) || '').localeCompare(Dash.dataRef(a) || ''));
-    X.utils.book_append_sheet(wb, folha(X, cols.map(c => c.t), ordenados.map(p => cols.map(c => { const v = c.f(p); return v === undefined ? null : v; })), cols), 'Processos');
+    abaTabela(wb, 'Processos', cols, ordenados.map(p => cols.map(c => { const v = c.f(p); return v === undefined ? null : v; })));
+
+    // ── Matriz de rotas × mês (mapa de calor)
+    const meses = [...new Set(S.ativos.map(p => (Dash.dataRef(p) || '').slice(0, 7)).filter(Boolean))].sort();
+    const rotaDe = p => `${semAc(p.origem || p.localColeta) || '?'} → ${semAc(p.destino || p.localEntrega) || '?'}`;
+    const wm = abaTabela(wb, 'Matriz de rotas', [{ t: 'Rota', w: 44 }].concat(meses.map(k => ({ t: MES3[+k.slice(5) - 1] + '/' + k.slice(2, 4), w: 9, tipo: 'n' })), [{ t: 'Total', w: 9, tipo: 'n' }]),
+      S.rotas.map(x => { const lin = [x.k]; meses.forEach(k => { const v = S.ativos.filter(p => rotaDe(p) === x.k && (Dash.dataRef(p) || '').startsWith(k)).length; lin.push(v || null); }); lin.push(x.n); return lin; }));
+    wm.views = [{ state: 'frozen', xSplit: 1, ySplit: 1 }];
+    if (meses.length && S.rotas.length) {
+      const ultCol = String.fromCharCode(65 + meses.length);
+      wm.addConditionalFormatting({ ref: `B2:${ultCol}${S.rotas.length + 1}`, rules: [{ type: 'colorScale', cfvo: [{ type: 'min' }, { type: 'max' }], color: [{ argb: 'FFEAF2FC' }, { argb: 'FF7FAEE8' }] }] });
+      const tot = wm.addRow(['Total'].concat(meses.map(k => S.ativos.filter(p => (Dash.dataRef(p) || '').startsWith(k)).length), [S.ativos.length]));
+      tot.font = { bold: true }; tot.eachCell(c => { c.border = { top: { style: 'thin' } }; });
+      wm.getColumn(meses.length + 2).font = { bold: true };
+    }
+
+    // ── Agregados por dia / semana / mês
     const cAg = [{ t: '', w: 13 }, { t: 'Processos', tipo: 'n', w: 11 }, { t: 'Entregues', tipo: 'n', w: 11 }, { t: 'Em andamento', tipo: 'n', w: 13 }, { t: 'Cancelados', tipo: 'n', w: 11 }, { t: 'Peso (kg)', tipo: 'n2', w: 13 }, { t: 'Volumes', tipo: 'n', w: 10 }, { t: 'Valor NF (R$)', tipo: 'brl', w: 16 }];
     const linhaAg = (o, primeira) => [primeira, o.n, o.entregues, o.andamento, o.cancelados, n2(o.peso), o.vol, n2(o.nf)];
-    const agDia = agregado(procs, p => Dash.dataRef(p) ? Dash.dataRef(p).slice(0, 10) : '');
-    X.utils.book_append_sheet(wb, folha(X, ['Data'].concat(cAg.slice(1).map(c => c.t)), agDia.map(o => linhaAg(o, dataXl(o.k))), [Object.assign({}, cAg[0], { tipo: 'd' })].concat(cAg.slice(1))), 'Por dia');
-    const agSem = agregado(procs, p => { const d = Dash.paraData(Dash.dataRef(p)); return d ? Dash.iso(semanaIni(d)) : ''; });
-    X.utils.book_append_sheet(wb, folha(X, ['Semana (início)'].concat(cAg.slice(1).map(c => c.t)), agSem.map(o => linhaAg(o, dataXl(o.k))), [Object.assign({}, cAg[0], { tipo: 'd', w: 15 })].concat(cAg.slice(1))), 'Por semana');
-    const agMes = agregado(procs, p => (Dash.dataRef(p) || '').slice(0, 7));
-    X.utils.book_append_sheet(wb, folha(X, ['Mês'].concat(cAg.slice(1).map(c => c.t)), agMes.map(o => linhaAg(o, o.k)), cAg), 'Por mês');
-    const m = Dash.metricas(procs);
-    const res = [
-      ['Relatório', meta.titulo || 'Dashboard Pinholog'], ['Cliente', meta.cliente || 'Todos os clientes'],
-      ['Gerado em', new Date().toLocaleString('pt-BR')], ['Processos (sem cancelados)', m.total], ['Entregues', m.entregues], ['Em andamento', m.andamento],
-      ['Cancelados', m.cancelados], ['Peso total (kg)', n2(m.peso)], ['Volumes', m.volumes], ['Valor de mercadoria (R$)', n2(m.nf)],
-      ['1ª resposta no prazo', m.sla1 == null ? '' : n2(m.sla1 * 100) + '%'], ['Programação no prazo', m.slaProg == null ? '' : n2(m.slaProg * 100) + '%'],
+    abaTabela(wb, 'Por dia', [Object.assign({}, cAg[0], { t: 'Data', tipo: 'd' })].concat(cAg.slice(1)), agregado(procs, p => Dash.dataRef(p) ? Dash.dataRef(p).slice(0, 10) : '').map(o => linhaAg(o, dataXl(o.k))));
+    abaTabela(wb, 'Por semana', [Object.assign({}, cAg[0], { t: 'Semana (início)', tipo: 'd', w: 15 })].concat(cAg.slice(1)), agregado(procs, p => { const d = Dash.paraData(Dash.dataRef(p)); return d ? Dash.iso(semanaIni(d)) : ''; }).map(o => linhaAg(o, dataXl(o.k))));
+    abaTabela(wb, 'Por mês', [Object.assign({}, cAg[0], { t: 'Mês' })].concat(cAg.slice(1)), agregado(procs, p => (Dash.dataRef(p) || '').slice(0, 7)).map(o => linhaAg(o, o.k)));
+
+    // ── Resumo / como usar
+    const wr = wb.addWorksheet('Resumo');
+    wr.columns = [{ width: 30 }, { width: 100 }];
+    [['Relatório', meta.titulo || 'Dashboard Pinholog'], ['Cliente', meta.cliente || 'Todos os clientes'], ['Período', txtPer], ['Gerado em', new Date().toLocaleString('pt-BR')],
       [], ['Como usar no Power BI', 'Obter dados → Excel (ou Web, se recebeu o link) → marque a tabela "Processos" (e as de agregados, se quiser) → Carregar.'],
-      ['', 'A coluna "Data referência" é a data de coleta (ou recebimento, quando não há coleta) — use-a para séries por dia, semana e mês.'],
-    ];
-    const wsR = X.utils.aoa_to_sheet(res); wsR['!cols'] = [{ wch: 28 }, { wch: 90 }];
-    X.utils.book_append_sheet(wb, wsR, 'Resumo');
-    return wb;
+      ['', 'A coluna "Data referência" é a data de coleta (ou recebimento, quando não há coleta) — use-a para séries por dia, semana e mês.']]
+      .forEach(l => wr.addRow(l));
+    wr.getColumn(1).font = { bold: true };
+
+    // mover "Dados dos gráficos" pro fim
+    wd.orderNo = 999;
+    const buf = await wb.xlsx.writeBuffer();
+    try { return await injetarGraficos(buf, 'Painel', G.map(g => Object.assign(g, { lin0: g.lin0 })), logoBase64()); }
+    catch (e) { console.warn('gráficos do Excel', e); return buf; }
   }
-  async function bytesXlsx(procs, meta) { const X = await lib('xlsx'); return X.write(planilha(X, procs, meta), { bookType: 'xlsx', type: 'array', compression: true }); }
+  async function bytesXlsx(procs, meta) { return planilhaBytes(procs, meta); }
   async function baixarXlsx(procs, meta) {
-    const X = await lib('xlsx');
-    X.writeFile(planilha(X, procs, meta), nomeArq(meta.arquivo || ('Pinholog - ' + (meta.cliente || 'Operação')), 'xlsx'), { compression: true });
+    const buf = await planilhaBytes(procs, meta);
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([buf], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+    a.download = nomeArq(meta.arquivo || ('Pinholog - ' + (meta.cliente || 'Operação')), 'xlsx');
+    document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 2000);
   }
 
   // ── PDF: renderiza o painel numa folha fora da tela (tema claro, largura
@@ -1184,7 +1397,7 @@ const DashExport = (() => {
     const doc = await gerarPdf(procs, meta, aoProgresso);
     doc.save(nomeArq(meta.arquivo || ('Pinholog - ' + (meta.cliente || 'Operação')), 'pdf'));
   }
-  return { lib, planilha, bytesXlsx, baixarXlsx, gerarPdf, baixarPdf, nomeArq };
+  return { lib, bytesXlsx, baixarXlsx, gerarPdf, baixarPdf, nomeArq };
 })();
 
 </script>
