@@ -1331,6 +1331,23 @@ body.has-dock{padding-bottom:120px;}
 .dz-hbar-k{white-space:normal!important;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;line-height:1.3;word-break:break-word;}
 .dz-cat .dz-hbar-k{display:flex;}
 .dz-pdf-host .dz-mz-tbl th,.dz-pdf-host .dz-mz-tbl td,.dz-pdf-host .dz-tbl th{position:static!important;}
+/* ── SLA coleta/entrega por região ── */
+.dz-grid-sla{grid-template-columns:1fr 1fr!important;}
+@media (max-width:1100px){ .dz-grid-sla{grid-template-columns:1fr!important;} }
+.dz-sla-meta{font-size:12px;color:var(--text2);font-weight:700;white-space:nowrap;}
+.dz-sla-meta select{height:30px;border-radius:8px;border:1px solid var(--border2);background:var(--s1);color:var(--text);font:600 12px var(--font-sans);padding:0 6px;margin-left:4px;}
+.dz-sla-top{display:flex;align-items:center;gap:22px;flex-wrap:wrap;padding:10px 0 14px;border-bottom:1px solid var(--border);margin-bottom:12px;}
+.dz-sla-top b{display:block;font-size:24px;font-weight:800;color:var(--text);letter-spacing:-.02em;} .dz-sla-top span{font-size:12px;color:var(--text3);}
+.dz-sla-top .dz-status{margin-left:auto;font-size:12px;color:var(--text2);}
+.dz-sla-rows{display:flex;flex-direction:column;gap:10px;}
+.dz-sla-rows.longo{max-height:360px;overflow-y:auto;padding-right:6px;}
+.dz-sla-l{display:grid;grid-template-columns:minmax(120px,38%) 1fr 70px;align-items:center;gap:12px;}
+.dz-sla-l .dz-meter-t{margin:0;}
+.dz-sla-k{display:flex;flex-direction:column;line-height:1.25;min-width:0;} .dz-sla-k b{font-size:12.5px;color:var(--text);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;} .dz-sla-k span{font-size:11px;color:var(--text3);}
+.dz-sla-v{display:flex;align-items:center;justify-content:flex-end;gap:6px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums;}
+.dz-sla-v .dz-status i{width:15px;height:15px;font-size:9px;}
+.dz-sla-meta select{width:auto!important;min-width:0!important;max-width:150px;}
+.dz-sla-ct td{vertical-align:top;white-space:normal!important;} .dz-sla-ct td:first-child{min-width:260px;} .dz-sla-ct .dz-sub{font-size:11px;color:var(--text3);margin-top:2px;}
 
 /* ══════════ Login · AgenteRodo ══════════ */
 #ar-progress{position:fixed;top:0;left:0;height:2px;width:0;z-index:30000;background:linear-gradient(90deg,var(--blue),#ff8a2a);box-shadow:0 0 8px rgba(255,138,42,.5);opacity:0;pointer-events:none;}
@@ -14489,7 +14506,7 @@ const Dash = (() => {
       status: row.status || v('STATUS'), etapa,
       categoria: v('CATEGORIA').toUpperCase(), tipoCarga: v('TIPO DE CARGA'),
       origem: v('ORIGEM'), destino: v('DESTINO'), localColeta: row.local_coleta || v('LOCAL COLETA'), localEntrega: row.local_entrega || v('LOCAL DE ENTREGA'),
-      dataReceb: row.data_recebimento || '', dataColeta: row.data_carregamento || v('DATA COLETA'), dataEntrega: row.data_descarga || v('DATA ENTREGA'),
+      dataReceb: row.data_recebimento || '', dataLib: row.data_liberacao || '', horaLib: row.hora_liberacao || '', horaReceb: row.hora_recebimento || '', horaColeta: v('HORA COLETA'), janela: v('JANELA DE DESCARGA'), chegada: v('HORÁRIO DE CHEGADA NO CLIENTE'), dataColeta: row.data_carregamento || v('DATA COLETA'), dataEntrega: row.data_descarga || v('DATA ENTREGA'),
       volume: /\d/.test(volTxt) ? (parseInt(volTxt.match(/\d+/)[0], 10) || 0) : 0,
       peso: num(v('PESO (KG)')), medidas: v('OBSERVAÇÃO CARGA'),
       nfValor: /^\s*(R\$\s*)?[\d.,]+\s*$/.test(nfTxt) ? num(nfTxt) : 0,
@@ -14501,7 +14518,7 @@ const Dash = (() => {
       trava: norm(v('HOUVE TRAVA?')) === 'sim', motivoTrava: v('MOTIVO'),
     };
   }
-  const CAMPOS_CLIENTE = ['ref', 'status', 'etapa', 'categoria', 'tipoCarga', 'origem', 'destino', 'localColeta', 'localEntrega', 'dataReceb', 'dataColeta', 'dataEntrega', 'volume', 'peso', 'medidas', 'nfValor', 'tipoVeiculo', 'h1', 'ok1', 'hProg', 'okProg'];
+  const CAMPOS_CLIENTE = ['chegada', 'dataLib', 'horaLib', 'horaReceb', 'horaColeta', 'janela', 'ref', 'status', 'etapa', 'categoria', 'tipoCarga', 'origem', 'destino', 'localColeta', 'localEntrega', 'dataReceb', 'dataColeta', 'dataEntrega', 'volume', 'peso', 'medidas', 'nfValor', 'tipoVeiculo', 'h1', 'ok1', 'hProg', 'okProg'];
   function paraCliente(p, opcoes) {
     const o = {}; CAMPOS_CLIENTE.forEach(k => { o[k] = p[k]; });
     if (opcoes && opcoes.motorista) { o.placa = p.placa; o.motorista = p.motorista; }
@@ -14929,6 +14946,172 @@ const Dash = (() => {
     });
   }
 
+
+  // ── SLA de coleta e entrega por região (UF de destino) ──────────────
+  const UF_NOME = { AC: 'Acre', AL: 'Alagoas', AM: 'Amazonas', AP: 'Amapá', BA: 'Bahia', CE: 'Ceará', DF: 'Distrito Federal', ES: 'Espírito Santo', GO: 'Goiás', MA: 'Maranhão', MG: 'Minas Gerais', MS: 'Mato Grosso do Sul', MT: 'Mato Grosso', PA: 'Pará', PB: 'Paraíba', PE: 'Pernambuco', PI: 'Piauí', PR: 'Paraná', RJ: 'Rio de Janeiro', RN: 'Rio Grande do Norte', RO: 'Rondônia', RR: 'Roraima', RS: 'Rio Grande do Sul', SC: 'Santa Catarina', SE: 'Sergipe', SP: 'São Paulo', TO: 'Tocantins' };
+  const CID_UF = (() => {
+    const t = {
+      PR: 'ALMIRANTE TAMANDARE|ARAUCARIA|CAMPO LARGO|COLOMBO|CURITIBA|MANDIRITUBA|PARANAGUA|PINHAIS|PIRAQUARA|PONTA GROSSA|SAO JOSE DOS PINHAIS|SAO MATEUS DO SUL|PEABIRU|TEIXEIRA SOARES|TEIXEIRA SORARES|LONDRINA|MARINGA|CASCAVEL|FOZ DO IGUACU|LAPA',
+      SC: 'ARAQUARI|BLUMENAU|BRACO DO NORTE|FLORIANOPOLIS|GARUVA|GASPAR|INDAIAL|ITAJAI|ITAPOA|JOINVILLE|LAGUNA|NAVEGANTES|RIO DO SUL|BENEDITO NOVO|CANELINHA|SAO JOAQUIM|SAO JOAO BATISTA|SAO FRANCISCO DO SUL|IMBITUBA|CHAPECO|JARAGUA DO SUL',
+      SP: 'ARARAS|BARRETOS|BARUERI|BOITUVA|BRAGANCA PAULISTA|BRAGRANCA PAULISTA|CAMPINAS|ESPIRITO SANTO DO PINHAL|FRANCA|GUARUJA|GUARULHOS|JUNDIAI|LIMEIRA|LUIZ ANTONIO|MATAO|MAUA|MOCOCA|MONTE APRAZIVEL|MONTE MOR|NAZARE PAULISTA|OSASCO|PIRACICABA|RIBEIRAO PRETO|RIBEIRAO PETRO|SANTA CRUZ DAS PALMEIRAS|SANTOS|SAO PAULO|SERRA NEGRA|SOROCABA|SUMARE|TANABI|VARZEA PAULISTA|VINHEDO|VIRACOPOS|SAO BERNARDO DO CAMPO|SANTO ANDRE|CAJAMAR|ITUPEVA|LOUVEIRA|CUBATAO',
+      RS: 'ESTEIO|PORTO ALEGRE|SANTA CRUZ DO SUL|SAPUCAIA DO SUL|NOVO HAMBURGO|GUAIBA|TAPEJARA|CANOAS|CAXIAS DO SUL|RIO GRANDE',
+      MG: 'BELO HORIZONTE|BETIM|CONTAGEM|EXTREMA|POCOS DE CALDAS|MONTES CLAROS|RIO PARDO DE MINAS|INDIANOPOLIS|GUARANI|UBERLANDIA|JUIZ DE FORA',
+      RJ: 'RIO DE JANEIRO|TERESOPOLIS|VOLTA REDONDA|TANGUA|ITAGUAI|DUQUE DE CAXIAS',
+      BA: 'BARREIRAS|BOM JESUS DA LAPA|IBIASSUCE|IBIPITANGA|LUIS EDUARDO MAGALHAES|VITORIA DA CONQUISTA|XIQUE - XIQUE|XIQUE-XIQUE|SALVADOR|CAMACARI',
+      PA: 'JACUNDA|CANAA DOS CARAJAS|PARAUAPEBAS|GOIANESIA DO PARA|SAO JOAO DO ARAGUAIA|BELEM|MARABA',
+      RO: 'CEREJEIRAS|VILHENA|PORTO VELHO', PE: 'IPOJUCA|CABO DE SANTO AGOSTINHO|RECIFE|SUAPE', AM: 'MANAUS|PORTO DE MANAUS',
+      DF: 'BRASILIA', MS: 'PONTA PORA|BONITO|CAMPO GRANDE|DOURADOS', ES: 'SAO MATEUS|VITORIA|SERRA|VILA VELHA', GO: 'GOIANIA|ANAPOLIS',
+    };
+    const m = new Map(); Object.entries(t).forEach(([uf, l]) => l.split('|').forEach(c => m.set(c, uf))); return m;
+  })();
+  function ufDe(txt) {
+    const s = semAcento(txt).replace(/\.+$/, '').trim();
+    if (!s) return '';
+    const fim = s.match(/(?:[,\-\/]|\s)\s*([A-Z]{2})$/);
+    if (fim && UF_NOME[fim[1]]) return fim[1];
+    if (CID_UF.has(s)) return CID_UF.get(s);
+    const base = s.split(/\s*[\/,]\s*|\s+-\s+/)[0].trim();
+    if (CID_UF.has(base)) return CID_UF.get(base);
+    for (const [c, uf] of CID_UF) if (s.includes(c)) return uf;
+    return '';
+  }
+  // dias úteis entre duas datas (a → b), sem contar sábados e domingos
+  function diasUteis(a, b) {
+    if (!a || !b || b < a) return b && a && b < a ? null : null;
+    let n = 0; for (let d = new Date(a.getFullYear(), a.getMonth(), a.getDate() + 1); d <= b; d = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1)) if (d.getDay() % 6) n++;
+    return n;
+  }
+  const SLA_PADRAO = { coleta: 24, entrega: 48 }; // horas
+  function slaMetas(cfg) {
+    let m = Object.assign({}, SLA_PADRAO);
+    try { Object.assign(m, JSON.parse(localStorage.getItem('dz_sla_metas_h') || '{}')); } catch (e) {}
+    if (cfg && cfg.opcoes && cfg.opcoes.metas) Object.assign(m, cfg.opcoes.metas);
+    return m;
+  }
+  function slaMeta(tipo, v) {
+    const m = slaMetas(); m[tipo] = Number(v);
+    try { localStorage.setItem('dz_sla_metas_h', JSON.stringify(m)); } catch (e) {}
+    if (typeof dzRender === 'function') dzRender();
+  }
+  function dataHora(d, h) {
+    const x = paraData(d); if (!x) return null;
+    const m = String(h || '').match(/(\d{1,2})\s*[:;hH.]\s*(\d{2})?/);
+    if (m && +m[1] < 24) x.setHours(+m[1], +(m[2] || 0), 0, 0);
+    return x;
+  }
+  // Horas operacionais: os clientes não recebem de madrugada nem no fim de semana,
+  // então a coleta é antecipada pra cumprir a janela. Só contam seg–sex, 06:00–20:00.
+  const OP_INI = 6, OP_FIM = 20;
+  function horasOp(a, b) {
+    if (!a || !b || b <= a) return 0;
+    let t = 0;
+    for (let d = new Date(a.getFullYear(), a.getMonth(), a.getDate()); d <= b; d = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1)) {
+      if (!(d.getDay() % 6)) continue;
+      const i = new Date(d); i.setHours(OP_INI, 0, 0, 0); const f = new Date(d); f.setHours(OP_FIM, 0, 0, 0);
+      const x = Math.max(i, a), y = Math.min(f, b); if (y > x) t += (y - x) / 36e5;
+    }
+    return t;
+  }
+  function slaRegiao(lista, tipo, meta) {
+    const hj = new Date(); const hoje = new Date(hj.getFullYear(), hj.getMonth(), hj.getDate());
+    const g = new Map(); const todos = [];
+    lista.forEach(p => {
+      // coleta: liberação (data+hora) → DATA COLETA + HORA COLETA (AD/AE)
+      // entrega: DATA COLETA + HORA COLETA → DATA ENTREGA + JANELA DE DESCARGA
+      const a = tipo === 'coleta' ? (p.dataLib ? dataHora(p.dataLib, p.horaLib) : dataHora(p.dataReceb, p.horaReceb)) : dataHora(p.dataColeta, p.horaColeta);
+      const b = tipo === 'coleta' ? dataHora(p.dataColeta, p.horaColeta) : dataHora(p.dataEntrega, p.janela);
+      if (!a || !b || b < a || b > new Date()) return;
+      const dias = horasOp(a, b); // horas operacionais
+      const uf = ufDe(p.destino || p.localEntrega) || '—';
+      if (!g.has(uf)) g.set(uf, []);
+      g.get(uf).push(dias); todos.push(dias);
+    });
+    const med = arr => { const x = arr.slice().sort((a, b) => a - b); return x[Math.floor(x.length / 2)]; };
+    const linhas = [...g.entries()].map(([uf, arr]) => ({ uf, n: arr.length, ok: arr.filter(d => d <= meta).length / arr.length, med: med(arr) }))
+      .sort((a, b) => b.n - a.n);
+    return { linhas, n: todos.length, ok: todos.length ? todos.filter(d => d <= meta).length / todos.length : null, med: todos.length ? med(todos) : null };
+  }
+  function slaCard(lista, tipo, cfg, interno) {
+    const metas = slaMetas(cfg), meta = metas[tipo], ALVO = 0.9;
+    const r = slaRegiao(lista, tipo, meta);
+    const dia = h => fmtHoras(h);
+    const titulo = tipo === 'coleta' ? 'SLA de coleta por região' : 'SLA de entrega por região';
+    const sub = tipo === 'coleta' ? 'Liberação do processo → DATA + HORA COLETA · por estado de destino · horas operacionais' : 'Coleta (data + hora) → entrega (data + janela) · horas operacionais (seg–sex, 06h–20h)';
+    const opt = v => v < 24 || v % 24 ? v + ' h' : (v / 24) + (v === 24 ? ' dia' : ' dias');
+    const sel = interno && !_modoPdf ? `<label class="dz-sla-meta">Meta: <select onchange="Dash.slaMeta('${tipo}', this.value)">${[6, 12, 24, 36, 48, 72, 96, 120, 168, 240].map(v => `<option value="${v}" ${v === meta ? 'selected' : ''}>até ${opt(v)}</option>`).join('')}</select></label>` : `<span class="dz-sla-meta">Meta: até ${opt(meta)}</span>`;
+    if (!r.n) return `<section class="dz-card"><header class="dz-rt-h"><div><h3>${esc(titulo)}</h3><p>${esc(sub)}</p></div>${sel}</header>${vazio('Sem processos com as duas datas preenchidas no período.')}</section>`;
+    const est = p => p >= ALVO ? 'bom' : p >= ALVO - 0.1 ? 'atencao' : 'critico';
+    const ico = { bom: '✓', atencao: '!', critico: '✕' };
+    const e0 = est(r.ok);
+    const linhas = r.linhas.map(l => { const e = est(l.ok); const nome = l.uf === '—' ? 'Não identificado' : `${l.uf} · ${UF_NOME[l.uf]}`; return `
+      <div class="dz-sla-l dz-meter ${e}" ${tipAttr([{ v: nome }, { v: fmtPct(l.ok), r: 'no prazo' }, { v: fmtInt(l.n), r: 'processos medidos' }, { v: dia(l.med), r: 'mediana' }])}>
+        <div class="dz-sla-k"><b>${esc(nome)}</b><span>${fmtInt(l.n)} proc. · mediana ${dia(l.med)}</span></div>
+        <div class="dz-meter-t"><div class="dz-meter-f" style="width:${(l.ok * 100).toFixed(1)}%"></div><div class="dz-meter-meta" style="left:${ALVO * 100}%"></div></div>
+        <div class="dz-sla-v"><span class="dz-status ${e}"><i>${ico[e]}</i></span>${fmtPct(l.ok)}</div>
+      </div>`; }).join('');
+    return `<section class="dz-card dz-sla"><header class="dz-rt-h"><div><h3>${esc(titulo)}</h3><p>${esc(sub)}</p></div>${sel}</header>
+      <div class="dz-sla-top"><div><b>${fmtPct(r.ok)}</b><span>no prazo · ${fmtInt(r.n)} processos</span></div><div><b>${dia(r.med)}</b><span>tempo mediano</span></div><span class="dz-status ${e0}"><i>${ico[e0]}</i>${e0 === 'bom' ? 'Na meta' : e0 === 'atencao' ? 'Perto da meta' : 'Abaixo da meta'} (alvo ${fmtPct(ALVO)})</span></div>
+      <div class="dz-sla-rows ${r.linhas.length > 8 && !_modoPdf ? 'longo' : ''}">${linhas}</div></section>`;
+  }
+
+  // ── Acordos contratuais por cliente (SLA/KPI do contrato) ────────────
+  // fim real da entrega = DATA ENTREGA + HORÁRIO DE CHEGADA NO CLIENTE (se houver) senão a JANELA
+  // TP LINK: só DATA COLETA + HORA COLETA (início) e DATA ENTREGA + JANELA DE DESCARGA (fim),
+  // com 3 h de tolerância para atrasos na entrega.
+  const fimEntrega = p => dataHora(p.dataEntrega, p.janela);
+  const gateOut = p => dataHora(p.dataColeta, p.horaColeta);
+  const oriN = p => semAcento(p.origem || p.localColeta), desN = p => semAcento(p.destino || p.localEntrega);
+  const TOL_H = 3;
+  const LANES_TPL = [
+    { id: 'lt1', nome: 'Lead Time: Itapoá / Navegantes / SFS / Itajaí → JLL', meta: 8, filtro: p => /ITAPOA|NAVEGANTES|SAO FRANCISCO|SFS|ITAJAI/.test(oriN(p)) && /JOINVILLE|JLL/.test(desN(p)) },
+    { id: 'lt2', nome: 'Lead Time: Imbituba → JLL', meta: 16, filtro: p => /IMBITUBA/.test(oriN(p)) && /JOINVILLE|JLL/.test(desN(p)) },
+    { id: 'lt3', nome: 'Lead Time: DTA GRU → Joinville', meta: 24, filtro: p => /GUARULHOS|GRU/.test(oriN(p)) && /JOINVILLE/.test(desN(p)) },
+    { id: 'lt4', nome: 'Lead Time: FLN → Fábrica Joinville', meta: 10, filtro: p => /FLORIANOPOLIS|FLN/.test(oriN(p)) && /JOINVILLE/.test(desN(p)) },
+  ];
+  const CRIT = 'Coleta (data + hora) → entrega (data + janela), em horas operacionais, com 3 h de tolerância';
+  const CONTRATOS = {
+    'TP LINK': [
+      { id: 'otif', nome: 'OTIF (On-Time In-Full)', meta: 0.985, tipo: 'pct', crit: 'Entregas dentro do prazo da rota (meta do lead time + 3 h; demais rotas: 24 h + 3 h)',
+        medir: p => { const a = gateOut(p), b = fimEntrega(p); if (!a || !b || b < a || b > new Date()) return null; const l = LANES_TPL.find(x => x.filtro(p)); return horasOp(a, b) <= (l ? l.meta : 24) + TOL_H; } },
+      ...LANES_TPL.map(l => Object.assign({ tipo: 'h', crit: CRIT, ini: gateOut, fim: fimEntrega, tol: TOL_H }, l)),
+      { id: 'disp', nome: 'Disponibilização de veículos', meta: 24, tipo: 'manual', crit: 'Depende da hora da solicitação (booking), que não está entre as colunas usadas' },
+      { id: 'fat', nome: 'Acuracidade no faturamento', meta: 1, tipo: 'manual', crit: 'DACTEs/faturas conforme a tabela tarifária — conferência manual' },
+    ],
+  };
+  function contratoDe(lista) {
+    const cs = new Set(lista.map(p => semAcento(p.cliente)).filter(Boolean));
+    if (cs.size !== 1) return null;
+    const c = [...cs][0];
+    const k = Object.keys(CONTRATOS).find(x => c.startsWith(semAcento(x)));
+    return k ? { cliente: k, kpis: CONTRATOS[k] } : null;
+  }
+  function contratoCard(lista) {
+    const ct = contratoDe(lista); if (!ct) return '';
+    const agora = new Date();
+    const ico = { bom: '✓', atencao: '!', critico: '✕' };
+    const linhas = ct.kpis.map(k => {
+      if (k.tipo === 'manual') return `<tr><td><b>${esc(k.nome)}</b><div class="dz-sub">${esc(k.crit)}</div></td><td class="num">${k.meta === 1 ? '100%' : '≤ ' + k.meta + ' h'}</td><td class="num">—</td><td class="num">—</td><td><span class="dz-sub">Não medido pelo sistema</span></td></tr>`;
+      let ok = 0, n = 0; const hs = [];
+      lista.forEach(p => {
+        if (k.filtro && !k.filtro(p)) return;
+        if (k.medir) { const r = k.medir(p); if (r === null) return; n++; if (r) ok++; return; }
+        const a = k.ini(p), b = k.fim(p); if (!a || !b || b < a || b > agora) return;
+        const h = horasOp(a, b); n++; hs.push(h); if (h <= k.meta + (k.tol || 0)) ok++;
+      });
+      const pct = n ? ok / n : null;
+      const alvo = k.tipo === 'pct' ? k.meta : 0.9;
+      const e = pct == null ? '' : pct >= alvo ? 'bom' : pct >= alvo - 0.1 ? 'atencao' : 'critico';
+      const med = hs.length ? hs.slice().sort((a, b) => a - b)[Math.floor(hs.length / 2)] : null;
+      return `<tr><td><b>${esc(k.nome)}</b><div class="dz-sub">${esc(k.crit)}</div></td>
+        <td class="num">${k.tipo === 'pct' ? '≥ ' + fmtDec(k.meta * 100, 1) + '%' : '≤ ' + k.meta + ' h' + (k.tol ? ` <span class="dz-sub">(+${k.tol} h)</span>` : '')}</td>
+        <td class="num"><b>${pct == null ? '—' : fmtDec(pct * 100, 1) + '%'}</b>${med != null ? `<div class="dz-sub">mediana ${fmtHoras(med)}</div>` : ''}</td>
+        <td class="num">${fmtInt(n)}</td>
+        <td>${e ? `<span class="dz-status ${e}"><i>${ico[e]}</i>${e === 'bom' ? 'Cumprido' : e === 'atencao' ? 'Perto da meta' : 'Abaixo da meta'}</span>` : '<span class="dz-sub">Sem medições no período</span>'}</td></tr>`;
+    }).join('');
+    return card(`Acordo de nível de serviço — ${ct.cliente}`, 'Indicadores do contrato · horas operacionais (seg–sex, 06h–20h): madrugada e fim de semana não contam, pois a coleta é antecipada para cumprir a janela',
+      `<div class="dz-tbl"><table class="dz-sla-ct"><thead><tr><th>Indicador (KPI)</th><th class="num">Meta contratual</th><th class="num">Resultado</th><th class="num">Medidos</th><th>Situação</th></tr></thead><tbody>${linhas}</tbody></table></div>`);
+  }
+
   // ── Montagem do painel ─────────────────────────────────────────────
   // modo: 'interno' (todos os clientes, com custos/equipes) | 'cliente'
   function render(el, todos, cfg) {
@@ -14974,6 +15157,8 @@ const Dash = (() => {
         ${medidor(m.sla1, 0.9, '1ª resposta no prazo', `${fmtInt(m.sla1n)} medições · mediana ${fmtHoras(m.h1med)}`)}
         ${medidor(m.slaProg, 0.9, 'Programação no prazo', `${fmtInt(m.slaProgn)} medições`)}
       </div>`));
+      { const ct = contratoCard(lista); if (ct) blocos.push(ct); }
+      blocos.push(`<div class="dz-grid2 dz-grid-sla">${slaCard(ativos, 'coleta', cfg, interno)}${slaCard(ativos, 'entrega', cfg, interno)}</div>`);
     }
     if (interno) {
       blocos.push(`<div class="dz-grid3">
@@ -15035,7 +15220,7 @@ const Dash = (() => {
     return { lista, metricas: m };
   }
 
-  return { mzSet, mzExportar, ritmoModo, ritmoDados, dataRef, paraData, serieTempo, ETAPAS, normalizar, paraCliente, periodo, noPeriodo, metricas, render, filtrarTabela, fase, FASES, esc, norm, dataBR, iso, fmtInt, fmtPeso, fmtBRL, fmtPct, CAMPOS_CLIENTE };
+  return { slaRegiao, slaMeta, slaMetas, ufDe, mzSet, mzExportar, ritmoModo, ritmoDados, dataRef, paraData, serieTempo, ETAPAS, normalizar, paraCliente, periodo, noPeriodo, metricas, render, filtrarTabela, fase, FASES, esc, norm, dataBR, iso, fmtInt, fmtPeso, fmtBRL, fmtPct, CAMPOS_CLIENTE };
 })();
 
 // ═══════════════════════════════════════════════════════════════════════
@@ -15681,7 +15866,7 @@ function dzMontarSnapshot(link) {
   return {
     v: 1, cliente: link.cliente, titulo: link.titulo || ('Painel de embarques — ' + link.cliente),
     gerado_em: new Date().toISOString(), expira_em: link.expira_em || null,
-    opcoes: { sla: !!o.sla, motorista: !!o.motorista, dias: o.dias || null },
+    opcoes: { sla: !!o.sla, motorista: !!o.motorista, dias: o.dias || null, metas: Dash.slaMetas() },
     processos: lista.map(p => Dash.paraCliente(p, o)),
   };
 }
