@@ -3250,6 +3250,7 @@ let relRealtimeCanal = null;
 let relRealtimeDebounce = null;
 
 function relRealtimeIniciar() {
+  return; // desligado (economia de tráfego no plano gratuito) — a vigia leve cobre as mudanças
   if (relRealtimeCanal) return; // já conectado, não duplica
   if (typeof window.supabase === 'undefined' || !window.supabase.createClient) {
     // CDN não carregou (rede bloqueada, offline, etc.) — sem problema,
@@ -8789,24 +8790,22 @@ function relVigiaIniciar() {
   relVigiaIntervalo = setInterval(relVigiaChecar, 20000);
 }
 
-let _relVigiaCarimbo = {};
 async function relVigiaChecar() {
   if (document.hidden) return; // aba em segundo plano: não consome tráfego
   let linhas = Object.keys(relVigiaSnapshot);
   if (!linhas.length) return; // nada carregado na tela agora — nada pra vigiar
   try {
     const hdrs = { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY };
-    const _mud = [];
-    for (let i = 0; i < linhas.length; i += 300) {
-      const lote = linhas.slice(i, i + 300);
-      const leve = await _sbFetchTudo(`${SB_URL}/rest/v1/relatorios_dados?linha=in.(${lote.join(',')})&select=linha,sincronizado_em,status_processo,status_processo_manual,status_processo_manual_base`, hdrs);
-      leve.forEach(r => {
-        const c = [r.sincronizado_em, r.status_processo, r.status_processo_manual, r.status_processo_manual_base].join('|');
-        if (_relVigiaCarimbo[r.linha] !== undefined && _relVigiaCarimbo[r.linha] !== c) _mud.push(String(r.linha));
-        _relVigiaCarimbo[r.linha] = c;
-      });
+    const _set = new Set(linhas);
+    if (!window._relVigiaDesde) {
+      const u = await (await fetch(`${SB_URL}/rest/v1/relatorios_dados?select=alterado_em&order=alterado_em.desc&limit=1`, { headers: hdrs })).json();
+      window._relVigiaDesde = (u && u[0] && u[0].alterado_em) || new Date().toISOString();
+      return;
     }
-    linhas = _mud;
+    const novos = await (await fetch(`${SB_URL}/rest/v1/relatorios_dados?select=linha,alterado_em&alterado_em=gt.${encodeURIComponent(window._relVigiaDesde)}&order=alterado_em.asc&limit=1000`, { headers: hdrs })).json();
+    if (!Array.isArray(novos) || !novos.length) return;
+    window._relVigiaDesde = novos[novos.length - 1].alterado_em;
+    linhas = [...new Set(novos.map(r => String(r.linha)).filter(l => _set.has(l)))];
     if (!linhas.length) return; // nada mudou desde a última checagem
     // Corrigido em 31/08/2026 — mesma causa da nota grande em
     // relCarregarClientes/_sbFetchTudo: com "Todos os Clientes" agora
@@ -8822,7 +8821,7 @@ async function relVigiaChecar() {
     for (let i = 0; i < linhas.length; i += TAM_LOTE_VIGIA) {
       const lote = linhas.slice(i, i + TAM_LOTE_VIGIA);
       const filtro = `linha=in.(${lote.join(',')})`;
-      const pagina = await _sbFetchTudo(`${SB_URL}/rest/v1/relatorios_dados?${filtro}&select=linha,cliente,status_processo,status_processo_manual,status_processo_manual_base,status_processo_manual_em,status,todos`, hdrs);
+      const pagina = await _sbFetchTudo(`${SB_URL}/rest/v1/relatorios_dados?${filtro}&select=linha,origem_planilha,origem_planilha_rotulo,cliente,referencia,local_coleta,local_entrega,data_liberacao,data_carregamento,data_descarga,status,status_processo,status_processo_manual,status_processo_manual_base,status_processo_manual_em,equipe,assistente,nf,rastreamento,horas_primeira_resposta,primeira_resposta_ok,horas_programacao,programacao_ok,data_recebimento,hora_recebimento,data_1_resposta,hora_1_resposta,hora_liberacao,data_programacao,hora_programacao,adiantamento_confirmado,todos`, hdrs);
       linhasAtuais = linhasAtuais.concat(pagina);
     }
     let mudouStatusProcesso = false;
@@ -8857,6 +8856,12 @@ async function relVigiaChecar() {
     // o indicador "de quem é a vez" mudou (os outros dois sinais não
     // afetam o que já está na tela).
     if (mudouStatusProcesso && relClienteAtual) relBuscar();
+    else if (linhasAtuais.length && Array.isArray(relRegistros)) {
+      // atualiza só as linhas que mudaram, sem recarregar tudo
+      let trocou = false;
+      linhasAtuais.forEach(row => { const i = relRegistros.findIndex(x => x._linha === row.linha); if (i >= 0) { relRegistros[i] = relMapRegistroSupabase(row); trocou = true; } });
+      if (trocou) { try { relRenderTabela(); relRenderKanban(); } catch (e) {} }
+    }
   } catch (e) { /* falha na checagem periódica não é crítica — tenta de novo no próximo minuto */ }
 }
 
@@ -15500,7 +15505,7 @@ const dzSalvarEstado = () => { try { localStorage.setItem('agenterodo_dz', JSON.
 const dzHdrs = extra => Object.assign({ apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY }, extra || {});
 
 async function dzCarregar(forcar) {
-  if (!forcar && dzProcs.length && Date.now() - dzCarregadoEm < 5 * 60 * 1000) return dzProcs;
+  if (!forcar && dzProcs.length && Date.now() - dzCarregadoEm < 15 * 60 * 1000) return dzProcs;
   if (dzCarregando) return dzCarregando;
   dzCarregando = (async () => {
     const rows = await _sbFetchTudo(`${SB_URL}/rest/v1/relatorios_dados?select=*&order=linha.asc`, dzHdrs());
